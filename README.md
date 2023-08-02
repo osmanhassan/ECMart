@@ -5,7 +5,7 @@
 1. Install Node, npm
 2. [Initialize Tailwindcss on your machine using the following instruction](https://tailwindcss.com/docs/installation)
 
-## TechStack Used 
+## TechStack Used (till now)
 - HTML5
 - CSS3
 - TailwindCSS
