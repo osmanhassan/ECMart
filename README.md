@@ -11,3 +11,9 @@
 - TailwindCSS
 - JavaScript
 - NodeJS
+
+
+## Necessary Installation
+
+- npx tailwindcss -i ./public/css/input.css -o ./public/css/app.css --watch
+- 
