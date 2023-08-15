@@ -38,7 +38,7 @@ function findById(uid, callback) {
 }
 
 function getUserByNamePass(params, callback) {
-  var sql = "SELECT * FROM users WHERE name LIKE ? AND password LIKE ?";
+  var sql = "SELECT * FROM users WHERE USER_NAME LIKE ? AND PASSWORD LIKE ?";
   db.getResult(sql, [params.userName, params.password], function (result) {
     callback(result);
   });

@@ -3,25 +3,26 @@ var express = require("express");
 var user = require("../models/user");
 var router = express.Router();
 
-// router.get("/", function (request, response) {
-//   data = {
-//     userName: "",
-//     userNameError: "",
-//     passwordError: "",
-//     confirmPassError: "",
-//   };
-//   // response.render('signUp', data);
-//   response.json(data);
-// });
+router.get("/", function (request, response) {
+  data = {
+    userName: "",
+    role: "",
+    email: "",
+    phone: "",
+    shopName: "",
+  };
+  response.render("signup", data);
+  // response.json(data);
+});
 
 router.post("/", function (request, response) {
   // console.log(request.body);
   // params.userName,
 
   var values = {
-    userName: request.body.userName,
+    userName: request.body.username,
     password: request.body.password,
-    role: request.body.role,
+    role: 1,
     email: request.body.email,
     phone: request.body.phone,
     shopName: request.body.shopName,
@@ -31,7 +32,7 @@ router.post("/", function (request, response) {
   //     if (data.status) {
   user.insert(values, function (status) {
     if (status) {
-      response.json({ code: 200, status: "ok" });
+      response.redirect("/signup/");
     } else response.json({ code: 300, status: "failed" });
   });
   //  } else response.render("signUp", data);
