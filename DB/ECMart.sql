@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 15, 2023 at 09:32 AM
+-- Generation Time: Aug 15, 2023 at 04:39 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.4
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `ECMart`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `ID` int(11) NOT NULL,
+  `NAME` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `SELLER_ID` int(11) NOT NULL,
+  `QUANTITY` int(11) NOT NULL,
+  `PRICE` float NOT NULL,
+  `VARIANT` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `RATING` float DEFAULT NULL,
+  `IMAGE` blob DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`ID`, `NAME`, `SELLER_ID`, `QUANTITY`, `PRICE`, `VARIANT`, `RATING`, `IMAGE`) VALUES
+(2, 'Under Wear men', 4, 500, 5.5, 'Red, Purple, Pink, Orange', 3.3, NULL);
 
 -- --------------------------------------------------------
 
@@ -43,13 +67,23 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `USER_NAME`, `PASSWORD`, `ROLE`, `EMAIL`, `PHONE`, `SHOP_NAME`, `NID`) VALUES
-(1, 'win', 'password', 1, 'win@gmail.com', 192324, 'asdad', 12312313),
-(4, 'osman', 'password', 1, 'asdas', 1323123, 'aadsasd', 12312312),
-(5, 'enan', 'password', 2, 'enan@gmail.com', 21382147, 'Vape Shop', 31231412);
+(4, 'osman', 'password', 1, 'asdas', 1323123, 'aadsasd', NULL),
+(5, 'enan', 'password', 2, 'enan@gmail.com', 21382147, NULL, NULL),
+(6, 'Prithul', 'password', 1, 'prithul@gmail.com', 138374312, 'jamai er bokol ghondho', NULL),
+(7, 'Chadni', '123456', 1, 'chadni@gmail.com', 1263573264, 'Win_Shop', NULL),
+(8, 'Shuvo', '1234', 2, 'shuvo@gmail.com', 1724327334, NULL, NULL),
+(9, 'Noyon', '1234', 3, 'noyon@delivery.com', 1742042069, NULL, 456789876);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `SELLER_ID` (`SELLER_ID`);
 
 --
 -- Indexes for table `users`
@@ -62,10 +96,26 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`SELLER_ID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
