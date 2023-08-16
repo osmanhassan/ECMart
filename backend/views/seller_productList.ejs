@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/frontend/dist/app.css" rel="stylesheet" />
+    <link href="/css/app.css" rel="stylesheet" />
   </head>
   <body class="h-full bg-white dark:bg-slate-900">
     <!-- home page -->
@@ -65,7 +65,7 @@
                 class="flex w-full justify-between text-slate-600 dark:text-sky-400 hover:text-gray-300 cursor-pointer items-center mb-6"
               >
                 <a
-                  href="./seller_productAdd.html"
+                  href="/seller/productAdd"
                   class="flex items-center focus:outline-none focus:ring-2 focus:ring-white"
                 >
                   <svg
@@ -92,7 +92,7 @@
                 class="flex w-full justify-between text-slate-600 dark:text-sky-400 hover:text-gray-300 cursor-pointer items-center mb-6"
               >
                 <a
-                  href="./seller_productList.html"
+                  href="/seller/productList"
                   class="flex items-center focus:outline-none focus:ring-2 focus:ring-white"
                 >
                   <svg
@@ -324,7 +324,7 @@
                 class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6"
               >
                 <a
-                  href="javascript:void(0)"
+                  href="/seller/dashboard"
                   class="flex items-center focus:outline-none focus:ring-2 focus:ring-white"
                 >
                   <svg
@@ -756,6 +756,9 @@
                   <div
                     class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
                   >
+                    <!-- Product View of 1st Product -->
+                    <!-- Enter Ejs code here -->
+                    <% products.forEach(product => { %>
                     <div class="group relative">
                       <div
                         class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
@@ -774,404 +777,16 @@
                                 aria-hidden="true"
                                 class="absolute inset-0"
                               ></span>
-                              Basic Tee
+                              <%= product.NAME %>
                             </a>
                           </h3>
-                          <p class="mt-1 text-sm">Black</p>
+                          <p class="mt-1 text-sm"><%= product.VARIANT %></p>
                         </div>
-                        <p class="text-sm font-medium">$35</p>
+                        <p class="text-sm font-medium"><%= product.PRICE %></p>
                       </div>
                     </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
-                    <div class="group relative">
-                      <div
-                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      >
-                        <img
-                          src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                          alt="Front of men&#039;s Basic Tee in black."
-                          class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </div>
-                      <div class="mt-4 flex justify-between">
-                        <div>
-                          <h3 class="text-sm">
-                            <a href="#">
-                              <span
-                                aria-hidden="true"
-                                class="absolute inset-0"
-                              ></span>
-                              Basic Tee
-                            </a>
-                          </h3>
-                          <p class="mt-1 text-sm">Black</p>
-                        </div>
-                        <p class="text-sm font-medium">$35</p>
-                      </div>
-                    </div>
+                    <% }); %>
+                    <!-- END of 1st product -->
                   </div>
                 </div>
               </div>

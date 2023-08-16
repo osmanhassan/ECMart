@@ -12,24 +12,24 @@ router.post("/", function (request, response) {
       result[0].activity = "online";
       var data = {
         uid: result[0].ID,
-        name: result[0].USER_NAME,
+        userName: result[0].USER_NAME,
         password: result[0].PASSWORD,
         role: result[0].ROLE,
         email: result[0].EMAIL,
         phone: result[0].PHONE,
-        email: result[0].SHOP_NAME,
-        email: result[0].NID,
+        shopName: result[0].SHOP_NAME,
+        nid: result[0].NID,
       };
 
       request.session.user = data;
-      console.log(request.session.user.name + " logged in");
-      response.redirect("/profile");
+      console.log(request.session.user.userName + " logged in");
+      response.redirect("/seller/dashboard");
     } else {
       console.log(result);
       console.log(request.body.password);
       response.render("login", {
         userName: request.body.userName,
-        error: "Invalid username or password",
+        error: "Invalid userName or password",
       });
     }
   });

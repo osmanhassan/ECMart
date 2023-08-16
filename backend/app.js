@@ -4,6 +4,7 @@ var expressSession = require("express-session");
 
 var signUp = require("./controllers/signupController");
 var login = require("./controllers/loginController");
+let seller = require("./controllers/sellerController");
 
 const app = express();
 
@@ -13,6 +14,7 @@ const port = 3000;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(
   expressSession({
     secret: "my top secret password",
@@ -27,6 +29,13 @@ app.use("/js", express.static(__dirname + "/public/js"));
 
 app.use("/signup", signUp);
 app.use("/login", login);
+app.use("/seller", seller);
+
+// app.get("/seller_dashboard", (req, res) => {
+//   // Render the dashboard.ejs view
+//   res.render("seller_dashboard"); // Assumes dashboard.ejs is in the views folder
+// });
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
