@@ -14,7 +14,7 @@ router.post("/productAdd", (req, res) => {
   console.log(req.body);
   let productDetails = {
     productName: req.body.productName,
-    sellerId: 4,
+    sellerId: 6,
     stock: req.body.stock,
     price: req.body.price,
     variant: req.body.variant,
@@ -32,7 +32,6 @@ router.post("/productAdd", (req, res) => {
 
 router.get("/productList", (req, res) => {
   product.getProductListbyId(4, (result) => {
-    console.log(result);
     res.render("seller_productList", { products: result });
   });
 });

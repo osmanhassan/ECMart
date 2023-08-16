@@ -23,28 +23,6 @@ function insert(params, callback) {
   );
 }
 
-function insertProduct(params, callback) {
-  var sql = "INSERT INTO products VALUES(null, ?, ?, ?, ?, ?, null, ?)";
-  db.execute(
-    sql,
-    [
-      params.productName,
-      params.sellerId,
-      params.stock,
-      params.price,
-      params.variant,
-      params.image,
-    ],
-    function (result) {
-      if (result) {
-        callback(true);
-      } else {
-        callback(false);
-      }
-    }
-  );
-}
-
 function findByName(name, callback) {
   var sql = "SELECT * FROM users WHERE name LIKE ?";
   db.getResult(sql, [name], function (result) {
@@ -133,5 +111,4 @@ module.exports = {
   MessageSenderFriends,
   findFriendlistFriends,
   NoMessageSenderFriends,
-  insertProduct,
 };

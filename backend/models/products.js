@@ -29,7 +29,15 @@ function getProductListbyId(uid, callback) {
   });
 }
 
+function getAllProducts(callback) {
+  let sql = "SELECT * FROM products";
+  db.getResult(sql, null, function (result) {
+    callback(result);
+  });
+}
+
 module.exports = {
   insertProduct,
   getProductListbyId,
+  getAllProducts,
 };
