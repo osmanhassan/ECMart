@@ -45,15 +45,15 @@ npx tailwindcss -i ./src/input.css -o ./dist/app.css --watch
 ## UI To-do 
 
 - [ ] Landing Page. 
-- [ ] Register as: Buyer - Seller - Deliveryman. 
-- [ ] Buyer Payment Page.
-- [ ] Buyer Add fund to Tether Page
-- [ ] Buyer|Seller|Deliveryman, Account Page -- Address add, edit.
-- [ ] Seller review and rating page
-- [ ] Seller Order Page
-- [ ] Delivery-man Dashboard
-- [ ] Deliveryman Order Collect Page
-- [ ] Deliveryman Order Delivary Page
-- [ ] Deliveryman Order Completed Page
+- [ ] Register as: Buyer - Seller - Deliveryman.  == login.html
+- [ ] Buyer Payment Page. == buyer_catalog.html
+- [ ] Buyer Add fund to Tether Page == buyer_catalog.html
+- [ ] Buyer|Seller|Deliveryman, Account Page -- Address add, edit. == buyer_catalog.html
+- [ ] Seller review and rating page == seller_productList.html
+- [ ] Seller Order Page == seller_productList.html + OTP option
+- [ ] Delivery-man Dashboard == similar to buyer and seller 
+- [ ] Deliveryman Order Collect Page == similar to buyer and seller  + OTP option
+- [ ] Deliveryman Order Delivary Page == similar to buyer and seller + OTP option
+- [ ] Deliveryman Order Completed Page == similar to buyer and seller 
 
 
