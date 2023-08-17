@@ -13,7 +13,19 @@
 - NodeJS
 
 
-## Necessary Installation
+## Necessary Documentation
 
-- npx tailwindcss -i ./public/css/input.css -o ./public/css/app.css --watch
-- 
+1. [TailwindCSS Documentation](https://tailwindcss.com/docs/installation)
+2. 
+
+## Necessary Installation Commands
+
+1. First naviagte to the frontend directory using `cd`
+
+2. Run the commands 
+```bash
+npm install -D
+```
+```bash
+npx tailwindcss -i ./src/input.css -o ./dist/app.css --watch
+```
