@@ -29,3 +29,31 @@ npm install -D
 ```bash
 npx tailwindcss -i ./src/input.css -o ./dist/app.css --watch
 ```
+## Instructions
+
+1. Maintain DarkMode-LightMode --> bg, font
+2. Code in Proper section, highlighted as
+
+```Comment
+<!-- Place your CODE here in the SECTION  -->
+```
+3. Take the following page as reference
+      - login.html
+      - buyer_catalog.html
+4. 
+
+## UI To-do 
+
+- [ ] Landing Page. 
+- [ ] Register as: Buyer - Seller - Deliveryman. 
+- [ ] Buyer Payment Page.
+- [ ] Buyer Add fund to Tether Page
+- [ ] Buyer|Seller|Deliveryman, Account Page -- Address add, edit.
+- [ ] Seller review and rating page
+- [ ] Seller Order Page
+- [ ] Delivery-man Dashboard
+- [ ] Deliveryman Order Collect Page
+- [ ] Deliveryman Order Delivary Page
+- [ ] Deliveryman Order Completed Page
+
+
