@@ -7,6 +7,7 @@ var signUp = require("./controllers/signupController");
 var login = require("./controllers/loginController");
 let seller = require("./controllers/sellerController");
 let buyer = require("./controllers/buyerController");
+let logout = require("./controllers/logoutController");
 
 const app = express();
 
@@ -28,16 +29,20 @@ app.use("/css", express.static(__dirname + "/public/css"));
 app.use("/images", express.static(__dirname + "/public/images"));
 app.use("/js", express.static(__dirname + "/public/js"));
 
+//authentication function
+
+function auth(request, response, next) {
+  if (!request.session.user) {
+    response.redirect("/login/");
+  } else next();
+}
+
 //endpoint handler
 app.use("/signup", signUp);
 app.use("/login", login);
-app.use("/seller", seller);
-app.use("/buyer", buyer);
-
-// app.get("/seller_dashboard", (req, res) => {
-//   // Render the dashboard.ejs view
-//   res.render("seller_dashboard"); // Assumes dashboard.ejs is in the views folder
-// });
+app.use("/logout", logout);
+app.use("/seller", auth, seller);
+app.use("/buyer", auth, buyer);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
