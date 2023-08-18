@@ -1,0 +1,57 @@
+<script>
+  let darkBtn = document.getElementById("darkModeBtn");
+  let lightBtn = document.getElementById("lightModeBtn");
+
+  darkBtn.addEventListener("click", (e) => {
+    document.documentElement.classList.add("dark");
+  });
+
+  lightBtn.addEventListener("click", (e) => {
+    document.documentElement.classList.remove("dark");
+  });
+</script>
+<script>
+  var sideBar = document.getElementById("mobile-nav");
+  var openSidebar = document.getElementById("openSideBar");
+  var closeSidebar = document.getElementById("closeSideBar");
+  sideBar.style.transform = "translateX(-260px)";
+
+  function sidebarHandler(flag) {
+    if (flag) {
+      sideBar.style.transform = "translateX(0px)";
+      openSidebar.classList.add("hidden");
+      closeSidebar.classList.remove("hidden");
+    } else {
+      sideBar.style.transform = "translateX(-260px)";
+      closeSidebar.classList.add("hidden");
+      openSidebar.classList.remove("hidden");
+    }
+  }
+
+  function handleThemeBtnClick() {
+    var themeDropDown = document.getElementById("themeDropDown");
+    themeDropDown.classList.toggle("hidden");
+  }
+
+  function handleProfileBtnClick() {
+    var themeDropDown = document.getElementById("profileElements");
+    themeDropDown.classList.toggle("hidden");
+  }
+
+  function fixContentHeight() {
+    const bodyContentElement = document.getElementById("body-content");
+    const bodyContentElementHeight = bodyContentElement.offsetHeight - 64;
+    document
+      .getElementById("body-content")
+      .setAttribute("style", "height:" + bodyContentElementHeight + "px");
+  }
+  fixContentHeight();
+
+  window.addEventListener(
+    "resize",
+    function (event) {
+      fixContentHeight();
+    },
+    true
+  );
+</script>
