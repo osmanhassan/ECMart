@@ -31,9 +31,20 @@ app.use("/js", express.static(__dirname + "/public/js"));
 
 //authentication function
 
-function auth(request, response, next) {
+function authentication(request, response, next) {
   if (!request.session.user) {
     response.redirect("/login/");
+  } else next();
+}
+
+function sellerAuthorization(request, response, next) {
+  if (request.session.user.role != 1) {
+    response.render("access_denied");
+  } else next();
+}
+function buyerAuthorization(request, response, next) {
+  if (request.session.user.role != 2) {
+    response.render("access_denied");
   } else next();
 }
 
@@ -41,8 +52,8 @@ function auth(request, response, next) {
 app.use("/signup", signUp);
 app.use("/login", login);
 app.use("/logout", logout);
-app.use("/seller", auth, seller);
-app.use("/buyer", auth, buyer);
+app.use("/seller", authentication, sellerAuthorization, seller);
+app.use("/buyer", authentication, buyerAuthorization, buyer);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
