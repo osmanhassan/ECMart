@@ -22,13 +22,24 @@
 
 1. First naviagte to the frontend directory using `cd`
 
+```bash
+cd frontend
+```
+
 2. Run the commands 
+```bash
+npm install
+```
 ```bash
 npm install -D
 ```
 ```bash
 npx tailwindcss -i ./src/input.css -o ./dist/app.css --watch
 ```
+3. copy "src/img" folder into "dist" folder
+
+4. if you use any img then place the img in both "src/img" and "dist/img" folder 
+
 ## Instructions
 
 1. Maintain DarkMode-LightMode --> bg, font
