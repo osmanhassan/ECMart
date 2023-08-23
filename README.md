@@ -60,7 +60,7 @@ npx tailwindcss -i ./src/input.css -o ./dist/app.css --watch
 - [ ] Buyer Payment Page. == buyer_catalog.html
 - [ ] Buyer Add fund to Tether Page == buyer_catalog.html
 - [ ] Buyer|Seller|Deliveryman, Account Page -- Address add, edit. == buyer_catalog.html
-- [ ] Seller review and rating page == seller_productList.html
+- [ ] Seller and Product review and rating page == seller_productList.html
 - [ ] Seller Order Page == seller_productList.html + OTP option
 - [ ] Delivery-man Dashboard == similar to buyer and seller 
 - [ ] Deliveryman Order Collect Page == similar to buyer and seller  + OTP option
