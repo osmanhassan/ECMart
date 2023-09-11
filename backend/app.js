@@ -24,13 +24,13 @@ app.use(
     resave: false,
   })
 );
+
 // when user_requires/application_requires any CSS/JS/image from the server --> express.static --> The express. static middleware function is used to expose a directory or a file to a particular URL so its contents can be publicly accessed.
 app.use("/css", express.static(__dirname + "/public/css"));
 app.use("/images", express.static(__dirname + "/public/images"));
 app.use("/js", express.static(__dirname + "/public/js"));
 
 //authentication function
-
 function authentication(request, response, next) {
   if (!request.session.user) {
     response.redirect("/login/");
