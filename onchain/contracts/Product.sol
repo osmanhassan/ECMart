@@ -7,15 +7,13 @@ import "hardhat/console.sol";
 contract Product {
     uint256 private ecMartPercentage = 2;
     uint256 private reviewRatingAmount = 5;
-    uint256 private deliverymanAmount = 3;
     string name;
     uint256 private price;
     uint256 quantity;
     uint256 ecMartAmount;
     string description;
     address seller;
-    address owner;
-    uint256 public finalProductPrice;
+    address owner,
     mapping(address => string) rating;
     mapping(address => string) review;
 
@@ -25,7 +23,8 @@ contract Product {
         string memory _description,
         uint256 _quantity,
         address _seller,
-        address _owner
+        address _ownwer,
+
     ) {
         name = _name;
         price = _price;
@@ -34,22 +33,10 @@ contract Product {
         seller = _seller;
         owner = _owner;
         ecMartAmount = price * (ecMartPercentage / 100);
-        finalProductPrice =
-            price +
-            ecMartAmount +
-            deliverymanAmount;
     }
 
-    modifier onlyECmartOrSeller() {
-        require(
-            msg.sender == owner || msg.sender == seller,
-            "Not Owner or seller"
-        ); // Custom error message
-        _;
-    }
-
-    modifier onlyECmart() {
-        require(msg.sender == owner, "Not Owner or seller");
+    modifier onlyOwnerOrSeller {
+     require(msg.sender == owner || msg.sender == seller, "Not Owner or seller"); // Custom error message
         _;
     }
 
@@ -57,15 +44,11 @@ contract Product {
         return quantity;
     }
 
-    function getPrice() public view onlyECmartOrSeller returns (uint256) {
+    function getPrice() public view returns (uint256) {
         return price;
     }
 
-    function getProductFinalPrice() public view returns (uint256) {
-        return finalProductPrice;
-    }
-
-    function getEcmartAmount() public view onlyECmart returns (uint256) {
+    function getEcmartAmount() public view returns (uint256) {
         return ecMartAmount;
     }
 
@@ -77,7 +60,7 @@ contract Product {
         return seller;
     }
 
-    function updateQuantity(uint256 _quantity) public onlyECmartOrSeller {
+    function updateQuantity(uint256 _quantity) public onlyOwnerOrSeller {
         quantity = _quantity;
     }
 }

@@ -7,22 +7,38 @@
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  // const Product = await hre.ethers.getContractFactory("Product");
+  // console.log("Deploying contract...");
+  // const product = await Product.deploy(
+  //   "win",
+  //   "2656",
+  //   "Win is the hottest boy to buy",
+  //   "1",
+  //   "0x7a68a980FB95dAE6E0Cd4b92951e2363ED07da4A",
+  //   "0xAD2Ba2c788B73788db4BC597146f0Fd6176285C8"
+  // );
+  // // await product.deployed();
+  // console.log(`Deployed contract to: ${product.address}`);
 
-  const lockedAmount = hre.ethers.parseEther("0.001");
+  //   const product = await hre.ethers.deployContract("Product", [
+  //     "win",
+  //     "2656",
+  //     "Win is the hottest boy to buy",
+  //     "1",
+  //     "0x7a68a980FB95dAE6E0Cd4b92951e2363ED07da4A",
+  //     "0xAD2Ba2c788B73788db4BC597146f0Fd6176285C8",
+  //   ]);
 
-  const lock = await hre.ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
+  //   await product.waitForDeployment();
+  //   // console.log(product);
+  //   console.log(`Product deployed to ${product.target}`);
+  // }
 
-  await lock.waitForDeployment();
+  const ecmart = await hre.ethers.deployContract("ECMart");
 
-  console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
-  );
+  await ecmart.waitForDeployment();
+  // console.log(product);
+  console.log(`Product deployed to ${ecmart.target}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
