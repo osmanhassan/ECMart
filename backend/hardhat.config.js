@@ -15,7 +15,7 @@ module.exports = {
       url: "HTTP://127.0.0.1:7545",
       chainId: 1337,
       accounts: [
-        "0x6efb9cfa62e1016acd0f990f84d637f70d1a70ab97d068deb8e9e107d7dae093",
+        "0x03e63cfbe537b221ac06325117d71b4473933df253a0d94664b38a3056c2a76e",
       ],
     },
   },

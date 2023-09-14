@@ -258,7 +258,7 @@ contract ProductFacet {
     }
 
     function getdata(uint256 _data) public view returns (uint256) {
-        return _data;
+        return _data * 2;
     }
 }
 
@@ -293,7 +293,7 @@ contract RegistrationFacet {
 }
 
 contract Diamond {
-    AppStorage appStorage;
+    AppStorage aps;
 
     // address owner;
     mapping(bytes4 => address) public facetMap;
@@ -364,8 +364,25 @@ contract Diamond {
     fallback() external {
         address facet = facetMap[msg.sig];
         // console.log(facet);
-        require(facet != address(0), "Facet not foundasdasda");
-        (bool success, ) = facet.delegatecall(msg.data);
-        require(success, "Facet delegate call failed");
+        require(facet != address(0), "Facet not found");
+        // Execute external function from facet using delegatecall and return any value.
+        assembly {
+            // copy function selector and any arguments
+            calldatacopy(0, 0, calldatasize()) // copies the calldata into memory (this is where delegatecall loads from)
+            // execute function call against the relevant facet
+            // note that we send in the entire calldata including the function selector
+            let result := delegatecall(gas(), facet, 0, calldatasize(), 0, 0)
+            // get any return value
+            returndatacopy(0, 0, returndatasize())
+            // return any return value or error back to the caller
+            switch result
+            case 0 {
+                // delegate call failed
+                revert(0, returndatasize()) // so revert
+            }
+            default {
+                return(0, returndatasize()) // delegatecall succeeded, return any return data
+            }
+        }
     }
 }
