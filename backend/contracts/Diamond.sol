@@ -60,6 +60,7 @@ contract PlaceOrderFacet {
     }
 
     function placeOrder(
+        // Final Price, ecMart Amount, ReviewRating amount, deliveryman amount
         address[] calldata _orderItems,
         uint256[] calldata _units
     ) public payable {
@@ -239,13 +240,15 @@ contract PayOrderFacet {
 contract ProductFacet {
     AppStorage aps;
 
+    event Save(address productAddress);
+
     function addProduct(
         string memory _name,
         uint256 _price,
         string memory _description,
         uint256 _quantity
-    ) public {
-        // require(aps.sellers[msg.sender] == 1, "You are not a seller");
+    ) public returns (mapping(address => uint) memory) {
+        require(aps.sellers[msg.sender] == 1, "You are not a seller");
         Product product = new Product(
             _name,
             _price,
@@ -254,7 +257,11 @@ contract ProductFacet {
             msg.sender,
             address(this)
         );
+        address productAddress = address(product);
+        console.log(productAddress);
         aps.products[address(product)] = 1;
+        emit Save(productAddress);
+        return product;
     }
 
     function getdata(uint256 _data) public view returns (uint256) {

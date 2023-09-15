@@ -44,14 +44,30 @@ async function main() {
   // );
 
   // ----------------------
-  const productFacet = await hre.ethers.getContractAt(
+  const productFacet = await ethers.getContractAt(
     "ProductFacet",
     ecmart.address
   );
 
   tx = await productFacet.getdata(5);
-  // await tx.wait();
   console.log(tx);
+
+  const registrationFacet = await ethers.getContractAt(
+    "RegistrationFacet",
+    ecmart.address
+  );
+
+  tx = await registrationFacet.registerSeller();
+  console.log(tx);
+
+  productFacet.on("Save", (_productAddress) => {
+    console.log("Product added to ---->" + _productAddress);
+  });
+
+  tx = await productFacet.addProduct("Book", 250, "Best book", 100);
+  await tx.wait(1);
+  console.log(tx);
+
   // ----------------------
 
   // const { Web3 } = require("web3");
