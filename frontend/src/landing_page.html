@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Landing Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 dark:text-white transition-colors duration-500 ease-in-out">
+    <header class="bg-white dark:bg-gray-800 shadow-md">
+        <div class="container mx-auto p-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="img/logo.png" alt="Company Logo" class="h-10 w-10 mr-2">
+                <div class="text-xl font-semibold">EC Mart</div>
+            </div>
+            <ul class="flex space-x-4">
+                <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Home</a></li>
+                <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Registration</a></li>
+                <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Log In</a></li>
+                <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">About</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero bg-gray-900 text-white py-20">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-semibold mb-4">Discover Amazing Products</h1>
+            <p class="text-lg mb-8">Explore a wide range of products for all your needs.</p>
+            <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-full text-lg font-semibold transition duration-300 ease-in-out">Shop Now</a>
+        </div>
+    </section>
+
+    <section class="featured-products py-12">
+        <div class="container mx-auto">
+            <h2 class="text-2xl font-semibold mb-6 text-center">Featured Products</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Featured Product 1 -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <img src="img/camera.jpg" alt="Product 1" class="w-full h-40 object-cover mb-4">
+                    <h3 class="text-lg font-semibold mb-2">Product 1</h3>
+                    <p class="text-gray-600 dark:text-gray-300">High-quality product with great features.</p>
+                    <p class="text-green-500 dark:text-green-300 font-semibold mt-2">$29.99</p>
+                </div>
+                <!-- Featured Product 2 -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <img src="img/drone.jpg" alt="Product 2" class="w-full h-40 object-cover mb-4">
+                    <h3 class="text-lg font-semibold mb-2">Product 2</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Innovative design and functionality.</p>
+                    <p class="text-green-500 dark:text-green-300 font-semibold mt-2">$39.99</p>
+                </div>
+                <!-- Featured Product 3 -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <img src="img/guitar.jpg" alt="Product 3" class="w-full h-40 object-cover mb-4">
+                    <h3 class="text-lg font-semibold mb-2">Product 3</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Durable and stylish for everyday use.</p>
+                    <p class="text-green-500 dark:text-green-300 font-semibold mt-2">$19.99</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2023 MyShop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="fixed bottom-4 right-4 z-10">
+        <button id="dark-mode-toggle" class="rounded-full p-2 bg-white shadow-md dark:bg-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 text-gray-600 dark:text-gray-300">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        const darkModeToggle = document.querySelector('#dark-mode-toggle');
+        const body = document.body;
+
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+        });
+    </script>
+</body>
+</html>
