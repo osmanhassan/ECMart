@@ -59,8 +59,8 @@ contract PlaceOrderFacet {
         return (TOTAL_PAYABLE, orderUnitPrice, orderUnitFinalPrice);
     }
 
+    // Final Price, ecMart Amount, ReviewRating amount, deliveryman
     function placeOrder(
-        // Final Price, ecMart Amount, ReviewRating amount, deliveryman amount
         address[] calldata _orderItems,
         uint256[] calldata _units
     ) public payable {
@@ -247,7 +247,7 @@ contract ProductFacet {
         uint256 _price,
         string memory _description,
         uint256 _quantity
-    ) public returns (mapping(address => uint) memory) {
+    ) public returns (Product) {
         require(aps.sellers[msg.sender] == 1, "You are not a seller");
         Product product = new Product(
             _name,
