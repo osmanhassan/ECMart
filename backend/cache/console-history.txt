@@ -1,0 +1,43 @@
+  console.log(`${tx_4}`);
+tx_4 = await productFacet.viewProducts();
+tx_3 = await productFacet.addProduct("kimino", 250, "Female Dress", 200)
+let tx_3 = await productFacet.addProduct("kimino", 250, "Female Dress", 200);
+  console.log(`${tx_4}`);
+ let tx_4 = await productFacet.viewProducts();
+  console.log("Product Added");
+  await tx_3.wait(1);
+let tx_3 = await productFacet.addProduct("Book", 250, "Best book", 100);
+  console.log(`Got value from ProductFacet Function ${tx}`);
+  let tx = await productFacet.getdata(5);
+  console.log(`Product Facet is on address: ${productFacet.address}`);
+  );
+    ecmart.address
+    "ProductFacet",
+const productFacet = await ethers.getContractAt(
+  let tx_2 = await registrationFacet.registerSeller();
+console.log(`Registration Facet is on address: ${registrationFacet.address}`);
+  );
+    ecmart.address
+    "RegistrationFacet",
+const registrationFacet = await ethers.getContractAt(
+console.log(`Deployed ECMART contract to: ${ecmart.address}`);
+await ecmart.deployed()
+const ecmart = await DiamondContractFactory.deploy();
+const DiamondContractFactory = await ethers.getContractFactory("Diamond");
+clear
+  console.log(`${tx_4}`);
+  let tx_4 = await productFacet.viewProducts();
+  console.log("Product Added");
+  await tx_3.wait(1);
+let tx_3 = await productFacet.addProduct("Book", 250, "Best book", 100);
+  console.log(`Got value from ProductFacet Function ${tx}`);
+  let tx = await productFacet.getdata(5);
+  console.log(`Product Facet is on address: ${productFacet.address}`);
+  );
+    ecmart.address
+    "ProductFacet",
+const productFacet = await ethers.getContractAt(
+console.log(`Deployed ECMART contract to: ${ecmart.address}`)
+await ecmart.deployed()
+const ecmart = await DiamondContractFactory.deploy();
+const DiamondContractFactory = await ethers.getContractFactory("Diamond");

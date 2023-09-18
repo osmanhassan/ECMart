@@ -1,4 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
+
+//New Fucntion added
+// function provideReviewRating( address _productAddress,string memory review,uint8 rating)
+
+//Function Modified
+// function setDelivery(address[] memory _deliveryItems, uint256[] memory _deliveryUnits)
+
 pragma solidity ^0.8.0;
 
 // Uncomment this line to use console.log
@@ -20,7 +27,10 @@ contract Order {
     mapping(address => uint256) productUnitPrice;
     mapping(address => uint256) deliveryDetails;
 
-    uint256 public status;
+    // Status_Code: 1 == Deliveryman Accepted
+    // Status_Code: 4 == Product Shipped
+    // Status_Code: 7 == Product Delivered
+    uint32 public status;
     uint256 public orderTime;
     bool public isPaid = false;
     uint256 public buyerTotalPaid;
@@ -62,9 +72,34 @@ contract Order {
 
     modifier onlyECmart() {
         // require(msg.sender == owner);
-        require(msg.sender == owner, "Owner only");
+        require(msg.sender == owner, "ECmart only");
         _;
     }
+
+    //Added function by --> Win
+    function addBuyer() public onlyECmart {
+        for (uint32 i = 0; i < orderItems.length; i++) {
+            (bool success, ) = orderItems[i].call(
+                abi.encodeWithSignature("addBuyer(address)", buyer)
+            );
+            require(
+                success,
+                "Buyer Not Added to the Product From ORDER contract"
+            );
+        }
+    }
+
+    //Fund Transfer to Deliveryman starts
+
+    // FUND Transfers to Deliveryman ends
+
+    //Fund Transfer to seller starts
+
+    // FUND Transfers to seller ends
+
+    //Fund Transfer to reviewRating starts
+
+    // FUND Transfers to reviewRating ends
 
     function getBuyer() public view returns (address) {
         return buyer;
@@ -82,7 +117,7 @@ contract Order {
         return orderUnits;
     }
 
-    function getOrderUnitFinalPrice() public view returns ( uint256[] memory) {
+    function getOrderUnitFinalPrice() public view returns (uint256[] memory) {
         return orderUnitFinalPrice;
     }
 
@@ -148,5 +183,37 @@ contract Order {
 
         deliveredItems = _deliveryItems;
         deliveredUnits = _deliveryUnits;
+
+        //Review and Rating ENABLE || REview and rating can be submitted even when the product is not delivered.
+        for (uint32 i = 0; i < orderItems.length; i++) {
+            // Call the function of Product Contract without importing Product.sol using function signature --> dynamic approach
+            (bool success, ) = orderItems[i].call(
+                abi.encodeWithSignature("enableReviewRating(address)", buyer)
+            );
+            require(success, "Review-Rating Permission given is FAILED!!");
+        }
+    }
+
+    function provideReviewRating(
+        address _productAddress,
+        string memory review,
+        uint8 rating
+    ) public {
+        require(
+            msg.sender == buyer,
+            "Can not give Review-Rating. Because You are not the buyer!"
+        );
+        require(
+            orderDetails[_productAddress] != 0,
+            "You haven't purchased the product!"
+        );
+        (bool success, ) = _productAddress.call(
+            abi.encodeWithSignature(
+                "submitReviewRating(string,uint8)",
+                review,
+                rating
+            )
+        );
+        require(success, "Review-Rating Provding is FAILED!!");
     }
 }

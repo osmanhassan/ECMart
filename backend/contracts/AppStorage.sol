@@ -11,4 +11,5 @@ struct AppStorage {
     mapping(address => uint8)  sellers;
     mapping(address => uint8)  buyers;
     mapping(address => uint8)  deliveryMen;
+    uint256 deliveryManChargePerUnit;
 }

@@ -24,5 +24,8 @@ module.exports = {
       url: "http://127.0.0.1:8545/",
       chainid: 31337,
     },
+    ganache:{
+      url: "HTTP://127.0.0.1:7545",
+    }
   },
 };
