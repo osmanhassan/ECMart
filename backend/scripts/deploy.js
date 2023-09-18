@@ -66,17 +66,18 @@ async function main() {
     ecmart.address
   );
   console.log(`Product Facet initiated`);
+  console
 
   //add product as seller
   let tx_addProduct = await productFacet
     .connect(sellerWallet)
-    .addProduct("Book", 5000, "Best book", 100);
+    .addProduct("Book", "5000000000000000000", "Best book", 150);
   // await tx_3.wait(1);
   console.log("Product Added 1");
 
   tx_addProduct = await productFacet
     .connect(sellerWallet)
-    .addProduct("Kimino", 30000, "Japanese Female Dress", 300);
+    .addProduct("Kimino", "30000000000000000000", "Japanese Female Dress", 400);
   console.log("Product Added 2");
 
   let tx_viewProduct = await productFacet.viewProducts(sellerPublicAddress);
@@ -89,8 +90,8 @@ async function main() {
 
   let tx_order = await orderFacet
     .connect(buyerWallet)
-    .placeOrder([tx_viewProduct[0], tx_viewProduct[1]], [2, 1], {
-      value: ethers.utils.parseEther("30.0"),
+    .placeOrder([tx_viewProduct[0], tx_viewProduct[1]], [2, 3], {
+      value: ethers.utils.parseEther("135.1"),
     });
 
   const deliveryFacet = await ethers.getContractAt(
@@ -189,7 +190,7 @@ async function main() {
     const balanceEtherOfDM = ethers.utils.formatEther(
       await ethers.provider.getBalance(dmPublicAddress)
     );
-    console.log(`Deliveryman BALANCE Before Delivery: ${contractBalanceEther}`);
+    console.log(`Deliveryman BALANCE Before Delivery: ${balanceEtherOfDM}`);
   }
 
   async function deliverOrder(orderAddress) {
@@ -205,7 +206,7 @@ async function main() {
       .setDelivery(
         orderAddress,
         [tx_viewProduct[0], tx_viewProduct[1]],
-        [2, 1]
+        [2, 3]
       );
     console.log("Delivery Items and Quantity is SET by delivery man");
     //Get Delivery Items and Units
@@ -220,6 +221,7 @@ async function main() {
         .getDeliveredUnits()}`
     );
   }
+
   async function paymentOfOrder(orderAddress) {
     console.log("----------------- PAYMENT PREVIEW -------------- ");
 
@@ -231,7 +233,7 @@ async function main() {
     orderFacet.on("OrderPaid", (_isPaid) => {
       if (_isPaid) {
         console.log(
-          "paid----------------------------------------------------------"
+          "paid ----------------------------------------------------------"
         );
         async function logBal() {
           const balanceEtherOfBuyer = ethers.utils.formatEther(
@@ -254,7 +256,7 @@ async function main() {
             await ethers.provider.getBalance(dmPublicAddress)
           );
           console.log(
-            `Deliveryman BALANCE After Delivery: ${contractBalanceEther}`
+            `Deliveryman BALANCE After Delivery: ${balanceEtherOfDM}`
           );
         }
         logBal();
@@ -313,19 +315,19 @@ async function main() {
         .getSeller()}`
     );
 
-    //getEcmartAmount()
-    console.log(
-      `ECMart Amount on Product 1 : ${await productContract_1
-        .connect(ecmart.address)
-        .getEcmartAmount()}`
-    );
+    // //getEcmartAmount()
+    // console.log(
+    //   `ECMart Amount on Product 1 : ${await productContract_1
+    //     .connect(ecmart.address)
+    //     .getEcmartAmount()}`
+    // );
 
-    //getReviewRatingAmount()
-    console.log(
-      `Review-Rating Amount on Product 1 : ${await productContract_1
-        .connect(ecmart.address)
-        .getReviewRatingAmount()}`
-    );
+    // //getReviewRatingAmount()
+    // console.log(
+    //   `Review-Rating Amount on Product 1 : ${await productContract_1
+    //     .connect(ecmart.address)
+    //     .getReviewRatingAmount()}`
+    // );
   }
 }
 

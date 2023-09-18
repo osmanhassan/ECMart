@@ -5,11 +5,13 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 struct AppStorage {
-   uint256 tester;
-    mapping(address => uint8)  orders;
-    mapping(address => uint8)  products;
-    mapping(address => uint8)  sellers;
-    mapping(address => uint8)  buyers;
-    mapping(address => uint8)  deliveryMen;
+    uint256 tester;
+    mapping(address => uint8) orders;
+    mapping(address => uint8) products;
+    mapping(address => uint8) sellers;
+    mapping(address => uint8) buyers;
+    mapping(address => uint8) deliveryMen;
     uint256 deliveryManChargePerUnit;
+    uint256 reviewRatingAmount;
+    uint256 ecMartPercentage;
 }

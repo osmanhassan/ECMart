@@ -11,9 +11,11 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 contract Product {
-    uint256 private ecMartPercentage = 2;
-    uint256 private reviewRatingAmount = 5;
-    uint256 private deliverymanAmount = 3;
+    // // Assume 5% of produt_actual price
+    // uint256 private ecMartPercentage = 5;
+    // // Assume 3 ETH per delivery
+    // uint256 private reviewRatingAmount = 3000000000000000000;
+    // uint256 private deliverymanAmount = 3000000000000000000;
     string name;
     uint256 private price;
     uint256 quantity;
@@ -46,7 +48,8 @@ contract Product {
         string memory _description,
         uint256 _quantity,
         address _seller,
-        address _owner
+        address _owner,
+        uint256 _finalPrice
     ) {
         name = _name;
         price = _price;
@@ -54,10 +57,7 @@ contract Product {
         description = _description;
         seller = _seller;
         owner = _owner;
-        ecMartAmount = (price * ecMartPercentage) / 100;
-        console.log("Percentage-----------------------------");
-        console.log(uint256(ecMartPercentage / 100));
-        finalProductPrice = price + ecMartAmount + deliverymanAmount;
+        finalProductPrice = _finalPrice;
     }
 
     modifier onlyECmartOrSeller() {
@@ -133,13 +133,17 @@ contract Product {
         return finalProductPrice;
     }
 
-    function getEcmartAmount() public view onlyECmart returns (uint256) {
-        return ecMartAmount;
-    }
+    // function getEcmartAmount() public view onlyECmart returns (uint256) {
+    //     return ecMartAmount;
+    // }
 
-    function getReviewRatingAmount() public view returns (uint256) {
-        return reviewRatingAmount;
-    }
+    // function getReviewRatingAmount() public view returns (uint256) {
+    //     return reviewRatingAmount;
+    // }
+
+    // function getDelivermanAmount() public view returns (uint256){
+    //     return deliverymanAmount;
+    // }
 
     function getSeller() public view returns (address) {
         return seller;

@@ -31,7 +31,7 @@
 
 // console.log(`Transaction  Response ${transactionResponse}`);
 // console.log(ecmart.interface);
-// const encodedFunctionData = ecmart.interface.encodeFunctionData(
+// const dFuncencodetionData = ecmart.interface.encodeFunctionData(
 //   "addProduct(string,uint256,string,uint256)",
 //   ["Shirt", 323, "Shirt polo", 123]
 // );

@@ -24,8 +24,12 @@ module.exports = {
       url: "http://127.0.0.1:8545/",
       chainid: 31337,
     },
-    ganache:{
+    ganache: {
       url: "HTTP://127.0.0.1:7545",
-    }
+      accounts: [
+        "0x4821d50212dce28036d48476ed739ba2c9dbb8429aa4de75a871b6c5c71b2886",
+      ], //replace ganache wallet private key here
+      chainid: 1337,
+    },
   },
 };

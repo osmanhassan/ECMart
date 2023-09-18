@@ -15,6 +15,7 @@ contract Order {
     address public buyer;
     address public deliveryMan;
     address public owner;
+    uint256 public buyerTotalPaid;
 
     address[] public orderItems;
     uint256[] public orderUnits;
@@ -23,9 +24,14 @@ contract Order {
     address[] public deliveredItems;
     uint256[] public deliveredUnits;
 
-    mapping(address => uint256) orderDetails;
-    mapping(address => uint256) productUnitPrice;
-    mapping(address => uint256) deliveryDetails;
+    //productAddress => Units
+    mapping(address => uint256) productToUnits;
+    //productAddress => Per unit Actual price
+    mapping(address => uint256) productUnitActualPrice;
+    //productAddress => Per unit Final price
+    mapping(address => uint256) productUnitFinalPrice;
+    // delivered products => Units
+    mapping(address => uint256) deliveryProductToUnits;
 
     // Status_Code: 1 == Deliveryman Accepted
     // Status_Code: 4 == Product Shipped
@@ -33,7 +39,7 @@ contract Order {
     uint32 public status;
     uint256 public orderTime;
     bool public isPaid = false;
-    uint256 public buyerTotalPaid;
+    uint256 public buyerTotalPayable;
     bool public isRefunded = false;
     uint256 public refundedAmount;
     bool public isDelivered = false;
@@ -43,6 +49,7 @@ contract Order {
         address[] memory _orderItems,
         uint256[] memory _units,
         address _owner,
+        uint256 _buyerTotalPayable,
         uint256 _buyerTotalPaid,
         uint256[] memory _orderUnitPrice,
         uint256[] memory _orderUnitFinalPrice
@@ -53,20 +60,19 @@ contract Order {
         );
         owner = _owner;
         orderTime = block.timestamp;
-
         buyer = _buyer;
-
         orderItems = _orderItems;
         orderUnits = _units;
         orderUnitPrice = _orderUnitPrice;
         orderUnitFinalPrice = _orderUnitFinalPrice;
-
+        buyerTotalPayable = _buyerTotalPayable;
         buyerTotalPaid = _buyerTotalPaid;
         isPaid = true;
 
         for (uint256 i = 0; i < _orderItems.length; i++) {
-            orderDetails[_orderItems[i]] = _units[i];
-            productUnitPrice[_orderItems[i]] = _orderUnitPrice[i];
+            productToUnits[_orderItems[i]] = _units[i];
+            productUnitActualPrice[_orderItems[i]] = _orderUnitPrice[i];
+            productUnitFinalPrice[_orderItems[i]] = _orderUnitFinalPrice[i];
         }
     }
 
@@ -143,6 +149,10 @@ contract Order {
     }
 
     //onlybyer and EC
+    function getBuyerTotalPayable() public view returns (uint256) {
+        return buyerTotalPayable;
+    }
+
     function getBuyerTotalPaid() public view returns (uint256) {
         return buyerTotalPaid;
     }
@@ -162,7 +172,7 @@ contract Order {
     function getProductWiseUnitPrice(
         address productaddress
     ) public view onlyECmart returns (uint256) {
-        return productUnitPrice[productaddress];
+        return productUnitActualPrice[productaddress];
     }
 
     function setDeliveryMan(address _deliveryManAddress) public onlyECmart {
@@ -173,12 +183,16 @@ contract Order {
         address[] memory _deliveryItems,
         uint256[] memory _deliveryUnits
     ) public onlyECmart {
+        console.log("From Delivery ----------");
         for (uint256 i = 0; i < _deliveryItems.length; i++) {
+            console.log(productToUnits[_deliveryItems[i]]);
+            console.log(_deliveryUnits[i]);
+
             require(
-                orderDetails[_deliveryItems[i]] <= _deliveryUnits[i],
+                productToUnits[_deliveryItems[i]] >= _deliveryUnits[i],
                 "delivery doesn't match with order"
             );
-            deliveryDetails[_deliveryItems[i]] = _deliveryUnits[i];
+            deliveryProductToUnits[_deliveryItems[i]] = _deliveryUnits[i];
         }
 
         deliveredItems = _deliveryItems;
@@ -204,7 +218,7 @@ contract Order {
             "Can not give Review-Rating. Because You are not the buyer!"
         );
         require(
-            orderDetails[_productAddress] != 0,
+            productToUnits[_productAddress] != 0,
             "You haven't purchased the product!"
         );
         (bool success, ) = _productAddress.call(

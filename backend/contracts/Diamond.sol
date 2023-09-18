@@ -9,13 +9,8 @@ import "./Order.sol";
 contract OrderFacet {
     AppStorage aps;
     using SafeMath for uint256;
-    uint256 private deliveryManChargePerUnit = 3;
+
     uint256 private orderTotalReviewRatingPayable;
-    //Lets assume 1USD == 619,202,727,197,760 WEI
-    uint256 constant USDtoWEI = 619202727197760;
-    //wait
-    address ECMART_ADDRESS = 0xbDA5747bFD65F08deb54cb465eB87D40e51B197E;
-    address REVIEW_RATING_ADDRESS = 0xbDA5747bFD65F08deb54cb465eB87D40e51B197E;
 
     event Save(address orderAddress);
     event OrderPaid(bool isPaid);
@@ -43,6 +38,7 @@ contract OrderFacet {
 
         for (uint256 i = 0; i < _orderItems.length; i++) {
             address productAddress = _orderItems[i];
+
             require(aps.products[productAddress] != 0, "Product doesn't exist");
             Product product = Product(productAddress);
             uint256 unit = _units[i];
@@ -55,17 +51,21 @@ contract OrderFacet {
             orderUnitPrice[i] = product.getPrice();
             orderUnitFinalPrice[i] = product.getProductFinalPrice();
 
-            orderTotalSellerPayable += product.getPrice() * unit;
-            orderTotalDeliveryManPayable += deliveryManChargePerUnit * unit;
-            orderTotalEcMartPayable += product.getEcmartAmount() * unit;
-            // **** REview Rating is not unit specific
-            orderTotalReviewRatingPayable += product.getReviewRatingAmount();
+            TOTAL_PAYABLE += orderUnitFinalPrice[i] * _units[i];
+
+            // orderTotalSellerPayable += product.getPrice() * unit;
+            // orderTotalDeliveryManPayable += aps.deliveryManChargePerUnit * unit;
+            // //***************** ERROR MIGHT OCCUR */ for division operation
+            // orderTotalEcMartPayable +=
+            //     ((aps.ecMartPercentage * orderUnitPrice[i]) / 100) *
+            //     unit;
+            // orderTotalReviewRatingPayable += aps.reviewRatingAmount * unit;
         }
-        TOTAL_PAYABLE =
-            orderTotalSellerPayable +
-            orderTotalDeliveryManPayable +
-            orderTotalEcMartPayable +
-            orderTotalReviewRatingPayable;
+        // TOTAL_PAYABLE =
+        //     orderTotalSellerPayable +
+        //     orderTotalDeliveryManPayable +
+        //     orderTotalEcMartPayable +
+        //     orderTotalReviewRatingPayable;
         return (TOTAL_PAYABLE, orderUnitPrice, orderUnitFinalPrice);
     }
 
@@ -84,15 +84,10 @@ contract OrderFacet {
 
         //****  need implement getConversionRate() method
         //Lets assume 1USD == 619,202,727,197,760 WEI
-        require(
-            msg.value >= (TOTAL_PAYABLE * USDtoWEI),
-            "You need to spend more ETH!"
-        );
+        require(msg.value >= (TOTAL_PAYABLE), "You need to spend more ETH!");
         // hold money ends
-        // 30000000000000000000
-        // 24774301115182377600
-        // console.log(TOTAL_PAYABLE * USDtoWEI);
-        //excessMoney Refund
+
+        // excessMoney Refund
         // uint256 val = (TOTAL_PAYABLE * USDtoWEI);
         // val.sub(msg.value);
         // (bool success, ) = msg.sender.call{value: excessFund}("");
@@ -106,11 +101,13 @@ contract OrderFacet {
             _units,
             address(this),
             TOTAL_PAYABLE,
+            msg.value,
             orderUnitPrice,
             orderUnitFinalPrice
         );
         aps.orders[address(order)] = 1;
         console.log("Order address ", address(order));
+        console.log("Order TOTAL PAYABLE ", TOTAL_PAYABLE);
         // add order address to products ---> WIN
         for (uint32 i = 0; i < _orderItems.length; i++) {
             (bool successOrdertoProduct, ) = _orderItems[i].call(
@@ -160,9 +157,6 @@ contract OrderFacet {
 
         // send to seller  --> Only for Delivered Goods
 
-        //Lets assume 1USD == 619,202,727,197,760 WEI
-        // uint256 constant USDtoWEI = 619202727197760;
-
         uint256 sellersPaid = 0;
         uint256 deliveryManPaid = 0;
         uint256 ecMartPaid = 0;
@@ -173,41 +167,34 @@ contract OrderFacet {
         for (uint256 i = 0; i < deliveredItems.length; i++) {
             address productAddress = deliveredItems[i];
             Product product = Product(productAddress);
+
             uint256 unitPrice = order.getProductWiseUnitPrice(productAddress);
             uint256 units = deliveredUnits[i];
 
             deliveryManPaid += (units * aps.deliveryManChargePerUnit);
-            console.log(product.getEcmartAmount());
-            ecMartPaid += units * product.getEcmartAmount();
-            reviewRatingPaid += product.getReviewRatingAmount();
 
-            uint256 sellerPayable = (units * unitPrice) * USDtoWEI;
+            ecMartPaid += units * ((unitPrice * aps.ecMartPercentage) / 100);
+            reviewRatingPaid += (units * aps.reviewRatingAmount);
 
+            //Seller Pay
+            uint256 sellerPayable = (units * unitPrice);
             (bool callSuccess, ) = payable(product.getSeller()).call{
                 value: sellerPayable
             }("");
-
-            require(callSuccess, "Call failed");
+            require(callSuccess, "Seller Fund Transafer Failed!!");
 
             sellersPaid += sellerPayable;
         }
-        // but 40000 th uSD, etake ETH e ekhane convert ki kora hysilo split kore shby k dewar agge?
-        // conversion er code to likhi nai ami
-        // umm bujhchi
-        //
+
         console.log("Seller Paid");
         console.log(sellersPaid);
-        //  2476810908791040000 sellers payable ki ata?
-        // send to delivery man
-        deliveryManPaid *= USDtoWEI;
-        console.log(deliveryManPaid);
+
         (bool callSuccessDeliveryMan, ) = payable(order.getDeliveryMan()).call{
             value: deliveryManPaid
         }("");
+        require(callSuccessDeliveryMan, "Delivery Man Transafer Failed!!");
 
-        require(callSuccessDeliveryMan, "Call failed");
-        console.log("deliveryman Paid");
-        console.log(deliveryManPaid);
+        console.log("deliveryman Paid : ", deliveryManPaid);
 
         //
 
@@ -222,11 +209,14 @@ contract OrderFacet {
         // require(callSuccessEcMart, "Call failed");
         // balance to nai.. kano?
 
-        // // send to review rating
-        // reviewRatingPaid *= USDtoWEI;
-        // (bool callSuccessReviewRating, ) = payable(REVIEW_RATING_ADDRESS).call{
+        // send to review rating
+
+        // (bool callSuccessRvwRtng, ) = payable(msg.sender).call{
         //     value: reviewRatingPaid
         // }("");
+        // require(callSuccessRvwRtng, "Review Rating Transfer Failed!!");
+
+        // console.log("reviewRatingPaid : ", reviewRatingPaid);
 
         // require(callSuccessReviewRating, "Call failed");
         //
@@ -236,21 +226,21 @@ contract OrderFacet {
         //
 
         // refund buyer
-        // uint256 refundable = order.getBuyerTotalPaid() -
-        //     (sellersPaid + deliveryManPaid + ecMartPaid + reviewRatingPaid);
+        uint256 refundable = order.getBuyerTotalPaid() -
+            (sellersPaid + deliveryManPaid + ecMartPaid);
 
-        // (bool callSuccessRefund, ) = payable(order.getBuyer()).call{
-        //     value: refundable
-        // }("");
+        (bool callSuccessRefund, ) = payable(order.getBuyer()).call{
+            value: refundable
+        }("");
 
-        // require(callSuccessRefund, "Call failed");
-        // console.log("refunded to buyer ");
-        // console.log(refundable);
+        require(callSuccessRefund, "Refund Failed");
+        console.log("refunded to buyer ");
+        console.log(refundable);
         // //
 
-        // // set refund amount staus
-        // order.setIsRefunded(true);
-        // order.setRefundedAmount(refundable);
+        // set refund amount staus
+        order.setIsRefunded(true);
+        order.setRefundedAmount(refundable);
         //
         emit OrderPaid(true);
     }
@@ -312,13 +302,21 @@ contract ProductFacet {
         uint256 _quantity
     ) public returns (Product) {
         require(aps.sellers[msg.sender] == 1, "You are not a seller");
+
+        //***************** ERROR MIGHT OCCUR */ for division operation
+        uint256 _finalPrice = _price +
+            aps.deliveryManChargePerUnit +
+            aps.reviewRatingAmount +
+            ((_price * aps.ecMartPercentage) / 100);
+        console.log("_Final Price of Product : ", _finalPrice);
         Product product = new Product(
             _name,
             _price,
             _description,
             _quantity,
             msg.sender,
-            address(this)
+            address(this),
+            _finalPrice
         );
         address productAddress = address(product);
         console.log(productAddress);
@@ -388,7 +386,12 @@ contract Diamond {
         DeliveryFacet deliveryFacet = new DeliveryFacet();
         ProductFacet productFacet = new ProductFacet();
         RegistrationFacet registrationFacet = new RegistrationFacet();
-        aps.deliveryManChargePerUnit = 3;
+
+        // // Assume 5% of produt_actual price
+        // // Assume 3 ETH per delivery and reviewRating
+        aps.deliveryManChargePerUnit = 3000000000000000000;
+        aps.reviewRatingAmount = 3000000000000000000;
+        aps.ecMartPercentage = 5;
         facetMap[
             bytes4(keccak256("placeOrder(address[],uint256[])"))
         ] = address(orderFacet);
