@@ -1,3 +1,43 @@
+yarn hardhat run scripts/deploy.js
+npx hardhat run scripts/deploy.js
+npx hardhaty run scripts/deploy.js
+  console.log(`Registration Facet initiated`);
+  );
+    ecmart.address
+    "RegistrationFacet",
+const registrationFacet = await ethers.getContractAt(
+aps.sellers[0xdD2FD4581271e230360230F9337D5c0430Bf44C0]
+ecmart.aps.deliveryManChargePerUnit
+ecmart.orderFacet
+ecmart.facetMap
+ecmart.aps.tester
+ecmart
+console.log(`Deployed ECMART contract to: ${ecmart.address}`);
+await ecmart.deployed();
+const ecmart = await DiamondContractFactory.connect(ecmartWallet).deploy();
+const DiamondContractFactory = await ethers.getContractFactory("Diamond");
+  const dmWallet = new ethers.Wallet(dmWalletPrivateKey, ethers.provider);
+  const buyerWallet = new ethers.Wallet(buyerWalletPrivateKey, ethers.provider);
+  );
+    ethers.provider
+    sellerWalletPrivateKey,
+  const sellerWallet = new ethers.Wallet(
+const ecmartWallet = new ethers.Wallet(ecmartPrivateKey, ethers.provider);
+  "0x8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61";
+const dmWalletPrivateKey =
+const dmPublicAddress = "0xcd3b766ccdd6ae721141f452c550ca635964ce71"; //15
+// Deliveryman
+  "0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e";
+const buyerWalletPrivateKey =
+const buyerPublicAddress = "0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199"; //19
+// Buyer
+  "0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0";
+const sellerWalletPrivateKey =
+const sellerPublicAddress = "0xdd2fd4581271e230360230f9337d5c0430bf44c0"; //18
+// Seller Wallet
+  "0x689af8efa8c651a91ad287602527f3af2fe9f6501a7ac4b061667b5a93e037fd";
+const ecmartPrivateKey =
+const ecmartPublicAddress = "0xbda5747bfd65f08deb54cb465eb87d40e51b197e"; //17
   console.log(`${tx_4}`);
 tx_4 = await productFacet.viewProducts();
 tx_3 = await productFacet.addProduct("kimino", 250, "Female Dress", 200)

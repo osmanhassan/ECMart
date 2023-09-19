@@ -72,8 +72,8 @@
       ]
     },
     "/Users/mominwin/Documents/2_Productivity/Projects/ECMart/backend/contracts/Diamond.sol": {
-      "lastModificationDate": 1695061460383,
-      "contentHash": "185a2adf24da25b2533fe5f8621da071",
+      "lastModificationDate": 1695149424228,
+      "contentHash": "ec0af84934fc155aebdbc9ab879b8a07",
       "sourceName": "contracts/Diamond.sol",
       "solcConfig": {
         "version": "0.8.8",
@@ -117,8 +117,8 @@
       ]
     },
     "/Users/mominwin/Documents/2_Productivity/Projects/ECMart/backend/contracts/Product.sol": {
-      "lastModificationDate": 1695047598938,
-      "contentHash": "e278737792d541065c37a4bf5fcc78c1",
+      "lastModificationDate": 1695148392172,
+      "contentHash": "817742bea182fc30b7bdbcf4315df033",
       "sourceName": "contracts/Product.sol",
       "solcConfig": {
         "version": "0.8.8",

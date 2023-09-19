@@ -1,7 +1,7 @@
 var db = require("./db");
 
 function insert(params, callback) {
-  var sql = "INSERT INTO users VALUES(null, ?, ?, ?, ?, ?,?,?)";
+  var sql = "INSERT INTO users VALUES(null, ?, ?, ?, ?, ?,?,?, null)";
   db.execute(
     sql,
     [

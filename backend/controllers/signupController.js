@@ -34,7 +34,8 @@ router.post("/seller/", function (request, response) {
   //     if (data.status) {
   user.insert(values, function (status) {
     if (status) {
-      response.redirect("/login/");
+      // response.redirect("/login/");
+      response.json({ code: 200, status: "suceess" });
     } else response.json({ code: 300, status: "failed" });
   });
   //  } else response.render("signUp", data);

@@ -125,6 +125,12 @@ contract Product {
         return quantity;
     }
 
+
+    function getName() public view returns (string memory) {
+        return name;
+    }
+    
+
     function getPrice() public view onlyECmartOrSeller returns (uint256) {
         return price;
     }

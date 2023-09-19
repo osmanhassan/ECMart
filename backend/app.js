@@ -1,7 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 var bodyParser = require("body-parser");
 var expressSession = require("express-session");
-const port = 3000;
+const port = process.env.SERVER_PORT || 3000;
 
 var signUp = require("./controllers/signupController");
 var login = require("./controllers/loginController");
@@ -58,3 +59,4 @@ app.use("/buyer", authentication, buyerAuthorization, buyer);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+// dsad

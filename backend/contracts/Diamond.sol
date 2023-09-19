@@ -300,10 +300,10 @@ contract ProductFacet {
         uint256 _price,
         string memory _description,
         uint256 _quantity
-    ) public returns (Product) {
+    ) public {
         require(aps.sellers[msg.sender] == 1, "You are not a seller");
 
-        //***************** ERROR MIGHT OCCUR */ for division operation
+  
         uint256 _finalPrice = _price +
             aps.deliveryManChargePerUnit +
             aps.reviewRatingAmount +
@@ -323,13 +323,13 @@ contract ProductFacet {
         sellerToProducts[msg.sender].push(productAddress);
         aps.products[address(product)] = 1;
         // emit Save(productAddress);
-        return product;
+        
     }
 
     function viewProducts(
         address _sellerAddress
-    ) public view returns (address[] memory) {
-        return sellerToProducts[_sellerAddress];
+    ) public view returns (string memory) {
+        return Product(sellerToProducts[_sellerAddress][0]).getName();
     }
 
     // function getdata(uint256 _data) public view returns (uint256) {
@@ -341,12 +341,16 @@ contract RegistrationFacet {
     AppStorage aps;
 
     //  seller
+    event sellerRegistered(address orderAddress);
 
     function registerSeller() public {
         // need to add admin access control
         aps.sellers[msg.sender] = 1;
+        console.log("Seller registered : ", msg.sender);
+        emit sellerRegistered(msg.sender);
     }
 
+    //need to compile i guess
     //
 
     // buyer
@@ -453,6 +457,8 @@ contract Diamond {
         // console.log(facet);
         require(facet != address(0), "Facet not found");
         // Execute external function from facet using delegatecall and return any value.
+
+        console.log("akjshdkajhdakjdhakjdhakdjh");
         assembly {
             // copy function selector and any arguments
             calldatacopy(0, 0, calldatasize()) // copies the calldata into memory (this is where delegatecall loads from)

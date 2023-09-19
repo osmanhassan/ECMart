@@ -41,279 +41,280 @@ async function main() {
   // in current hardhat version, you might need to write ${simpleStorage.target}
   console.log(`Deployed ECMART contract to: ${ecmart.address}`);
 
-  // connect to registration Facet
-  const registrationFacet = await ethers.getContractAt(
-    "RegistrationFacet",
-    ecmart.address
-  );
-  console.log(`Registration Facet initiated`);
+  // // connect to registration Facet
+  // const registrationFacet = await ethers.getContractAt(
+  //   "RegistrationFacet",
+  //   ecmart.address
+  // );
+  // console.log(`Registration Facet initiated`);
 
-  //register as seller
-  let tx_seller = await registrationFacet
-    .connect(sellerWallet)
-    .registerSeller();
-  console.log("Seller Registered");
-  //register as buyer
-  let tx_buyer = await registrationFacet.connect(buyerWallet).registerBuyer();
-  console.log("Buyer Registered");
-  //register as DM
-  let tx_dm = await registrationFacet.connect(dmWallet).registerDeliveryMan();
-  console.log("Deliveryman Registered");
+  
+  // // register as seller
+  // let tx_seller = await registrationFacet
+  //   .connect(sellerWallet)
+  //   .registerSeller();
+  // console.log("Seller Registered");
+  // //register as buyer
+  // let tx_buyer = await registrationFacet.connect(buyerWallet).registerBuyer();
+  // console.log("Buyer Registered");
+  // //register as DM
+  // let tx_dm = await registrationFacet.connect(dmWallet).registerDeliveryMan();
+  // console.log("Deliveryman Registered");
 
-  //connect to Product Facet
-  const productFacet = await ethers.getContractAt(
-    "ProductFacet",
-    ecmart.address
-  );
-  console.log(`Product Facet initiated`);
-  console
+  // //connect to Product Facet
+  // const productFacet = await ethers.getContractAt(
+  //   "ProductFacet",
+  //   ecmart.address
+  // );
+  // console.log(`Product Facet initiated`);
+  // console;
 
-  //add product as seller
-  let tx_addProduct = await productFacet
-    .connect(sellerWallet)
-    .addProduct("Book", "5000000000000000000", "Best book", 150);
-  // await tx_3.wait(1);
-  console.log("Product Added 1");
+  // //add product as seller
+  // let tx_addProduct = await productFacet
+  //   .connect(sellerWallet)
+  //   .addProduct("Book", "5000000000000000000", "Best book", 150);
+  // // await tx_3.wait(1);
+  // console.log("Product Added 1");
 
-  tx_addProduct = await productFacet
-    .connect(sellerWallet)
-    .addProduct("Kimino", "30000000000000000000", "Japanese Female Dress", 400);
-  console.log("Product Added 2");
+  // tx_addProduct = await productFacet
+  //   .connect(sellerWallet)
+  //   .addProduct("Kimino", "30000000000000000000", "Japanese Female Dress", 400);
+  // console.log("Product Added 2");
 
-  let tx_viewProduct = await productFacet.viewProducts(sellerPublicAddress);
-  console.log(tx_viewProduct);
+  // let tx_viewProduct = await productFacet.viewProducts(sellerPublicAddress);
+  // console.log(tx_viewProduct);
 
-  //order
-  console.log("----------------  Order PREVIEW  ---------------------");
-  const orderFacet = await ethers.getContractAt("OrderFacet", ecmart.address);
-  console.log(`PlaceOrder Facet initiated`);
+  // //order
+  // console.log("----------------  Order PREVIEW  ---------------------");
+  // const orderFacet = await ethers.getContractAt("OrderFacet", ecmart.address);
+  // console.log(`PlaceOrder Facet initiated`);
 
-  let tx_order = await orderFacet
-    .connect(buyerWallet)
-    .placeOrder([tx_viewProduct[0], tx_viewProduct[1]], [2, 3], {
-      value: ethers.utils.parseEther("135.1"),
-    });
+  // let tx_order = await orderFacet
+  //   .connect(buyerWallet)
+  //   .placeOrder([tx_viewProduct[0], tx_viewProduct[1]], [2, 3], {
+  //     value: ethers.utils.parseEther("135.1"),
+  //   });
 
-  const deliveryFacet = await ethers.getContractAt(
-    "DeliveryFacet",
-    ecmart.address
-  );
-  console.log(`Delivery Facet initiated`);
+  // const deliveryFacet = await ethers.getContractAt(
+  //   "DeliveryFacet",
+  //   ecmart.address
+  // );
+  // console.log(`Delivery Facet initiated`);
 
-  //addOrder eventListener
-  orderFacet.on("Save", (_orderAddress) => {
-    console.log("Order address ---->" + _orderAddress);
-    setDM(_orderAddress);
-  });
+  // //addOrder eventListener
+  // orderFacet.on("Save", (_orderAddress) => {
+  //   console.log("Order address ---->" + _orderAddress);
+  //   setDM(_orderAddress);
+  // });
 
-  //set DM
-  async function setDM(orderAddress) {
-    let tx_setDM = await deliveryFacet
-      .connect(dmWallet)
-      .setDeliveryMan(orderAddress);
-    console.log("DM is set");
-    await orderShow(orderAddress);
-    await deliverOrder(orderAddress);
-    await paymentOfOrder(orderAddress);
-    await productView();
-  }
+  // //set DM
+  // async function setDM(orderAddress) {
+  //   let tx_setDM = await deliveryFacet
+  //     .connect(dmWallet)
+  //     .setDeliveryMan(orderAddress);
+  //   console.log("DM is set");
+  //   await orderShow(orderAddress);
+  //   await deliverOrder(orderAddress);
+  //   await paymentOfOrder(orderAddress);
+  //   await productView();
+  // }
 
-  //Order details all show
-  async function orderShow(_orderAddress) {
-    let orderAddress = _orderAddress;
-    let abi = getTheAbi("Order");
-    const orderContract = new ethers.Contract(orderAddress, abi, provider);
+  // //Order details all show
+  // async function orderShow(_orderAddress) {
+  //   let orderAddress = _orderAddress;
+  //   let abi = getTheAbi("Order");
+  //   const orderContract = new ethers.Contract(orderAddress, abi, provider);
 
-    console.log(
-      "--------------- ORDERS PREVIEW BEFORE DELIVERY ----------------"
-    );
-    console.log(
-      `Deliveryman of order is : ${await orderContract
-        .connect(buyerWallet)
-        .getDeliveryMan()}`
-    );
-    console.log(
-      `order items : ${await orderContract
-        .connect(buyerWallet)
-        .getOrderItems()}`
-    );
-    console.log(
-      `Buyer of Order : ${await orderContract.connect(buyerWallet).getBuyer()}`
-    );
-    console.log(
-      `Order units: ${await orderContract.connect(buyerWallet).getOrderUnits()}`
-    );
-    console.log(
-      `Delivered Items should be null : ${await orderContract
-        .connect(buyerWallet)
-        .getDeliveredItems()}`
-    );
-    console.log(
-      `Delivered Units should be null : ${await orderContract
-        .connect(buyerWallet)
-        .getDeliveredUnits()}`
-    );
+  //   console.log(
+  //     "--------------- ORDERS PREVIEW BEFORE DELIVERY ----------------"
+  //   );
+  //   console.log(
+  //     `Deliveryman of order is : ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getDeliveryMan()}`
+  //   );
+  //   console.log(
+  //     `order items : ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getOrderItems()}`
+  //   );
+  //   console.log(
+  //     `Buyer of Order : ${await orderContract.connect(buyerWallet).getBuyer()}`
+  //   );
+  //   console.log(
+  //     `Order units: ${await orderContract.connect(buyerWallet).getOrderUnits()}`
+  //   );
+  //   console.log(
+  //     `Delivered Items should be null : ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getDeliveredItems()}`
+  //   );
+  //   console.log(
+  //     `Delivered Units should be null : ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getDeliveredUnits()}`
+  //   );
 
-    console.log(
-      `Order Final Price: ${await orderContract
-        .connect(buyerWallet)
-        .getOrderUnitFinalPrice()}`
-    );
-    console.log(
-      `Order delivered: ${await orderContract
-        .connect(buyerWallet)
-        .getIsDelivered()}`
-    );
-    console.log(
-      `Buyer Paid: ${await orderContract
-        .connect(buyerWallet)
-        .getBuyerTotalPaid()}`
-    );
+  //   console.log(
+  //     `Order Final Price: ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getOrderUnitFinalPrice()}`
+  //   );
+  //   console.log(
+  //     `Order delivered: ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getIsDelivered()}`
+  //   );
+  //   console.log(
+  //     `Buyer Paid: ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getBuyerTotalPaid()}`
+  //   );
 
-    //Current Buyer Balance
-    const balanceEtherOfBuyer = ethers.utils.formatEther(
-      await provider.getBalance(buyerPublicAddress)
-    );
-    console.log(`Buyer Balance After Purchase: ${balanceEtherOfBuyer}`);
-    //Current Seller Balance
-    const balanceEtherOfSeller = ethers.utils.formatEther(
-      await provider.getBalance(sellerPublicAddress)
-    );
-    console.log(`Seller Balance After Purchase: ${balanceEtherOfSeller}`);
-    //Balance of ECMART
-    const contractBalanceEther = ethers.utils.formatEther(
-      await ethers.provider.getBalance(ecmart.address)
-    );
-    console.log(`ECMART BALANCE After Purchase: ${contractBalanceEther}`);
+  //   //Current Buyer Balance
+  //   const balanceEtherOfBuyer = ethers.utils.formatEther(
+  //     await provider.getBalance(buyerPublicAddress)
+  //   );
+  //   console.log(`Buyer Balance After Purchase: ${balanceEtherOfBuyer}`);
+  //   //Current Seller Balance
+  //   const balanceEtherOfSeller = ethers.utils.formatEther(
+  //     await provider.getBalance(sellerPublicAddress)
+  //   );
+  //   console.log(`Seller Balance After Purchase: ${balanceEtherOfSeller}`);
+  //   //Balance of ECMART
+  //   const contractBalanceEther = ethers.utils.formatEther(
+  //     await ethers.provider.getBalance(ecmart.address)
+  //   );
+  //   console.log(`ECMART BALANCE After Purchase: ${contractBalanceEther}`);
 
-    //Balance of deliveryman
-    const balanceEtherOfDM = ethers.utils.formatEther(
-      await ethers.provider.getBalance(dmPublicAddress)
-    );
-    console.log(`Deliveryman BALANCE Before Delivery: ${balanceEtherOfDM}`);
-  }
+  //   //Balance of deliveryman
+  //   const balanceEtherOfDM = ethers.utils.formatEther(
+  //     await ethers.provider.getBalance(dmPublicAddress)
+  //   );
+  //   console.log(`Deliveryman BALANCE Before Delivery: ${balanceEtherOfDM}`);
+  // }
 
-  async function deliverOrder(orderAddress) {
-    console.log(
-      "----------------- ORDER PREVIEW DURING DELIVERY -------------- "
-    );
-    let abi = getTheAbi("Order");
-    const orderContract = new ethers.Contract(orderAddress, abi, provider);
+  // async function deliverOrder(orderAddress) {
+  //   console.log(
+  //     "----------------- ORDER PREVIEW DURING DELIVERY -------------- "
+  //   );
+  //   let abi = getTheAbi("Order");
+  //   const orderContract = new ethers.Contract(orderAddress, abi, provider);
 
-    //Set Delivery by DM
-    let tx_setDelivery = await deliveryFacet
-      .connect(dmWallet)
-      .setDelivery(
-        orderAddress,
-        [tx_viewProduct[0], tx_viewProduct[1]],
-        [2, 3]
-      );
-    console.log("Delivery Items and Quantity is SET by delivery man");
-    //Get Delivery Items and Units
-    console.log(
-      `Delivered Items Should APPEAR NOW : ${await orderContract
-        .connect(buyerWallet)
-        .getDeliveredItems()}`
-    );
-    console.log(
-      `Delivered Units Should APPEAR NOW : ${await orderContract
-        .connect(buyerWallet)
-        .getDeliveredUnits()}`
-    );
-  }
+  //   //Set Delivery by DM
+  //   let tx_setDelivery = await deliveryFacet
+  //     .connect(dmWallet)
+  //     .setDelivery(
+  //       orderAddress,
+  //       [tx_viewProduct[0], tx_viewProduct[1]],
+  //       [2, 3]
+  //     );
+  //   console.log("Delivery Items and Quantity is SET by delivery man");
+  //   //Get Delivery Items and Units
+  //   console.log(
+  //     `Delivered Items Should APPEAR NOW : ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getDeliveredItems()}`
+  //   );
+  //   console.log(
+  //     `Delivered Units Should APPEAR NOW : ${await orderContract
+  //       .connect(buyerWallet)
+  //       .getDeliveredUnits()}`
+  //   );
+  // }
 
-  async function paymentOfOrder(orderAddress) {
-    console.log("----------------- PAYMENT PREVIEW -------------- ");
+  // async function paymentOfOrder(orderAddress) {
+  //   console.log("----------------- PAYMENT PREVIEW -------------- ");
 
-    // connect to PayOrder Facet
-    const orderFacet = await ethers.getContractAt("OrderFacet", ecmart.address);
-    console.log(`Order Facet initiated`);
+  //   // connect to PayOrder Facet
+  //   const orderFacet = await ethers.getContractAt("OrderFacet", ecmart.address);
+  //   console.log(`Order Facet initiated`);
 
-    //Current Buyer Balance
-    orderFacet.on("OrderPaid", (_isPaid) => {
-      if (_isPaid) {
-        console.log(
-          "paid ----------------------------------------------------------"
-        );
-        async function logBal() {
-          const balanceEtherOfBuyer = ethers.utils.formatEther(
-            await provider.getBalance(buyerPublicAddress)
-          );
-          console.log(`Buyer Balance After Delivery: ${balanceEtherOfBuyer}`);
-          //Current Seller Balance
-          const balanceEtherOfSeller = ethers.utils.formatEther(
-            await provider.getBalance(sellerPublicAddress)
-          );
-          console.log(`Seller Balance After Delivery: ${balanceEtherOfSeller}`);
+  //   //Current Buyer Balance
+  //   orderFacet.on("OrderPaid", (_isPaid) => {
+  //     if (_isPaid) {
+  //       console.log(
+  //         "paid ----------------------------------------------------------"
+  //       );
+  //       async function logBal() {
+  //         const balanceEtherOfBuyer = ethers.utils.formatEther(
+  //           await provider.getBalance(buyerPublicAddress)
+  //         );
+  //         console.log(`Buyer Balance After Delivery: ${balanceEtherOfBuyer}`);
+  //         //Current Seller Balance
+  //         const balanceEtherOfSeller = ethers.utils.formatEther(
+  //           await provider.getBalance(sellerPublicAddress)
+  //         );
+  //         console.log(`Seller Balance After Delivery: ${balanceEtherOfSeller}`);
 
-          //Balance of ECMART
-          const contractBalanceEther = ethers.utils.formatEther(
-            await ethers.provider.getBalance(ecmart.address)
-          );
-          console.log(`ECMART BALANCE After Delivery: ${contractBalanceEther}`);
-          //Balance of deliveryman
-          const balanceEtherOfDM = ethers.utils.formatEther(
-            await ethers.provider.getBalance(dmPublicAddress)
-          );
-          console.log(
-            `Deliveryman BALANCE After Delivery: ${balanceEtherOfDM}`
-          );
-        }
-        logBal();
-      } else {
-        console.log("Order is not paid");
-      }
-    });
-    // console.log("///// ERROR occured Here!! ");
-    // Pay to seller
-    let tx_payOrder = await orderFacet
-      .connect(buyerWallet)
-      .payOrder(orderAddress);
-    console.log(
-      "Payment Provided to Buyer, Seller, and Deliveryman. \nShould get review-rating amount back."
-    );
-  }
+  //         //Balance of ECMART
+  //         const contractBalanceEther = ethers.utils.formatEther(
+  //           await ethers.provider.getBalance(ecmart.address)
+  //         );
+  //         console.log(`ECMART BALANCE After Delivery: ${contractBalanceEther}`);
+  //         //Balance of deliveryman
+  //         const balanceEtherOfDM = ethers.utils.formatEther(
+  //           await ethers.provider.getBalance(dmPublicAddress)
+  //         );
+  //         console.log(
+  //           `Deliveryman BALANCE After Delivery: ${balanceEtherOfDM}`
+  //         );
+  //       }
+  //       logBal();
+  //     } else {
+  //       console.log("Order is not paid");
+  //     }
+  //   });
+  //   // console.log("///// ERROR occured Here!! ");
+  //   // Pay to seller
+  //   let tx_payOrder = await orderFacet
+  //     .connect(buyerWallet)
+  //     .payOrder(orderAddress);
+  //   console.log(
+  //     "Payment Provided to Buyer, Seller, and Deliveryman. \nShould get review-rating amount back."
+  //   );
+  // }
 
-  //Product Post-mortem
-  async function productView() {
-    console.log(
-      "------------------  Product PREVIEW  -------------------------"
-    );
-    //tx_viewProduct[]
-    let abi = getTheAbi("Product");
-    const productContract_1 = new ethers.Contract(
-      tx_viewProduct[0],
-      abi,
-      provider
-    );
+  // //Product Post-mortem
+  // async function productView() {
+  //   console.log(
+  //     "------------------  Product PREVIEW  -------------------------"
+  //   );
+  //   //tx_viewProduct[]
+  //   let abi = getTheAbi("Product");
+  //   const productContract_1 = new ethers.Contract(
+  //     tx_viewProduct[0],
+  //     abi,
+  //     provider
+  //   );
 
-    //getQuantity()
-    console.log(
-      `Quantity of Product 1 : ${await productContract_1
-        .connect(sellerWallet)
-        .getQuantity()}`
-    );
+  //   //getQuantity()
+  //   console.log(
+  //     `Quantity of Product 1 : ${await productContract_1
+  //       .connect(sellerWallet)
+  //       .getQuantity()}`
+  //   );
 
-    // getPrice()
-    console.log(
-      `Price of Product 1 : ${await productContract_1
-        .connect(sellerWallet)
-        .getPrice()}`
-    );
+  //   // getPrice()
+  //   console.log(
+  //     `Price of Product 1 : ${await productContract_1
+  //       .connect(sellerWallet)
+  //       .getPrice()}`
+  //   );
 
-    //getProductFinalPrice()
-    console.log(
-      `Final Price of Product 1 : ${await productContract_1
-        .connect(buyerWallet)
-        .getProductFinalPrice()}`
-    );
+  //   //getProductFinalPrice()
+  //   console.log(
+  //     `Final Price of Product 1 : ${await productContract_1
+  //       .connect(buyerWallet)
+  //       .getProductFinalPrice()}`
+  //   );
 
-    //getSeller()
-    console.log(
-      `Seller of Product 1 : ${await productContract_1
-        .connect(buyerWallet)
-        .getSeller()}`
-    );
+  //   //getSeller()
+  //   console.log(
+  //     `Seller of Product 1 : ${await productContract_1
+  //       .connect(buyerWallet)
+  //       .getSeller()}`
+  //   );
 
     // //getEcmartAmount()
     // console.log(
@@ -328,7 +329,7 @@ async function main() {
     //     .connect(ecmart.address)
     //     .getReviewRatingAmount()}`
     // );
-  }
+  // }
 }
 
 main().catch((error) => {

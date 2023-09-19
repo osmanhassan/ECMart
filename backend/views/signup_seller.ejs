@@ -23,7 +23,12 @@
           </h2>
         </div>
       </div>
-      <form method="POST" class="mx-auto mt-10 max-w-xl sm:mt-10">
+      <form
+        method="POST"
+        class="mx-auto mt-10 max-w-xl sm:mt-10"
+        id="sellerSignUpForm"
+        action="/signup/seller/"
+      >
         <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div class="sm:col-span-2">
             <label
@@ -136,5 +141,257 @@
         </div>
       </form>
     </div>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"
+      integrity="sha512-FDcVY+g7vc5CXANbrTSg1K5qLyriCsGDYCE02Li1tXEYdNQPvLPHNE+rT2Mjei8N7fZbe0WLhw27j2SrGRpdMg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script>
+      $(document).ready(function () {
+        var registrationAbi = [
+          {
+            anonymous: false,
+            inputs: [
+              {
+                indexed: false,
+                internalType: "address",
+                name: "orderAddress",
+                type: "address",
+              },
+            ],
+            name: "sellerRegistered",
+            type: "event",
+          },
+          {
+            inputs: [],
+            name: "registerBuyer",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "registerDeliveryMan",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "registerSeller",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+        ];
+
+        var productFacetAbi = [
+          {
+            inputs: [
+              {
+                internalType: "string",
+                name: "_name",
+                type: "string",
+              },
+              {
+                internalType: "uint256",
+                name: "_price",
+                type: "uint256",
+              },
+              {
+                internalType: "string",
+                name: "_description",
+                type: "string",
+              },
+              {
+                internalType: "uint256",
+                name: "_quantity",
+                type: "uint256",
+              },
+            ],
+            name: "addProduct",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "address",
+                name: "_sellerAddress",
+                type: "address",
+              },
+            ],
+            name: "viewProducts",
+            outputs: [
+              {
+                internalType: "string",
+                name: "",
+                type: "string",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+        ];
+        async function test() {
+          if (typeof window.ethereum !== "undefined") {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+            // Request user permission to access their accounts
+
+            // Connect to Metamask when the button is clicked
+            // const connectButton = document.getElementById('connectButton');
+            // connectButton.addEventListener('click', requestAccount);
+
+            try {
+              await window.ethereum.request({
+                method: "eth_requestAccounts",
+              });
+            } catch (error) {
+              console.error("Permission denied:", error);
+            }
+            // Create a contract instance
+            const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+            const contractAbi = productFacetAbi;
+            // ABI of your contract
+            const contract = new ethers.Contract(
+              contractAddress,
+              contractAbi,
+              provider.getSigner()
+            );
+            //addOrder eventListener
+
+            const result = await contract.addProduct(
+              "brush",
+              "123456789423423",
+              "colgate",
+              2
+            );
+            await result.wait(1);
+            console.log(result);
+
+            const result1 = await contract.viewProducts(
+              "0xdd2fd4581271e230360230f9337d5c0430bf44c0"
+            );
+            await result.wait(1);
+            console.log(result1);
+          }
+        }
+
+        // test();
+
+        function sellerSignUpFormSubmitHandler(e, formObj) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var form = formObj;
+          var url = form.attr("action");
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function (data) {
+              // Ajax call completed successfully
+              addSellerToChain(data);
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error");
+            },
+          });
+        }
+
+        async function addSellerToChain(seller) {
+          console.log(seller);
+          // Check if Metamask is available
+          if (typeof window.ethereum !== "undefined") {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+            // Request user permission to access their accounts
+
+            // Connect to Metamask when the button is clicked
+            // const connectButton = document.getElementById('connectButton');
+            // connectButton.addEventListener('click', requestAccount);
+
+            try {
+              await window.ethereum.request({
+                method: "eth_requestAccounts",
+              });
+            } catch (error) {
+              console.error("Permission denied:", error);
+            }
+            // Create a contract instance
+            const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+            const contractAbi = registrationAbi;
+            // ABI of your contract
+            const contract = new ethers.Contract(
+              contractAddress,
+              contractAbi,
+              provider.getSigner()
+            );
+            //addOrder eventListener
+
+            contract.on("sellerRegistered", (sellerAddress) => {
+              console.log("Seller address ---->" + sellerAddress);
+              // setDM(_orderAddress);
+            });
+            const result = await contract.registerSeller();
+            await result.wait(1);
+            console.log(result);
+            test();
+            // if (result == provider) {
+            //   var newPath = "/login/"; // Replace with your desired URL path
+            //   var currentURL =
+            //     window.location.protocol + "//" + window.location.hostname;
+
+            //   // Check if the current URL contains a port number
+            //   if (window.location.port !== "") {
+            //     currentURL += ":" + window.location.port;
+            //   }
+
+            //   currentURL += newPath;
+
+            //   // Redirect to the new URL without specifying the port
+            //   window.location.href = currentURL;
+            // }
+            // Call contract function when the button is clicked
+            // const callContractButton =
+            //   document.getElementById("callContractButton");
+            // callContractButton.addEventListener("click", async () => {
+            //   const result = await contract.someFunction();
+            //   console.log("Result:", result);
+            // });
+
+            // Send Ether when the button is clicked
+            // const sendEtherButton = document.getElementById("sendEtherButton");
+            // sendEtherButton.addEventListener("click", async () => {
+            //   const signer = provider.getSigner();
+            //   const tx = await signer.sendTransaction({
+            //     to: "RECIPIENT_ADDRESS",
+            //     value: ethers.utils.parseEther("1.0"), // Sending 1 ETH
+            //   });
+            //   await tx.wait();
+            //   console.log("Transaction Hash:", tx.hash);
+            // });
+          } else {
+            // Metamask is not available
+            console.error("Metamask is not installed or not available.");
+          }
+        }
+
+        $("#sellerSignUpForm").submit(function (e) {
+          sellerSignUpFormSubmitHandler(e, $(this));
+        });
+      });
+    </script>
   </body>
 </html>
