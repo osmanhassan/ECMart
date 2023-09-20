@@ -303,7 +303,6 @@ contract ProductFacet {
     ) public {
         require(aps.sellers[msg.sender] == 1, "You are not a seller");
 
-  
         uint256 _finalPrice = _price +
             aps.deliveryManChargePerUnit +
             aps.reviewRatingAmount +
@@ -323,7 +322,6 @@ contract ProductFacet {
         sellerToProducts[msg.sender].push(productAddress);
         aps.products[address(product)] = 1;
         // emit Save(productAddress);
-        
     }
 
     function viewProducts(
@@ -341,13 +339,13 @@ contract RegistrationFacet {
     AppStorage aps;
 
     //  seller
-    event sellerRegistered(address orderAddress);
+    event sellerRegistered(address orderAddress, uint256 dbID);
 
-    function registerSeller() public {
+    function registerSeller(uint256 dbID) public {
         // need to add admin access control
         aps.sellers[msg.sender] = 1;
         console.log("Seller registered : ", msg.sender);
-        emit sellerRegistered(msg.sender);
+        emit sellerRegistered(msg.sender, dbID);
     }
 
     //need to compile i guess
@@ -420,7 +418,7 @@ contract Diamond {
 
         // facetMap[bytes4(keccak256("getdata(uint256)"))] = address(productFacet);
 
-        facetMap[bytes4(keccak256("registerSeller()"))] = address(
+        facetMap[bytes4(keccak256("registerSeller(uint256)"))] = address(
             registrationFacet
         );
 

@@ -9,6 +9,7 @@ var login = require("./controllers/loginController");
 let seller = require("./controllers/sellerController");
 let buyer = require("./controllers/buyerController");
 let logout = require("./controllers/logoutController");
+let chainRegistrationListener = require("./services/registrationChainService");
 
 const app = express();
 
@@ -55,6 +56,11 @@ app.use("/login", login);
 app.use("/logout", logout);
 app.use("/seller", authentication, sellerAuthorization, seller);
 app.use("/buyer", authentication, buyerAuthorization, buyer);
+
+// chain activity
+//  chainRegistrationListener.initRegistrationListener();
+
+//
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

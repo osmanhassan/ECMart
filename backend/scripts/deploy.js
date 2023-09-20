@@ -21,6 +21,7 @@ const dmWalletPrivateKey =
 // Using Hardhat's default network
 const provider = ethers.provider;
 
+// tahole ki deploy js ei db connect kore update korbo??????????? aso??? hae... I don't see any other option.... let me chatgpt the issue
 async function main() {
   //connect wallet
   const ecmartWallet = new ethers.Wallet(ecmartPrivateKey, ethers.provider);
@@ -48,7 +49,9 @@ async function main() {
   // );
   // console.log(`Registration Facet initiated`);
 
-  
+  // registrationFacet.on("sellerRegistered", (address) => {
+  //   console.log("Event data:", address); // Access event data here
+  // });
   // // register as seller
   // let tx_seller = await registrationFacet
   //   .connect(sellerWallet)
@@ -316,19 +319,19 @@ async function main() {
   //       .getSeller()}`
   //   );
 
-    // //getEcmartAmount()
-    // console.log(
-    //   `ECMart Amount on Product 1 : ${await productContract_1
-    //     .connect(ecmart.address)
-    //     .getEcmartAmount()}`
-    // );
+  // //getEcmartAmount()
+  // console.log(
+  //   `ECMart Amount on Product 1 : ${await productContract_1
+  //     .connect(ecmart.address)
+  //     .getEcmartAmount()}`
+  // );
 
-    // //getReviewRatingAmount()
-    // console.log(
-    //   `Review-Rating Amount on Product 1 : ${await productContract_1
-    //     .connect(ecmart.address)
-    //     .getReviewRatingAmount()}`
-    // );
+  // //getReviewRatingAmount()
+  // console.log(
+  //   `Review-Rating Amount on Product 1 : ${await productContract_1
+  //     .connect(ecmart.address)
+  //     .getReviewRatingAmount()}`
+  // );
   // }
 }
 

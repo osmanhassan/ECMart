@@ -166,6 +166,12 @@
                 name: "orderAddress",
                 type: "address",
               },
+              {
+                indexed: false,
+                internalType: "uint256",
+                name: "dbID",
+                type: "uint256",
+              },
             ],
             name: "sellerRegistered",
             type: "event",
@@ -185,7 +191,13 @@
             type: "function",
           },
           {
-            inputs: [],
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "dbID",
+                type: "uint256",
+              },
+            ],
             name: "registerSeller",
             outputs: [],
             stateMutability: "nonpayable",
@@ -340,11 +352,11 @@
             );
             //addOrder eventListener
 
-            contract.on("sellerRegistered", (sellerAddress) => {
+            contract.on("sellerRegistered", (sellerAddress, db) => {
               console.log("Seller address ---->" + sellerAddress);
               // setDM(_orderAddress);
             });
-            const result = await contract.registerSeller();
+            const result = await contract.registerSeller(123);
             await result.wait(1);
             console.log(result);
             test();
