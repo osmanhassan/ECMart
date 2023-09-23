@@ -1,0 +1,95 @@
+<%- include('partials/common_header'); %> 
+  <body class="h-full bg-white dark:bg-slate-900">
+    <!-- home page -->
+    <section>
+      <div class="flex flex-no-wrap">
+        <!-- Sidebar starts -->
+        <%- include('partials/dm_left_bar'); %>
+        <!-- Sidebar ends -->
+
+        <div class="container mx-auto overflow-auto">
+          <!-- Top bar starts -->
+          <%- include('partials/dm_top_bar'); %>
+          <!-- Top bar ends -->
+
+          <%- include('partials/common_body'); %>
+            <!-- Place your content here STARTS -->
+
+<main class="container mx-auto py-8">
+  <section class="mb-8">
+    <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md">
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+        Order Details
+      </h2>
+      <table class="w-full">
+        <tr>
+          <td class="font-semibold text-gray-800 dark:text-white py-2">
+            Order ID:
+          </td>
+          <td class="py-2">12345</td>
+        </tr>
+        <tr>
+          <td class="font-semibold text-gray-800 dark:text-white py-2">
+            Order Contract Address:
+          </td>
+          <td class="py-2">0x1237384687236487</td>
+        </tr>
+        </table>
+        <br>
+
+       
+        <!-- USE LOOP here -->
+        <table class="w-full">
+
+          <tr>
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> Products 1 </h3>
+          </tr>
+
+          <tr>
+          <td class="font-semibold text-gray-800 dark:text-white py-2">
+            Contract Key: 
+          </td>
+          <td class="py-2"> 0x1233243543543543sdsad123df </td>
+        </tr>
+
+        <tr>
+          <td class="font-semibold text-gray-800 dark:text-white py-2">
+            $PRODUCT_NAME
+          </td>
+          <td class="py-2"><input name="productDeliveryStatus" type="checkbox" class="form-checkbox h-6 w-5 text-blue-500"></td>
+        </tr>
+
+        <tr>
+          <td class="font-semibold text-gray-800 dark:text-white py-2">
+            Product Quantity 
+          </td>
+          <td class="py-2"><input type="number" name="qunatity" class="form-checkbox h-7 w-25 dark:text-blue-500 text-center"></td>
+        </tr>
+        </table>
+        <br>
+    <!-- LOOP ends here  -->
+
+
+      <div class="mt-6">
+        <button
+          class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300"
+        >
+          SET DELIVERY
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+
+            <!-- Place your content here ENDS -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <%- include('partials/common_js'); %> <%- include('partials/common_js'); %>
+  </body>
+</html>
+
+
+
+<!-- MAIN -->
