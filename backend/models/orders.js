@@ -62,8 +62,25 @@ function updateOrderChainAddressByID(params, callback) {
     callback(flag);
   });
 }
+function updateDMByID(params, callback) {
+  // console.log(params);
+  var sql = "UPDATE orders SET DELIVERMAN_ID=? WHERE ID=?";
+  db.execute(sql, [params.dmId, params.id], function (flag) {
+    callback(flag);
+  });
+}
+
+function getUnassignedDMOrders(callback) {
+  var sql =
+    "select users.USER_NAME as BUYER_NAME, users.PHONE as BUYER_PHONE, x.* from users INNER JOIN (SELECT orders.id as ORDER_ID, max(orders.ORDER_PK) as ORDER_ADDRESS,max(orders.BUYER_ID) BUYER_ID, max(orders.BUYER_ADDRESS) as BUYER_ADDRESS,GROUP_CONCAT(users.USER_NAME SEPARATOR '||') as SELLERS, GROUP_CONCAT(users.SHOP_NAME SEPARATOR '||') as SELLERS_SHOP,GROUP_CONCAT(users.PHONE SEPARATOR '||') as SELLERS_PHONE FROM orders inner JOIN order_items on orders.ID = order_items.ORDER_ID INNER JOIN users on order_items.SELLER_ID = users.id WHERE orders.DELIVERMAN_ID is null and orders.ORDER_PK is not null GROUP BY orders.id) x on users.ID = x.BUYER_ID";
+  db.getResult(sql, [], function (result) {
+    callback(result);
+  });
+}
 
 module.exports = {
   placeOrder,
   updateOrderChainAddressByID,
+  getUnassignedDMOrders,
+  updateDMByID,
 };

@@ -250,9 +250,12 @@ contract OrderFacet {
 // Bujhi nai. Seller ar DM set kora thik ache naki?
 contract DeliveryFacet {
     AppStorage aps;
+    event deliveryManSet(uint256 orderDBID, uint256 dmDBID);
 
     function setDeliveryMan(
-        address orderAddress // address deliveryManAddress
+        address orderAddress,
+        uint256 orderDBID,
+        uint256 dmDBID // address deliveryManAddress
     ) public {
         require(aps.deliveryMen[msg.sender] != 0, "Invalid delivery man");
         require(aps.orders[orderAddress] != 0, "Invalid order");
@@ -265,6 +268,8 @@ contract DeliveryFacet {
         );
 
         order.setDeliveryMan(msg.sender);
+        emit deliveryManSet(orderDBID, dmDBID);
+
         // send reviewRating fund to buyer
     }
 
@@ -411,9 +416,9 @@ contract Diamond {
             bytes4(keccak256("placeOrder(address[],uint256[],uint256)"))
         ] = address(orderFacet);
 
-        facetMap[bytes4(keccak256("setDeliveryMan(address)"))] = address(
-            deliveryFacet
-        );
+        facetMap[
+            bytes4(keccak256("setDeliveryMan(address,uint256,uint256)"))
+        ] = address(deliveryFacet);
 
         facetMap[
             bytes4(keccak256("setDelivery(address,address[],uint256[])"))

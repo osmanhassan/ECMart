@@ -24,48 +24,49 @@
                     <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md mt-4 overflow-x-auto">
                       <table class="w-full table-auto">
                         <tbody>
+                          <% for(var x in orders){ %>
                            <tr>
                                 <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Order Address (Chain) :</td>
-                                <td class="px-4 py-2">0x123123234321434312423543212dsdf23</td>
+                                <td class="px-4 py-2"><%=orders[x].ORDER_ADDRESS%></td>
                             </tr>
                             <tr>
                                 <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Sellers :</td>
-                                <td class="px-4 py-2">" John's Store  "  ||  " Win's Shop " </td>
+                                <td class="px-4 py-2"><%=orders[x].SELLERS%> </td>
                             </tr>
                             <tr>
                               <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Sellers Contact:</td>
-                              <td class="px-4 py-2"> " +12345 "   ||   " 01732432412 "</td>
+                              <td class="px-4 py-2"> <%=orders[x].SELLERS_PHONE%></td>
                           </tr>
                             <tr>
                               <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Seller Shop Addresses:</td>
-                              <td class="px-4 py-2">" 123 Main St, City "  ||  " 123 Main St, City " </td>
+                              <td class="px-4 py-2"><%=orders[x].SELLERS_SHOP%></td>
                           </tr>
                             <tr>
                                 <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Buyer username:</td>
-                                <td class="px-4 py-2">"buyer_1"</td>
+                                <td class="px-4 py-2"><%=orders[x].BUYER_NAME%></td>
                             </tr>
                             <tr>
                                 <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Buyer Home Address:</td>
-                                <td class="px-4 py-2">123 Main St, City</td>
+                                <td class="px-4 py-2"><%=orders[x].BUYER_ADDRESS%></td>
                             </tr>
                             <tr>
                                 <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Buyer Contact Number:</td>
-                                <td class="px-4 py-2">123-456-7890</td>
+                                <td class="px-4 py-2"><%=orders[x].BUYER_PHONE%></td>
                             </tr>
                             <tr>
-                              <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Pick-up Date:</td>
-                              <td class="px-4 py-2"> 12th September, 2023</td>
-                          </tr>
+                              <td >
+                                <button type="button" order_address="<%=orders[x].ORDER_ADDRESS%>"  order_db_id="<%=orders[x].ORDER_ID%>" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300 deliveryCollectBtn">
+                                  Deliver This Order
+                              </button>
+                              </td>
+                              
+                            </tr>
+                            
+                          <% } %>
                         </tbody>
                       </table>
 
-                    <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md mt-4">
-                        <form class="flex flex-col space-y-4">
-                            <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300">
-                                Deliver This Order
-                            </button>
-                        </form>
-                    </div>
+                   
                     </div>
                 </section>
             </main>
@@ -77,6 +78,98 @@
       </div>
     </section>
     <%- include('partials/common_js'); %> <%- include('partials/common_js'); %>
+    <%- include('partials/common_scripts'); %>
+    <script>
+      $(document).ready(function () { 
+        // When product needs to be added
+        function setDeliveryMan(e, btnObj) {
+          // console.log("Dhukse")
+         var url = "/buyer/order/";
+         var data = {
+          order_address : $(btnObj).attr("order_address"),
+          order_db_id : $(btnObj).attr("order_db_id"),
+         }
+          setDeliveryManInOrder(data)
+        }
+
+        async function setDeliveryManInOrder(data) {
+          console.log("inside chain function");
+          console.log(data);
+          if (typeof window.ethereum !== "undefined") {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+
+            try {
+              await window.ethereum.request({
+                method: "eth_requestAccounts",
+              });
+            } catch (error) {
+              console.error("Permission denied:", error);
+            }
+            // Create a contract instance
+            const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+            // ABI of your contract
+            var url = "/abi/get/facetAbi/<%=process.env.CHAIN_DELIVERY_FACET_NAME%>/";
+            $.ajax({
+            type: "GET",
+            url: url,
+            success: function (abi) {
+              
+                console.log(abi);
+                const contractAbi = abi;
+                add(contractAddress,contractAbi,provider, data);
+              
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error");
+            },
+          });
+
+          
+
+            // const result1 = await contract.viewProducts(
+            //   "0xdd2fd4581271e230360230f9337d5c0430bf44c0"
+            // );
+            // await result.wait(1);
+            // console.log(result1);
+          }
+          else{
+            console.log("Metamask is not initiated Properly !!")
+          }
+        }
+
+        async function add(contractAddress, contractAbi,provider, data){
+            const contract = new ethers.Contract(
+              contractAddress,
+              contractAbi,
+              provider.getSigner()
+            );
+           var uid =  '<%=uid%>';
+            
+            const result = await contract.setDeliveryMan(
+              data.order_address.toLowerCase(),
+              data.order_db_id,
+              uid
+            );
+            await result.wait(1);
+            console.log(result);
+          }
+            
+
+     
+        $(".deliveryCollectBtn").click(function (e) {
+          
+          setDeliveryMan(e, $(this));
+        });
+
+        
+      });
+
+
+
+
+    </script>
   </body>
 </html>
 

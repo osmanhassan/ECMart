@@ -15,7 +15,7 @@ let chainRegistrationListener = require("./services/registrationChainService");
 let chainProductListener = require("./services/productChainService");
 let dm = require("./controllers/dmController");
 let orderProductListener = require("./services/orderChainService");
-
+let deliveryChainListener = require("./services/deliveryChainService");
 
 const app = express();
 
