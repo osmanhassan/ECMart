@@ -36,6 +36,11 @@ npm install -D
 ```bash
 npx tailwindcss -i ./src/input.css -o ./dist/app.css --watch
 ```
+or, FOR BACKEND, run
+```bash
+npx tailwindcss -i ./public/css/input.css -o ./public/css/app.css --watch
+```
+
 3. copy "src/img" folder into "dist" folder
 
 4. if you use any img then place the img in both "src/img" and "dist/img" folder 

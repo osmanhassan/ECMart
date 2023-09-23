@@ -1,29 +1,20 @@
-<!DOCTYPE html>
-<html lang="en" class="h-full dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Commerce Landing Page</title>
-    <link href="../dist/app.css" rel="stylesheet" />
-  </head>
-  <body
-    class="h-full bg-gray-100 dark:bg-gray-900 dark:text-white transition-colors duration-500 ease-in-out"
-  >
+
+    <%- include('./partials/common_header'); %>
     <header class="bg-white dark:bg-gray-900 shadow-md">
       <div class="container mx-auto p-4 flex items-center justify-between">
         <div class="flex items-center">
           <img
-            src="img/logo-dark.png"
+            src="/css/img/logo-dark.png"
             alt="Company Logo"
             class="h-10 w-10 mr-2 hidden dark:block"
           />
           <img
-            src="img/logo.png"
+            src="/css/img/logo.png"
             alt="Company Logo"
             class="h-10 w-10 mr-2 dark:hidden"
           />
 
-          <div class="text-xl font-semibold">EC Mart</div>
+          <div class="text-xl font-semibold dark:text-gray-100">EC Mart</div>
         </div>
         <ul class="flex space-x-4">
           <li>
@@ -35,14 +26,14 @@
           </li>
           <li>
             <a
-              href="#"
+              href="/signup/"
               class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               >Registration</a
             >
           </li>
           <li>
             <a
-              href="#"
+              href="/login/"
               class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               >Log In</a
             >
@@ -79,20 +70,20 @@
       </div>
     </section>
 
-    <section class="featured-products py-12">
+    <section class="featured-products py-12 dark:bg-gray-900">
       <div class="container mx-auto">
-        <h2 class="text-2xl font-semibold mb-6 text-center">
+        <h2 class="text-2xl font-semibold mb-6 text-center dark:text-gray-100">
           Featured Products
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- Featured Product 1 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <img
-              src="img/camera.jpg"
+              src="/images/marketplace/camera.jpg"
               alt="Camera"
               class="w-full h-40 object-cover mb-4"
             />
-            <h3 class="text-lg font-semibold mb-2">Camera</h3>
+            <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Camera</h3>
             <p class="text-gray-600 dark:text-gray-300">
               High-quality product with great features.
             </p>
@@ -103,11 +94,11 @@
           <!-- Featured Product 2 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <img
-              src="img/drone.jpg"
+              src="/images/marketplace/drone.jpg"
               alt="Drone"
               class="w-full h-40 object-cover mb-4"
             />
-            <h3 class="text-lg font-semibold mb-2">Drone</h3>
+            <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Drone</h3>
             <p class="text-gray-600 dark:text-gray-300">
               Innovative design and functionality.
             </p>
@@ -118,11 +109,11 @@
           <!-- Featured Product 3 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <img
-              src="img/guitar.jpg"
+              src="/images/marketplace/guitar.jpg"
               alt="Guitar"
               class="w-full h-40 object-cover mb-4"
             />
-            <h3 class="text-lg font-semibold mb-2">Guitar</h3>
+            <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Guitar</h3>
             <p class="text-gray-600 dark:text-gray-300">
               Durable and stylish for everyday use.
             </p>
@@ -134,11 +125,11 @@
           <!-- Featured Product 4 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <img
-              src="img/headphone.jpg"
+              src="/images/marketplace/headphone.jpg"
               alt="Product 1"
               class="w-full h-40 object-cover mb-4"
             />
-            <h3 class="text-lg font-semibold mb-2">Product 1</h3>
+            <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Product 1</h3>
             <p class="text-gray-600 dark:text-gray-300">
               Headphone that last long.
             </p>
@@ -149,11 +140,11 @@
           <!-- Featured Product 5 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <img
-              src="img/sneakers.jpg"
+              src="/images/marketplace/sneakers.jpg"
               alt="Product 2"
               class="w-full h-40 object-cover mb-4"
             />
-            <h3 class="text-lg font-semibold mb-2">Sneakers</h3>
+            <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Sneakers</h3>
             <p class="text-gray-600 dark:text-gray-300">
               Nike sports sneakers for sports.
             </p>
@@ -164,11 +155,11 @@
           <!-- Featured Product 6 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <img
-              src="img/iphone.jpg"
+              src="/images/marketplace/iphone.jpg"
               alt="Product 3"
               class="w-full h-40 object-cover mb-4"
             />
-            <h3 class="text-lg font-semibold mb-2">iPhone 11</h3>
+            <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">iPhone 11</h3>
             <p class="text-gray-600 dark:text-gray-300">
               Apple iPhone 11 256GB White
             </p>
@@ -207,14 +198,5 @@
         </svg>
       </button>
     </div>
-
-    <!-- <script>
-      const darkModeToggle = document.querySelector("#dark-mode-toggle");
-      const body = document.body;
-
-      darkModeToggle.addEventListener("click", () => {
-        body.classList.toggle("dark");
-      });
-    </script> -->
   </body>
 </html>

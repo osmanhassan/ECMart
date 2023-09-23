@@ -1,0 +1,276 @@
+<%- include('partials/common_header'); %> 
+
+  <body class="h-full bg-white dark:bg-slate-900">
+    <div class="flex flex-no-wrap">
+      <!-- Sidebar starts -->
+      <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
+      <%- include('partials/buyer_left_bar'); %>
+      <!-- Sidebar ends -->
+      <!-- Remove class [ h-64 ] when adding a card block -->
+      <div class="container mx-auto overflow-auto">
+        <%- include('partials/buyer_top_bar'); %>
+
+        <%- include('partials/common_body'); %>
+          <!-- Place your content here -->
+
+          <div
+            class="md:flex items-start justify-center py-12 2xl:px-20 md:px-6 px-4"
+          >
+            <div class="xl:w-2/6 lg:w-2/5 w-80 md:block hidden">
+              <img
+                class="w-full"
+                alt="image of a girl posing"
+                src="https://i.ibb.co/QMdWfzX/component-image-one.png"
+              />
+              <br>
+              <img
+                class="w-full"
+                alt="image of a girl posing"
+                src="https://i.ibb.co/QMdWfzX/component-image-one.png"
+              />
+            </div>
+            <div class="md:hidden">
+              <img
+                class="w-full"
+                alt="image of a girl posing"
+                src="https://i.ibb.co/QMdWfzX/component-image-one.png"
+              />
+              <br>
+              <img
+                class="w-full"
+                alt="image of a girl posing"
+                src="https://i.ibb.co/QMdWfzX/component-image-one.png"
+              />
+            </div>
+            <div class="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6">
+              <div class="border-b border-gray-200 pb-6">
+                <!-- Shop name -->
+                <p
+                  class="text-sm leading-none text-gray-600 dark:text-gray-300"
+                >
+                  Balenciaga Fall Collection
+                </p>
+                <!-- Product Name -->
+                <h1
+                  class="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 text-gray-800 dark:text-white mt-2"
+                >
+                <%= product[0].NAME %>
+                </h1>
+              </div>
+              <!-- Price -->
+              <div
+                class="py-4 border-b border-gray-200 flex items-center justify-between"
+              >
+                <p class="text-base leading-4 text-gray-800 dark:text-gray-300">
+                  Price
+                </p>
+                <div class="flex items-center justify-center">
+                  <p
+                    class="text-sm leading-none text-gray-600 dark:text-gray-300"
+                  >
+                  <%= product[0].FINAL_PRICE %>
+                  </p>
+                  
+                </div>
+              </div>
+
+              <div
+                class="py-4 border-b border-gray-200 flex items-center justify-between"
+              >
+                <p class="text-base leading-4 text-gray-800 dark:text-gray-300">
+                  Rating
+                </p>
+                <div class="flex items-center justify-center">
+                  <p
+                    class="text-sm leading-none text-gray-600 dark:text-gray-300 mr-3"
+                  >
+                  <%= product[0].RATING %>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Product address -->
+              <div
+                class="py-4 border-b border-gray-200 flex items-center justify-between"
+              >
+                <p class="text-base leading-4 text-gray-800 dark:text-gray-300">
+                  Contract_Address
+                </p>
+                <div class="flex items-center justify-center">
+                  <p
+                    class="text-xs leading-none text-gray-600 dark:text-gray-300"
+                  >
+                  <%= product[0].ADDRESS %>
+                  </p>
+                </div>
+              </div>
+              <!-- Stock -->
+              <div
+                class="py-4 border-b border-gray-200 flex items-center justify-between"
+              >
+                <p class="text-base leading-4 text-gray-800 dark:text-gray-300">
+                  Stock
+                </p>
+                <div class="flex items-center justify-center">
+                  <p
+                    class="text-sm leading-none text-gray-600 dark:text-gray-300 mr-3"
+                  >
+                  <%= product[0].STOCK %>
+                  </p>
+                </div>
+              </div>
+              <!-- Add to cart Button -->
+              <form id="addtoCartForm" action="/buyer/addToCart/" method="POST"> 
+              <button
+                class="dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:text-gray-900 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-base flex items-center justify-center leading-none text-white bg-gray-800 w-full py-4 hover:bg-gray-700 focus:outline-none"
+              >
+                <img
+                  class="mr-3 dark:hidden"
+                  src="https://tuk-cdn.s3.amazonaws.com/can-uploader/svg1.svg"
+                  alt="location"
+                />
+                <img
+                  class="mr-3 hidden dark:block"
+                  src="https://tuk-cdn.s3.amazonaws.com/can-uploader/svg1dark.svg"
+                  alt="location"
+                />
+                Add to Cart
+              </button>
+            </form>
+              <!-- Product description -->
+              <div>
+                <p
+                  class="xl:pr-48 text-base lg:leading-tight leading-normal text-gray-600 dark:text-gray-300 mt-7"
+                >
+                  <span class="text-purple-400 text-lg">
+                    Product Description :
+                  </span>
+                  <%= product[0].VARIANT %>
+                </p>
+                <!-- Shipping -->
+              </div>
+              <div>
+                <div class="border-t border-b py-4 mt-7 border-gray-200">
+                  <div
+                    data-menu
+                    class="flex justify-between items-center cursor-pointer"
+                  >
+                    <p
+                      class="text-base leading-4 text-gray-800 dark:text-gray-300"
+                    >
+                      Shipping and returns
+                    </p>
+                    <button
+                      class="cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 rounded"
+                      role="button"
+                      aria-label="show or hide"
+                    >
+                      <img
+                        class="transform dark:hidden"
+                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/productDetail3-svg4.svg"
+                        alt="dropdown"
+                      />
+                      <img
+                        class="transform hidden dark:block"
+                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/productDetail3-svg4dark.svg"
+                        alt="dropdown"
+                      />
+                    </button>
+                  </div>
+                  <div
+                    class="hidden pt-4 text-base leading-normal pr-12 mt-4 text-gray-600 dark:text-gray-300"
+                    id="sect"
+                  >
+                    You will be responsible for paying for your own shipping
+                    costs for returning your item. Shipping costs are
+                    nonrefundable
+                  </div>
+                </div>
+              </div>
+              <!-- Contact US -->
+              <div>
+                <div class="border-b py-4 border-gray-200">
+                  <div
+                    data-menu
+                    class="flex justify-between items-center cursor-pointer"
+                  >
+                    <p
+                      class="text-base leading-4 text-gray-800 dark:text-gray-300"
+                    >
+                      Contact us
+                    </p>
+                    <button
+                      class="cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 rounded"
+                      role="button"
+                      aria-label="show or hide"
+                    >
+                      <img
+                        class="transform dark:hidden"
+                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/productDetail3-svg4.svg"
+                        alt="dropdown"
+                      />
+                      <img
+                        class="transform hidden dark:block"
+                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/productDetail3-svg4dark.svg"
+                        alt="dropdown"
+                      />
+                    </button>
+                  </div>
+                  <div
+                    class="hidden pt-4 text-base leading-normal pr-12 mt-4 text-gray-600 dark:text-gray-300"
+                    id="sect"
+                  >
+                    If you have any questions on how to return your item to us,
+                    contact us.
+                  </div>
+                </div>
+              </div>
+              <!-- MAIN DIV END -->
+            </div>
+          </div>
+
+
+          <!-- Reviews -->
+          <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl font-semibold  text-gray-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 mb-6">Customer Reviews</h2>
+    
+            <!-- Review Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Review 1 -->
+                <div class="bg-transparent rounded-lg p-4 shadow-2xl">
+                    <h3 class="text-xl font-semibold  text-gray-600 dark:text-gray-300 mb-2">Reviewer Name 1</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Reviewer Ethereum Wallet: <span class="text-gray-800 dark:text-purple-600">0x123456789...</span></p>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Purchase Date: <span class="text-gray-600 dark:text-purple-600">September 10, 2023</span></p>
+                    <p class="text-gray-600 dark:text-gray-300">Review Description: <span class="text-gray-800 dark:text-purple-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec lorem non quam varius hendrerit. </span></p>
+                </div>
+                
+                <!-- Review 2 -->
+                <div class="bg-transparent rounded-lg p-4 shadow-2xl">
+                  <h3 class="text-xl font-semibold  text-gray-600 dark:text-gray-300 mb-2">Reviewer Name 1</h3>
+                  <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Reviewer Ethereum Wallet: <span class="text-gray-800 dark:text-purple-600">0x123456789...</span></p>
+                  <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Purchase Date: <span class="text-gray-600 dark:text-purple-600">September 10, 2023</span></p>
+                  <p class="text-gray-600 dark:text-gray-300">Review Description: <span class="text-gray-800 dark:text-purple-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec lorem non quam varius hendrerit. </span></p>
+              </div>
+
+              <!-- Review 2 -->
+              <div class="bg-transparent rounded-lg p-4 shadow-2xl">
+                <h3 class="text-xl font-semibold  text-gray-600 dark:text-gray-300 mb-2">Reviewer Name 1</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Reviewer Ethereum Wallet: <span class="text-gray-800 dark:text-purple-600">0x123456789...</span></p>
+                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Purchase Date: <span class="text-gray-600 dark:text-purple-600">September 10, 2023</span></p>
+                <p class="text-gray-600 dark:text-gray-300">Review Description: <span class="text-gray-800 dark:text-purple-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec lorem non quam varius hendrerit. </span></p>
+            </div>
+
+          
+                
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <%- include('partials/common_js'); %>
+
+  </body>
+</html>

@@ -1,8 +1,9 @@
 var db = require("./db");
 
 function insertProduct(params, callback) {
-  var sql = "INSERT INTO products VALUES(null, ?, ?, ?, ?, ?, null, ?)";
-  db.execute(
+  var sql =
+    "INSERT INTO products VALUES(null, ?, ?, ?, ?, null, ?, null, ?,null)";
+  db.executeGetId(
     sql,
     [
       params.productName,
@@ -13,13 +14,20 @@ function insertProduct(params, callback) {
       params.image,
     ],
     function (result) {
-      if (result) {
-        callback(true);
+      if (result != -1) {
+        callback(result);
       } else {
-        callback(false);
+        callback(undefined);
       }
     }
   );
+}
+
+function getProductbyId(productId, callback) {
+  var sql = "SELECT * FROM products WHERE ID = ?";
+  db.getResult(sql, [productId], function (result) {
+    callback(result);
+  });
 }
 
 function getProductListbyId(uid, callback) {
@@ -36,8 +44,21 @@ function getAllProducts(callback) {
   });
 }
 
+function updateProductChainAddressByID(params, callback) {
+  var sql = "UPDATE products SET FINAL_PRICE=?, ADDRESS=? WHERE ID=?";
+  db.execute(
+    sql,
+    [params.final_price, params.address, params.id],
+    function (flag) {
+      callback(flag);
+    }
+  );
+}
+
 module.exports = {
   insertProduct,
+  getProductbyId,
   getProductListbyId,
   getAllProducts,
+  updateProductChainAddressByID,
 };

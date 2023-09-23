@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html class="h-full">
-  <head>
-    <%- include('partials/common_header'); %> <%-
+
+<%- include('partials/common_header'); %> <%-
     include('partials/common_scripts'); %>
-  </head>
   <body class="h-full bg-white dark:bg-slate-900">
     <!-- home page -->
     <section>
@@ -23,7 +20,7 @@
               <h1
                 class="text-slate-700 dark:text-gray-300 text-3xl font-semibold mb-4"
               >
-                Welcome Seller, UserName!
+                Welcome Seller, <b> <%= username %> </b> !!!!
               </h1>
             </section>
           </div>

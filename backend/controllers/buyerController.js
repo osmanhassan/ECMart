@@ -6,8 +6,29 @@ let orders = require("../models/orders");
 router.get("/productList/", (req, res) => {
   product.getAllProducts((result) => {
     //console.log(result);
+    // console.log(result);
     res.render("buyer_productList", { products: result });
   });
+});
+
+router.get("/productView/:id/", (req, res) => {
+  const productId = req.params.id;
+  product.getProductbyId(productId, (result) => {
+    console.log(result);
+    if (result.length != 0) {
+      res.render("buyer_productView", { product: result });
+    } else {
+      res.json({
+        code: 500,
+        status: "server-error",
+        message: "Product not found",
+      });
+    }
+  });
+});
+
+router.get("/buyer_cart/", (req, res) => {
+  res.render("buyer_cart");
 });
 
 router.get("/order/", (req, res) => {

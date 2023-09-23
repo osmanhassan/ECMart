@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html class="h-full">
-  <!-- hadahk -->
-  <head>
+
     <%- include('partials/common_header'); %>
-  </head>
+
   <body class="h-full bg-white dark:bg-slate-900">
     <div class="isolate px-6 py-24 sm:py-32 lg:px-8">
       <div class="flex min-h-full flex-col justify-center">
@@ -11,11 +8,6 @@
           <div
             class="mx-auto h-20 w-20 bg-[url('./img/logo.png')] dark:bg-[url('./img/logo-dark.png')] bg-cover"
           ></div>
-          <!-- <img
-            class="mx-auto h-20 w-auto"
-            src="./img/logo-dark.png"
-            alt="Your Company"
-          /> -->
           <h2
             class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-indigo-200 dark:to-purple-500"
           >
@@ -115,6 +107,22 @@
           </div>
           <div class="sm:col-span-2">
             <label
+              for="nid"
+              class="block text-sm font-semibold leading-6 text-gray-900 dark:text-indigo-200"
+              >National Identity</label
+            >
+            <div class="mt-2.5">
+              <input
+                type="text"
+                name="nid"
+                id="nid"
+                placeholder="National Identity"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+          <div class="sm:col-span-2">
+            <label
               for="shopName"
               class="block text-sm font-semibold leading-6 text-gray-900 dark:text-indigo-200"
               >Shop Name</label
@@ -130,6 +138,23 @@
               />
             </div>
           </div>
+          <!-- House Address -->
+          <div class="sm:col-span-2">
+            <label
+              for="address"
+              class="block text-sm font-semibold leading-6 text-gray-900 dark:text-indigo-200"
+              >Shop Address</label
+            >
+            <div class="mt-2.5">
+              <input
+                type="text"
+                name="address"
+                id="address"
+                placeholder="House, Road, City, State"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
         </div>
         <div class="mt-10">
           <button
@@ -139,173 +164,43 @@
             Register
           </button>
         </div>
+        <div class="mt-10">
+          <p class="mt-10 text-center text-sm text-gray-500">
+            Already Registered?
+            <a
+              href="/login/"
+              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:hover:text-green-200"
+              >Login</a
+            >
+          </p>
+          <p class="mt-10 text-center text-sm text-gray-500">
+            Don't want to sign up as Seller?
+            <a
+              href="/signup/"
+              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:hover:text-green-200"
+              >Sign Up differently</a
+            >
+          </p>
+        </div>
       </form>
     </div>
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
-
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"
-      integrity="sha512-FDcVY+g7vc5CXANbrTSg1K5qLyriCsGDYCE02Li1tXEYdNQPvLPHNE+rT2Mjei8N7fZbe0WLhw27j2SrGRpdMg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    
+    <%- include('partials/common_scripts'); %>
 
     <script>
       $(document).ready(function () {
-        var registrationAbi = [
-          {
-            anonymous: false,
-            inputs: [
-              {
-                indexed: false,
-                internalType: "address",
-                name: "orderAddress",
-                type: "address",
-              },
-              {
-                indexed: false,
-                internalType: "uint256",
-                name: "dbID",
-                type: "uint256",
-              },
-            ],
-            name: "sellerRegistered",
-            type: "event",
-          },
-          {
-            inputs: [],
-            name: "registerBuyer",
-            outputs: [],
-            stateMutability: "nonpayable",
-            type: "function",
-          },
-          {
-            inputs: [],
-            name: "registerDeliveryMan",
-            outputs: [],
-            stateMutability: "nonpayable",
-            type: "function",
-          },
-          {
-            inputs: [
-              {
-                internalType: "uint256",
-                name: "dbID",
-                type: "uint256",
-              },
-            ],
-            name: "registerSeller",
-            outputs: [],
-            stateMutability: "nonpayable",
-            type: "function",
-          },
-        ];
+       
+       //When form submit button is pressed --> call function 
+       $("#sellerSignUpForm").submit(function (e) {
+          sellerSignUpFormSubmitHandler(e, $(this));
+        });
 
-        var productFacetAbi = [
-          {
-            inputs: [
-              {
-                internalType: "string",
-                name: "_name",
-                type: "string",
-              },
-              {
-                internalType: "uint256",
-                name: "_price",
-                type: "uint256",
-              },
-              {
-                internalType: "string",
-                name: "_description",
-                type: "string",
-              },
-              {
-                internalType: "uint256",
-                name: "_quantity",
-                type: "uint256",
-              },
-            ],
-            name: "addProduct",
-            outputs: [],
-            stateMutability: "nonpayable",
-            type: "function",
-          },
-          {
-            inputs: [
-              {
-                internalType: "address",
-                name: "_sellerAddress",
-                type: "address",
-              },
-            ],
-            name: "viewProducts",
-            outputs: [
-              {
-                internalType: "string",
-                name: "",
-                type: "string",
-              },
-            ],
-            stateMutability: "view",
-            type: "function",
-          },
-        ];
-        async function test() {
-          if (typeof window.ethereum !== "undefined") {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-            // Request user permission to access their accounts
-
-            // Connect to Metamask when the button is clicked
-            // const connectButton = document.getElementById('connectButton');
-            // connectButton.addEventListener('click', requestAccount);
-
-            try {
-              await window.ethereum.request({
-                method: "eth_requestAccounts",
-              });
-            } catch (error) {
-              console.error("Permission denied:", error);
-            }
-            // Create a contract instance
-            const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
-            const contractAbi = productFacetAbi;
-            // ABI of your contract
-            const contract = new ethers.Contract(
-              contractAddress,
-              contractAbi,
-              provider.getSigner()
-            );
-            //addOrder eventListener
-
-            const result = await contract.addProduct(
-              "brush",
-              "123456789423423",
-              "colgate",
-              2
-            );
-            await result.wait(1);
-            console.log(result);
-
-            const result1 = await contract.viewProducts(
-              "0xdd2fd4581271e230360230f9337d5c0430bf44c0"
-            );
-            await result.wait(1);
-            console.log(result1);
-          }
-        }
-
-        // test();
-
-        function sellerSignUpFormSubmitHandler(e, formObj) {
+        // When seller registration function
+        function sellerSignUpFormSubmitHandler(e, SellerFormObj) {
           e.preventDefault();
           e.stopPropagation();
 
-          var form = formObj;
+          var form = SellerFormObj;
           var url = form.attr("action");
           $.ajax({
             type: "POST",
@@ -313,26 +208,23 @@
             data: form.serialize(),
             success: function (data) {
               // Ajax call completed successfully
-              addSellerToChain(data);
+              if (data.code == 200) {
+                addSellerToChain(data.data);
+              }
             },
             error: function (data) {
               // Some error in ajax call
-              alert("some Error");
+              alert("some Error from Seller AJAX request");
             },
           });
         }
 
+        
         async function addSellerToChain(seller) {
           console.log(seller);
           // Check if Metamask is available
           if (typeof window.ethereum !== "undefined") {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-            // Request user permission to access their accounts
-
-            // Connect to Metamask when the button is clicked
-            // const connectButton = document.getElementById('connectButton');
-            // connectButton.addEventListener('click', requestAccount);
 
             try {
               await window.ethereum.request({
@@ -343,67 +235,49 @@
             }
             // Create a contract instance
             const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
-            const contractAbi = registrationAbi;
-            // ABI of your contract
-            const contract = new ethers.Contract(
-              contractAddress,
-              contractAbi,
-              provider.getSigner()
-            );
-            //addOrder eventListener
-
-            contract.on("sellerRegistered", (sellerAddress, db) => {
-              console.log("Seller address ---->" + sellerAddress);
-              // setDM(_orderAddress);
-            });
-            const result = await contract.registerSeller(123);
-            await result.wait(1);
-            console.log(result);
-            test();
-            // if (result == provider) {
-            //   var newPath = "/login/"; // Replace with your desired URL path
-            //   var currentURL =
-            //     window.location.protocol + "//" + window.location.hostname;
-
-            //   // Check if the current URL contains a port number
-            //   if (window.location.port !== "") {
-            //     currentURL += ":" + window.location.port;
-            //   }
-
-            //   currentURL += newPath;
-
-            //   // Redirect to the new URL without specifying the port
-            //   window.location.href = currentURL;
-            // }
-            // Call contract function when the button is clicked
-            // const callContractButton =
-            //   document.getElementById("callContractButton");
-            // callContractButton.addEventListener("click", async () => {
-            //   const result = await contract.someFunction();
-            //   console.log("Result:", result);
-            // });
-
-            // Send Ether when the button is clicked
-            // const sendEtherButton = document.getElementById("sendEtherButton");
-            // sendEtherButton.addEventListener("click", async () => {
-            //   const signer = provider.getSigner();
-            //   const tx = await signer.sendTransaction({
-            //     to: "RECIPIENT_ADDRESS",
-            //     value: ethers.utils.parseEther("1.0"), // Sending 1 ETH
-            //   });
-            //   await tx.wait();
-            //   console.log("Transaction Hash:", tx.hash);
-            // });
+            //AJAX Call to Get ABI
+            var url = "/abi/get/facetAbi/<%=process.env.CHAIN_REGISTRATION_FACET_NAME%>/";
+            $.ajax({
+            type: "GET",
+            url: url,
+            success: function (abi) {
+              
+                const contractAbi = abi;
+                add(contractAddress,contractAbi,provider, seller);
+              
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error from ABI AJAX request");
+            },
+          });
+         
+         
           } else {
             // Metamask is not available
             console.error("Metamask is not installed or not available.");
           }
         }
 
-        $("#sellerSignUpForm").submit(function (e) {
-          sellerSignUpFormSubmitHandler(e, $(this));
-        });
+        async function add(contractAddress,contractAbi,provider, seller){
+       
+           const contract = new ethers.Contract(
+           contractAddress,
+           contractAbi,
+           provider.getSigner()
+         );
+        
+         const result = await contract.registerSeller(seller.id);
+         await result.wait(1);
+         console.log(result);
+        }
+
       });
+
+      //  =========================================== IMPORTANT ===================================================================
+      // After registration from Blockchain, it emits an event with ---->  `registrationAddress`, `dbID`
+      // The event is listened on the backend using    -------->>>>>>>>>    backend/services/registrationChainService.js    <<<<<<<<<<---------------------
+      // Then it backend MySQL DB is upadted with `registrationAddress` with corresponding `dbID`
     </script>
   </body>
 </html>

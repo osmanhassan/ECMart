@@ -1,0 +1,48 @@
+
+    <%- include('./partials/common_header'); %>
+  <body class="h-full bg-white dark:bg-slate-900">
+    
+    <div class="flex flex-col items-center justify-center min-h-screen">
+      <header
+        class="text-3xl font-semibold mb-8 text-center text-gray-800 dark:text-white"
+      >
+        <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+          <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+            <div
+              class="mx-auto h-20 w-20 bg-[url('./img/logo.png')] dark:bg-[url('./img/logo-dark.png')] bg-cover"
+            ></div>
+            <!-- <img
+                class="mx-auto h-20 w-auto"
+                src="./img/logo-dark.png"
+                alt="Your Company"
+              /> -->
+            <h2
+              class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-indigo-200 dark:to-purple-500"
+            >
+            Register as
+            </h2>
+          </div>
+      </header>
+      <div class="flex space-x-4">
+        <a
+          href="/signup/buyer/"
+          class="flex-grow bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg text-center transition duration-300 ease-in-out transform hover:scale-105 dark:bg-violet-600 dark:text-wite dark:hover:text-slate-800 dark:hover:bg-violet-400"
+        >
+          Buyer
+        </a>
+        <a
+          href="/signup/seller/"
+          class="flex-grow bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg text-center transition duration-300 ease-in-out transform hover:scale-105 dark:bg-violet-600 dark:text-wite dark:hover:text-slate-800 dark:hover:bg-violet-400"
+        >
+          Seller
+        </a>
+        <a
+          href="/signup/deliveryman/"
+          class="flex-grow bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg text-center transition duration-300 ease-in-out transform hover:scale-105 dark:bg-violet-600 dark:text-wite dark:hover:text-slate-800 dark:hover:bg-violet-400"
+        >
+          Deliveryman
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

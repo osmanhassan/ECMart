@@ -293,13 +293,18 @@ contract ProductFacet {
 
     mapping(address => address[]) sellerToProducts;
 
-    // event Save(address productAddress);
+    event productSaved(
+        uint256 _finalPrice,
+        address productAddress,
+        uint256 dbID
+    );
 
     function addProduct(
         string memory _name,
         uint256 _price,
         string memory _description,
-        uint256 _quantity
+        uint256 _quantity,
+        uint256 dbID
     ) public {
         require(aps.sellers[msg.sender] == 1, "You are not a seller");
 
@@ -308,6 +313,7 @@ contract ProductFacet {
             aps.reviewRatingAmount +
             ((_price * aps.ecMartPercentage) / 100);
         console.log("_Final Price of Product : ", _finalPrice);
+
         Product product = new Product(
             _name,
             _price,
@@ -321,13 +327,13 @@ contract ProductFacet {
         console.log(productAddress);
         sellerToProducts[msg.sender].push(productAddress);
         aps.products[address(product)] = 1;
-        // emit Save(productAddress);
+        emit productSaved(_finalPrice, productAddress, dbID);
     }
 
     function viewProducts(
         address _sellerAddress
-    ) public view returns (string memory) {
-        return Product(sellerToProducts[_sellerAddress][0]).getName();
+    ) public view returns (address[] memory) {
+        return sellerToProducts[_sellerAddress];
     }
 
     // function getdata(uint256 _data) public view returns (uint256) {
@@ -339,31 +345,37 @@ contract RegistrationFacet {
     AppStorage aps;
 
     //  seller
-    event sellerRegistered(address orderAddress, uint256 dbID);
+    event registered(address registrationAddress, uint256 dbID);
 
     function registerSeller(uint256 dbID) public {
         // need to add admin access control
         aps.sellers[msg.sender] = 1;
         console.log("Seller registered : ", msg.sender);
-        emit sellerRegistered(msg.sender, dbID);
+        emit registered(msg.sender, dbID);
     }
 
     //need to compile i guess
     //
 
     // buyer
+    // event buyerRegistered(address buyerAddress, uint256 dbID);
 
-    function registerBuyer() public {
+    function registerBuyer(uint256 dbID) public {
         aps.buyers[msg.sender] = 2;
+        console.log("Buyer Registered : ", msg.sender);
+        emit registered(msg.sender, dbID);
     }
 
     //
 
     // deliveryMen
+    // event dmRegistered(address dmAddress, uint256 dbID);
 
-    function registerDeliveryMan() public {
+    function registerDeliveryMan(uint256 dbID) public {
         // need to add admin access control
         aps.deliveryMen[msg.sender] = 3;
+        console.log("Deliveryman Registered : ", msg.sender);
+        emit registered(msg.sender, dbID);
     }
 
     //
@@ -409,7 +421,9 @@ contract Diamond {
         facetMap[bytes4(keccak256("payOrder(address)"))] = address(orderFacet);
 
         facetMap[
-            bytes4(keccak256("addProduct(string,uint256,string,uint256)"))
+            bytes4(
+                keccak256("addProduct(string,uint256,string,uint256,uint256)")
+            )
         ] = address(productFacet);
 
         facetMap[bytes4(keccak256("viewProducts(address)"))] = address(
@@ -422,11 +436,11 @@ contract Diamond {
             registrationFacet
         );
 
-        facetMap[bytes4(keccak256("registerBuyer()"))] = address(
+        facetMap[bytes4(keccak256("registerBuyer(uint256)"))] = address(
             registrationFacet
         );
 
-        facetMap[bytes4(keccak256("registerDeliveryMan()"))] = address(
+        facetMap[bytes4(keccak256("registerDeliveryMan(uint256)"))] = address(
             registrationFacet
         );
 

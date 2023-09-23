@@ -9,6 +9,10 @@ const ecmartPrivateKey =
 const sellerPublicAddress = "0xdd2fd4581271e230360230f9337d5c0430bf44c0"; //18
 const sellerWalletPrivateKey =
   "0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0";
+// Seller Wallet_2
+const seller_2_PublicAddress = "0x2546bcd3c84621e976d8185a91a922ae77ecec30"; //16
+const seller_2_WalletPrivateKey =
+  "0xea6c44ac03bff858b476bba40716402b03e41b8e97e276d1baec7c37d42484a0";
 // Buyer
 const buyerPublicAddress = "0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199"; //19
 const buyerWalletPrivateKey =
@@ -42,50 +46,76 @@ async function main() {
   // in current hardhat version, you might need to write ${simpleStorage.target}
   console.log(`Deployed ECMART contract to: ${ecmart.address}`);
 
-  // // connect to registration Facet
-  // const registrationFacet = await ethers.getContractAt(
-  //   "RegistrationFacet",
-  //   ecmart.address
-  // );
-  // console.log(`Registration Facet initiated`);
+  // connect to registration Facet
+  const registrationFacet = await ethers.getContractAt(
+    "RegistrationFacet",
+    ecmart.address
+  );
+  console.log(`Registration Facet initiated`);
 
   // registrationFacet.on("sellerRegistered", (address) => {
   //   console.log("Event data:", address); // Access event data here
   // });
-  // // register as seller
-  // let tx_seller = await registrationFacet
-  //   .connect(sellerWallet)
-  //   .registerSeller();
-  // console.log("Seller Registered");
-  // //register as buyer
-  // let tx_buyer = await registrationFacet.connect(buyerWallet).registerBuyer();
-  // console.log("Buyer Registered");
-  // //register as DM
-  // let tx_dm = await registrationFacet.connect(dmWallet).registerDeliveryMan();
-  // console.log("Deliveryman Registered");
 
-  // //connect to Product Facet
-  // const productFacet = await ethers.getContractAt(
-  //   "ProductFacet",
-  //   ecmart.address
-  // );
-  // console.log(`Product Facet initiated`);
-  // console;
+  // register as seller
+  let tx_seller = await registrationFacet
+    .connect(sellerWallet)
+    .registerSeller(136);
+  console.log("Seller Registered");
 
-  // //add product as seller
-  // let tx_addProduct = await productFacet
-  //   .connect(sellerWallet)
-  //   .addProduct("Book", "5000000000000000000", "Best book", 150);
-  // // await tx_3.wait(1);
-  // console.log("Product Added 1");
+  //register as buyer
+  let tx_buyer = await registrationFacet
+    .connect(buyerWallet)
+    .registerBuyer(137);
+  console.log("Buyer Registered");
 
-  // tx_addProduct = await productFacet
-  //   .connect(sellerWallet)
-  //   .addProduct("Kimino", "30000000000000000000", "Japanese Female Dress", 400);
-  // console.log("Product Added 2");
+  //register as DM
+  let tx_dm = await registrationFacet
+    .connect(dmWallet)
+    .registerDeliveryMan(138);
+  console.log("Deliveryman Registered");
 
-  // let tx_viewProduct = await productFacet.viewProducts(sellerPublicAddress);
-  // console.log(tx_viewProduct);
+  //connect to Product Facet
+  const productFacet = await ethers.getContractAt(
+    "ProductFacet",
+    ecmart.address
+  );
+  console.log(`Product Facet initiated`);
+  console;
+
+  //add product as seller
+  let tx_addProduct = await productFacet
+    .connect(sellerWallet)
+    .addProduct(
+      "iPhone",
+      "30000000000000000000",
+      "Iphone 11 Pro 256GB White",
+      140,
+      53
+    );
+  // await tx_3.wait(1);
+  console.log("Product Added 1");
+
+  tx_addProduct = await productFacet
+    .connect(sellerWallet)
+    .addProduct("Camera", "60000000000000000000", "Nikon DSLR", 13, 54);
+  console.log("Product Added 2");
+
+  tx_addProduct = await productFacet
+    .connect(sellerWallet)
+    .addProduct(
+      "Watch",
+      "20000000000000000000",
+      "Apple Watch Series 5",
+      14,
+      55
+    );
+  console.log("Product Added 3");
+
+  //view Products
+  console.log("Product addresses :");
+  let tx_viewProduct = await productFacet.viewProducts(sellerPublicAddress);
+  console.log(tx_viewProduct);
 
   // //order
   // console.log("----------------  Order PREVIEW  ---------------------");
@@ -319,19 +349,19 @@ async function main() {
   //       .getSeller()}`
   //   );
 
-  // //getEcmartAmount()
-  // console.log(
-  //   `ECMart Amount on Product 1 : ${await productContract_1
-  //     .connect(ecmart.address)
-  //     .getEcmartAmount()}`
-  // );
+  //   //getEcmartAmount()
+  //   console.log(
+  //     `ECMart Amount on Product 1 : ${await provider.getBalance(
+  //       ecmart.address
+  //     )}`
+  //   );
 
-  // //getReviewRatingAmount()
-  // console.log(
-  //   `Review-Rating Amount on Product 1 : ${await productContract_1
-  //     .connect(ecmart.address)
-  //     .getReviewRatingAmount()}`
-  // );
+  //   // //getReviewRatingAmount()
+  //   // console.log(
+  //   //   `Review-Rating Amount on Product 1 : ${await productContract_1
+  //   //     .connect(ecmart.address)
+  //   //     .getReviewRatingAmount()}`
+  //   // );
   // }
 }
 

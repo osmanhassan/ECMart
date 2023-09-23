@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html class="h-full dark">
-  <!-- hadahk -->
-  <head>
+
     <%- include('partials/common_header'); %>
-  </head>
   <body class="h-full bg-white dark:bg-slate-900">
     <!-- register as buyer -->
     <div class="isolate px-6 py-24 sm:py-32 lg:px-8">
@@ -24,7 +20,7 @@
           </h2>
         </div>
       </div>
-      <form action="#" method="POST" class="mx-auto mt-10 max-w-xl sm:mt-10">
+      <form id="buyerRegForm" action="/signup/buyer/" method="POST" class="mx-auto mt-10 max-w-xl sm:mt-10">
         <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div class="sm:col-span-2">
             <label
@@ -107,6 +103,23 @@
             </div>
           </div>
         </div>
+        <!-- House Address -->
+        <div class="sm:col-span-2">
+          <label
+            for="address"
+            class="block text-sm font-semibold leading-6 text-gray-900 dark:text-indigo-200"
+            >Address</label
+          >
+          <div class="mt-2.5">
+            <input
+              type="text"
+              name="address"
+              id="address"
+              placeholder="House, Road, City, State"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
         <div class="mt-10">
           <button
             type="submit"
@@ -115,7 +128,120 @@
             Register
           </button>
         </div>
+        <div class="mt-10">
+          <p class="mt-10 text-center text-sm text-gray-500">
+            Already Registered?
+            <a
+              href="/login/"
+              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:hover:text-green-200"
+              >Login</a
+            >
+          </p>
+          <p class="mt-10 text-center text-sm text-gray-500">
+            Don't want to sign up as Buyer?
+            <a
+              href="/signup/"
+              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:hover:text-green-200"
+              >Sign Up differently</a
+            >
+          </p>
+        </div>
       </form>
     </div>
+
+    <%- include('partials/common_scripts'); %>
+
+    <script>
+      $(document).ready(function () {
+       
+       //When form submit button is pressed --> call function 
+       $("#buyerRegForm").submit(function (e) {
+          buyerSignUpFormSubmitHandler(e, $(this));
+        });
+
+        // When seller registration function
+        function buyerSignUpFormSubmitHandler(e, formObj) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var form = formObj;
+          var url = form.attr("action");
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function (data) {
+              // Ajax call completed successfully
+              if (data.code == 200) {
+                addBuyerToChain(data.data);
+              }
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error from Buyer AJAX request");
+            },
+          });
+        }
+
+        
+        async function addBuyerToChain(buyer) {
+          console.log(buyer);
+          // Check if Metamask is available
+          if (typeof window.ethereum !== "undefined") {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+            try {
+              await window.ethereum.request({
+                method: "eth_requestAccounts",
+              });
+            } catch (error) {
+              console.error("Permission denied:", error);
+            }
+            // Create a contract instance
+            const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+            //AJAX Call to Get ABI
+            var url = "/abi/get/facetAbi/<%=process.env.CHAIN_REGISTRATION_FACET_NAME%>/";
+            $.ajax({
+            type: "GET",
+            url: url,
+            success: function (abi) {
+              
+                const contractAbi = abi;
+                add(contractAddress,contractAbi,provider, buyer);
+              
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error from ABI AJAX request");
+            },
+          });
+         
+         
+          } else {
+            // Metamask is not available
+            console.error("Metamask is not installed or not available.");
+          }
+        }
+
+        async function add(contractAddress,contractAbi,provider, buyer){
+       
+           const contract = new ethers.Contract(
+           contractAddress,
+           contractAbi,
+           provider.getSigner()
+         );
+        
+         const result = await contract.registerSeller(buyer.id);
+         await result.wait(1);
+         console.log(result);
+        }
+
+      });
+
+      //  =========================================== IMPORTANT ===================================================================
+      // After registration from Blockchain, it emits an event with ---->  `registrationAddress`, `dbID`
+      // The event is listened on the backend using    -------->>>>>>>>>    backend/services/registrationChainService.js    <<<<<<<<<<---------------------
+      // Then it backend MySQL DB is upadted with `registrationAddress` with corresponding `dbID`
+    </script>
   </body>
 </html>

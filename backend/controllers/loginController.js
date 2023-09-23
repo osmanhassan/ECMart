@@ -8,6 +8,7 @@ router.get("/", function (request, response) {
 });
 
 router.post("/", function (request, response) {
+  console.log(request.body);
   user.getUserByNamePass(request.body, function (result) {
     if (result.length > 0 && result[0].PASSWORD == request.body.password) {
       // result[0].activity = "online";

@@ -72,8 +72,8 @@
       ]
     },
     "/Users/mominwin/Documents/2_Productivity/Projects/ECMart/backend/contracts/Diamond.sol": {
-      "lastModificationDate": 1695209522944,
-      "contentHash": "3df48c4b3b0ee47b955a091297936927",
+      "lastModificationDate": 1695390677055,
+      "contentHash": "2dbb48aacddd99df58f351db210b546d",
       "sourceName": "contracts/Diamond.sol",
       "solcConfig": {
         "version": "0.8.8",

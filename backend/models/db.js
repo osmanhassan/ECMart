@@ -2,9 +2,9 @@ var mysql = require("mysql");
 
 var connection = mysql.createConnection({
   host: "127.0.0.1",
-  user:  "root",
-  password:  "",
-  database:  "ECMart",
+  user: "root",
+  password: "",
+  database: "ECMart",
 });
 connection.connect(function (err) {
   if (err) {
@@ -13,6 +13,7 @@ connection.connect(function (err) {
   }
 });
 
+// DB operation _1 --> 
 function getResult(sql, params, callback) {
   if (params == null) {
     connection.query(sql, function (error, result) {
@@ -35,6 +36,7 @@ function getResult(sql, params, callback) {
   }
 }
 
+// DB operation _2
 function execute(sql, params, callback) {
   if (params == null) {
     connection.query(sql, function (error, result) {
@@ -57,6 +59,7 @@ function execute(sql, params, callback) {
   }
 }
 
+// DB operation _3
 function executeGetId(sql, params, callback) {
   if (params == null) {
     connection.query(sql, function (error, result) {
@@ -78,4 +81,5 @@ function executeGetId(sql, params, callback) {
     });
   }
 }
+
 module.exports = { getResult, execute, executeGetId };

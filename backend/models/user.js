@@ -1,8 +1,8 @@
 var db = require("./db");
 
-function insert(params, callback) {
-  var sql = "INSERT INTO users VALUES(null, ?, ?, ?, ?, ?,?,?, null)";
-  db.execute(
+function insertSeller(params, callback) {
+  var sql = "INSERT INTO users VALUES(null, ?, ?, ?, ?, ?,?,?, ?, null)";
+  db.executeGetId(
     sql,
     [
       params.userName,
@@ -12,12 +12,59 @@ function insert(params, callback) {
       params.phone,
       params.shopName,
       params.nid,
+      params.address,
     ],
     function (result) {
-      if (result) {
-        callback(true);
+      if (result != -1) {
+        callback(result);
       } else {
-        callback(false);
+        callback(undefined);
+      }
+    }
+  );
+}
+
+function insertBuyer(params, callback) {
+  var sql =
+    "INSERT INTO users VALUES(null, ?, ?, ?, ?, ?, null, null, ?, null)";
+  db.executeGetId(
+    sql,
+    [
+      params.userName,
+      params.password,
+      params.role,
+      params.email,
+      params.phone,
+      params.address,
+    ],
+    function (result) {
+      if (result != -1) {
+        callback(result);
+      } else {
+        callback(undefined);
+      }
+    }
+  );
+}
+
+function insertDM(params, callback) {
+  var sql = "INSERT INTO users VALUES(null, ?, ?, ?, ?, ?, null, ?, ?, null)";
+  db.executeGetId(
+    sql,
+    [
+      params.userName,
+      params.password,
+      params.role,
+      params.email,
+      params.phone,
+      params.nid,
+      params.address,
+    ],
+    function (result) {
+      if (result != -1) {
+        callback(result);
+      } else {
+        callback(undefined);
       }
     }
   );
@@ -54,6 +101,13 @@ function updateUser(params, callback) {
       callback(flag);
     }
   );
+}
+
+function updateUserChainAddressByID(params, callback) {
+  var sql = "UPDATE users SET PK=? WHERE ID=?";
+  db.execute(sql, [params.address, params.id], function (flag) {
+    callback(flag);
+  });
 }
 
 function findFriend(params, callback) {
@@ -101,7 +155,9 @@ function NoMessageSenderFriends(uid, callback) {
 }
 
 module.exports = {
-  insert,
+  insertSeller,
+  insertBuyer,
+  insertDM,
   findById,
   findByName,
   updateUser,
@@ -111,4 +167,5 @@ module.exports = {
   MessageSenderFriends,
   findFriendlistFriends,
   NoMessageSenderFriends,
+  updateUserChainAddressByID,
 };

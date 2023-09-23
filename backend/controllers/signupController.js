@@ -3,6 +3,12 @@ var express = require("express");
 var user = require("../models/user");
 var router = express.Router();
 
+// SignUP Page for all
+router.get("/", function (request, response) {
+  response.render("signup");
+  // response.json(data);
+});
+
 // SELLER SIGNUP VIEW
 router.get("/seller/", function (request, response) {
   data = {
@@ -29,13 +35,15 @@ router.post("/seller/", function (request, response) {
     phone: request.body.phone,
     shopName: request.body.shopName,
     nid: request.body.nid,
+    address: request.body.address,
   };
   //   signUpRequest.validate(values, function (data) {
   //     if (data.status) {
-  user.insert(values, function (status) {
-    if (status) {
+  user.insertSeller(values, function (id) {
+    if (id) {
+      values.id = id;
       // response.redirect("/login/");
-      response.json({ code: 200, status: "suceess" });
+      response.json({ code: 200, status: "suceess", data: values });
     } else response.json({ code: 300, status: "failed" });
   });
   //  } else response.render("signUp", data);
@@ -61,15 +69,17 @@ router.post("/buyer/", function (request, response) {
     role: 2,
     email: request.body.email,
     phone: request.body.phone,
+    address: request.body.address,
     // later provide null
-    shopName: request.body.shopName,
-    nid: request.body.nid,
+    // shopName: request.body.shopName,
+    // nid: request.body.nid,
   };
   //   signUpRequest.validate(values, function (data) {
   //     if (data.status) {
-  user.insert(values, function (status) {
-    if (status) {
-      response.redirect("/login/");
+  user.insertBuyer(values, function (id) {
+    if (id) {
+      values.id = id;
+      response.json({ code: 200, status: "suceess", data: values });
     } else response.json({ code: 300, status: "failed" });
   });
   //  } else response.render("signUp", data);
@@ -95,14 +105,15 @@ router.post("/deliveryman/", function (request, response) {
     role: 3,
     email: request.body.email,
     phone: request.body.phone,
-    shopName: request.body.shopName,
     nid: request.body.nid,
+    address: request.body.address,
   };
   //   signUpRequest.validate(values, function (data) {
   //     if (data.status) {
-  user.insert(values, function (status) {
-    if (status) {
-      response.redirect("/login/");
+  user.insertDM(values, function (id) {
+    if (id) {
+      values.id = id;
+      response.json({ code: 200, status: "suceess", data: values });
     } else response.json({ code: 300, status: "failed" });
   });
   //  } else response.render("signUp", data);

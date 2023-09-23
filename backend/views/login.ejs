@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html class="h-full dark">
-  <!-- hadahk -->
-  <head>
-    <%- include('partials/common_header'); %>
-  </head>
+
+    <%- include('./partials/common_header'); %>
+    
   <body class="h-full bg-white dark:bg-slate-900">
     <div class="flex min-h-full flex-col justify-center px-6 py-7 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -23,7 +20,8 @@
       </div>
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" method="POST">
+        <!-- FORM starts -->
+        <form class="space-y-6" method="POST" action="/login/">
           <div>
             <label
               for="email"

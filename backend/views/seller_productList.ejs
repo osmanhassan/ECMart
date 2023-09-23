@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html class="h-full">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/css/app.css" rel="stylesheet" />
-  </head>
+<!-- NEED TO ADD PARTIALS --------------------------------------------------------------------------------------- -->
+<%- include('partials/common_header'); %> 
+
   <body class="h-full bg-white dark:bg-slate-900">
     <!-- home page -->
     <section>
@@ -764,7 +760,7 @@
                         class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
                       >
                         <img
-                          src="data:image/jpeg;base64,<%= product.IMAGE.toString('base64') %>"
+                          src=""
                           alt="Image of product"
                           class="h-full w-full object-cover object-center lg:h-full lg:w-full"
                         />
@@ -918,63 +914,8 @@
           </div>
         </div>
       </div>
-      <script>
-        let darkBtn = document.getElementById("darkModeBtn");
-        let lightBtn = document.getElementById("lightModeBtn");
-
-        darkBtn.addEventListener("click", (e) => {
-          document.documentElement.classList.add("dark");
-        });
-
-        lightBtn.addEventListener("click", (e) => {
-          document.documentElement.classList.remove("dark");
-        });
-      </script>
-      <script>
-        var sideBar = document.getElementById("mobile-nav");
-        var openSidebar = document.getElementById("openSideBar");
-        var closeSidebar = document.getElementById("closeSideBar");
-        sideBar.style.transform = "translateX(-260px)";
-
-        function sidebarHandler(flag) {
-          if (flag) {
-            sideBar.style.transform = "translateX(0px)";
-            openSidebar.classList.add("hidden");
-            closeSidebar.classList.remove("hidden");
-          } else {
-            sideBar.style.transform = "translateX(-260px)";
-            closeSidebar.classList.add("hidden");
-            openSidebar.classList.remove("hidden");
-          }
-        }
-
-        function handleThemeBtnClick() {
-          var themeDropDown = document.getElementById("themeDropDown");
-          themeDropDown.classList.toggle("hidden");
-        }
-
-        function handleProfileBtnClick() {
-          var themeDropDown = document.getElementById("profileElements");
-          themeDropDown.classList.toggle("hidden");
-        }
-
-        function fixContentHeight() {
-          const bodyContentElement = document.getElementById("body-content");
-          const bodyContentElementHeight = bodyContentElement.offsetHeight - 64;
-          document
-            .getElementById("body-content")
-            .setAttribute("style", "height:" + bodyContentElementHeight + "px");
-        }
-        fixContentHeight();
-
-        window.addEventListener(
-          "resize",
-          function (event) {
-            fixContentHeight();
-          },
-          true
-        );
-      </script>
+      <%- include('partials/common_scripts'); %>
+      <%- include('partials/common_js'); %>
     </section>
   </body>
 </html>

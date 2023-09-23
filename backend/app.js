@@ -9,7 +9,10 @@ var login = require("./controllers/loginController");
 let seller = require("./controllers/sellerController");
 let buyer = require("./controllers/buyerController");
 let logout = require("./controllers/logoutController");
+let landing = require("./controllers/landingController");
+let abi = require("./controllers/abiController");
 let chainRegistrationListener = require("./services/registrationChainService");
+let chainProductListener = require("./services/productChainService");
 
 const app = express();
 
@@ -27,7 +30,7 @@ app.use(
   })
 );
 // when user_requires/application_requires any CSS/JS/image from the server --> express.static --> The express. static middleware function is used to expose a directory or a file to a particular URL so its contents can be publicly accessed.
-app.use("/css", express.static(__dirname + "/public/css"));
+app.use("/css", express.static(__dirname + "/public/css")); //__dirname ==> is till ==> ECART/backend
 app.use("/images", express.static(__dirname + "/public/images"));
 app.use("/js", express.static(__dirname + "/public/js"));
 
@@ -51,8 +54,10 @@ function buyerAuthorization(request, response, next) {
 }
 
 //endpoint handler
+app.use("", landing);
 app.use("/signup", signUp);
 app.use("/login", login);
+app.use("/abi", abi);
 app.use("/logout", logout);
 app.use("/seller", authentication, sellerAuthorization, seller);
 app.use("/buyer", authentication, buyerAuthorization, buyer);
@@ -63,6 +68,6 @@ app.use("/buyer", authentication, buyerAuthorization, buyer);
 //
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`ECMart BackEND app listening on port ${port}`);
 });
 // dsad
