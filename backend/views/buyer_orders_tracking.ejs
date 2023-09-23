@@ -1,0 +1,107 @@
+<%- include('partials/common_header'); %> 
+  <body class="h-full bg-white dark:bg-slate-900">
+    <!-- home page -->
+    <section>
+      <div class="flex flex-no-wrap">
+        <!-- Sidebar starts -->
+        <%- include('partials/buyer_left_bar'); %>
+        <!-- Sidebar ends -->
+
+        <div class="container mx-auto overflow-auto">
+          <!-- Top bar starts -->
+          <%- include('partials/dm_top_bar'); %>
+          <!-- Top bar ends -->
+
+          <%- include('partials/common_body'); %>
+            <!-- Place your content here STARTS -->
+
+             <div class="max-w-lg mx-auto">
+        <!-- Order Tracking Card -->
+        <div class="card bg-white dark:bg-gray-700 rounded-lg shadow-lg p-4 mb-4">
+            <!-- Order Status -->
+            <div class="text-right">
+                <span class="bg-green-500 text-white px-2 py-1 rounded-full">Order_Status</span>
+            </div>
+            
+            <!-- Order Information -->
+            <div class="mt-4">
+                <!-- Order ID and Contract Address -->
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Order ID</p>
+                        <p class="font-semibold">12345</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Order Contract Address</p>
+                        <p class="font-semibold">0xAbCdEf123...</p>
+                    </div>
+                </div>
+                
+                <!-- Order Date and Delivery Contact -->
+                <div class="flex justify-between mt-2">
+                    <div>
+                        <p class="text-sm text-gray-600">Order Time and Date</p>
+                        <p class="font-semibold">2023-09-15 10:30 AM</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Deliveryman Contact</p>
+                        <p class="font-semibold">John Doe (+123 456 789)</p>
+                    </div>
+                </div>
+                
+                <!-- Total Order Amount -->
+                <div class="mt-2">
+                    <p class="text-sm text-gray-600">Total Order Amount</p>
+                    <p class="font-semibold">$150.00</p>
+                </div>
+                
+                <!-- Product Information Sub-Card -->
+                <div class="bg-gray-100 dark:bg-gray-600 rounded-lg p-4 mt-4">
+                    <!-- Product 1 Information -->
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Product 1 Name</p>
+                            <p class="font-semibold">Product 1</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Product 1 Contract</p>
+                            <p class="font-semibold">0xP1Contract</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 1 Quantity and Unit Price -->
+                    <div class="flex justify-between mt-2">
+                        <div>
+                            <p class="text-sm text-gray-600">Quantity</p>
+                            <p class="font-semibold">2</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Unit Price</p>
+                            <p class="font-semibold">$50.00</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Shop Name -->
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-600">Shop Name</p>
+                        <p class="font-semibold">My Shop</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            
+
+            <!-- Place your content here ENDS -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <%- include('partials/common_js'); %> <%- include('partials/common_js'); %>
+  </body>
+</html>
+
+
+
+<!-- MAIN -->

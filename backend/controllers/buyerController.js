@@ -117,8 +117,12 @@ router.get("/order/", (req, res) => {
   });
 });
 
-// function randomNumberGenerate() {
-//   // generate 6 digit random otp number
-//   return Math.floor(Math.random() * Math.pow(10, 6));
-// }
+router.get("/orderTracking/", (req, res) => {
+  res.render("buyer_orders_tracking");
+});
+
+router.get("/orderDelivery/", (req, res) => {
+  res.render("buyer_orders_delivered");
+});
+
 module.exports = router;
