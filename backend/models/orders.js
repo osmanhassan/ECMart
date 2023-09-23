@@ -4,7 +4,7 @@ function placeOrder(params, callback) {
   let order_id;
   let no_of_products = params.productId.length;
 
-  let sql_orders = "INSERT INTO orders VALUES (null, ?, ?, ?, null, null)";
+  let sql_orders = "INSERT INTO orders VALUES (null, ?, ?, ?, null, null, 0)";
   let sql_orderItems = "INSERT INTO order_items VALUES ";
   let sql_otps =
     "INSERT into otps (SELLER_ID, ORDER_ID) SELECT DISTINCT SELLER_ID, ? as ORDER_ID from order_items WHERE ORDER_ID = ?";
@@ -55,6 +55,30 @@ function placeOrder(params, callback) {
   );
 }
 
+function setDelivery(params, order_id, callback) {
+  let sql_deliveryItems = "INSERT INTO delivery_items VALUES ";
+
+  //1st query
+
+  // 2nd query
+  var deliveryItemValuesQuery = [];
+  var deliveryItemValues = [];
+  for (i = 0; i < params.productId.length; i++) {
+    deliveryItemValuesQuery.push("(null, ?, ?, ?, ?, ?)");
+    deliveryItemValues.push(order_id);
+    deliveryItemValues.push(params.productId[i]);
+
+    deliveryItemValues.push(params.units[i]);
+    deliveryItemValues.push(params.unitPrice[i]);
+    deliveryItemValues.push(params.itemTotal[i]);
+  }
+  sql_deliveryItems += deliveryItemValuesQuery.join(", ");
+  console.log(sql_deliveryItems);
+  db.execute(sql_deliveryItems, deliveryItemValues, function (status) {
+    callback(status);
+  });
+}
+
 function updateOrderChainAddressByID(params, callback) {
   // console.log(params);
   var sql = "UPDATE orders SET ORDER_PK=? WHERE ID=?";
@@ -64,9 +88,16 @@ function updateOrderChainAddressByID(params, callback) {
 }
 function updateDMByID(params, callback) {
   // console.log(params);
-  var sql = "UPDATE orders SET DELIVERMAN_ID=? WHERE ID=?";
+  var sql = "UPDATE orders SET DELIVERMAN_ID=?, STATUS = 1 WHERE ID=?";
   db.execute(sql, [params.dmId, params.id], function (flag) {
     callback(flag);
+  });
+}
+
+function getByDeliveryManandStatus(params, callback) {
+  var sql = "SELECT * from orders inner join order_items on orders.id = order_items.order_id inner join products on products.id = order_items.product_id where DELIVERMAN_ID=? and STATUS=? order by orders.id";
+  db.getResult(sql, params, function (result) {
+    callback(result);
   });
 }
 
@@ -83,4 +114,6 @@ module.exports = {
   updateOrderChainAddressByID,
   getUnassignedDMOrders,
   updateDMByID,
+  setDelivery,
+  getByDeliveryManandStatus,
 };

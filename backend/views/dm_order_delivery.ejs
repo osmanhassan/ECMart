@@ -21,62 +21,64 @@
       <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
         Order Details
       </h2>
+      <% let order = orders[0]; for(var x in orders ){ %>
+        
+       <% if(order.ORDER_ID != orders[x].ORDER_ID || x == 0){ order = orders[x]; %>
+     <hr>
       <table class="w-full">
         <tr>
           <td class="font-semibold text-gray-800 dark:text-white py-2">
             Order ID:
           </td>
-          <td class="py-2">12345</td>
+          <td class="py-2"><%=order.ORDER_ID%></td>
         </tr>
         <tr>
           <td class="font-semibold text-gray-800 dark:text-white py-2">
             Order Contract Address:
           </td>
-          <td class="py-2">0x1237384687236487</td>
+          <td class="py-2"><%=order.ORDER_PK%></td>
         </tr>
+    
         </table>
+        <div class="mt-6">
+          <button
+            class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300 setDeliveryBtn" order_address = "<%=order.ORDER_PK%>" order_id="<%=order.ORDER_ID%>"
+          >
+            SET DELIVERY
+          </button>
+        </div>
         <br>
-
+        <% } %>
        
         <!-- USE LOOP here -->
         <table class="w-full">
 
           <tr>
-            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> Products 1 </h3>
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> <%=orders[x].NAME%> </h3>
           </tr>
 
           <tr>
           <td class="font-semibold text-gray-800 dark:text-white py-2">
             Contract Key: 
           </td>
-          <td class="py-2"> 0x1233243543543543sdsad123df </td>
+          <td class="py-2 Product_Id_<%=order.ORDER_ID%>"><%=orders[x].ADDRESS%></td>
         </tr>
 
-        <tr>
-          <td class="font-semibold text-gray-800 dark:text-white py-2">
-            $PRODUCT_NAME
-          </td>
-          <td class="py-2"><input name="productDeliveryStatus" type="checkbox" class="form-checkbox h-6 w-5 text-blue-500"></td>
-        </tr>
 
         <tr>
           <td class="font-semibold text-gray-800 dark:text-white py-2">
             Product Quantity 
           </td>
-          <td class="py-2"><input type="number" name="qunatity" class="form-checkbox h-7 w-25 dark:text-blue-500 text-center"></td>
+          <td class="py-2"><input type="number" name="qunatity" id="<%=order.ORDER_ID%>_<%=orders[x].ADDRESS%>" value="<%=orders[x].UNITS%>" class="form-checkbox h-7 w-25 dark:text-blue-500 text-center"></td>
         </tr>
         </table>
         <br>
+      
+        <% } %>
     <!-- LOOP ends here  -->
 
 
-      <div class="mt-6">
-        <button
-          class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300"
-        >
-          SET DELIVERY
-        </button>
-      </div>
+      
     </div>
   </section>
 </main>
@@ -87,6 +89,109 @@
       </div>
     </section>
     <%- include('partials/common_js'); %> <%- include('partials/common_js'); %>
+    <%- include('partials/common_scripts'); %>
+    <script>
+      $(document).ready(function () { 
+        // When product needs to be added
+        function setDeliveryMan(e, btnObj) {
+          // console.log("Dhukse")
+         var url = "/buyer/order/";
+         var data = {
+          order_address : $(btnObj).attr("order_address"),
+          order_db_id : $(btnObj).attr("order_db_id"),
+         }
+          setDeliveryManInOrder(data)
+        }
+
+        async function setDeliveryManInOrder(data) {
+          console.log("inside chain function");
+          console.log(data);
+          if (typeof window.ethereum !== "undefined") {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+
+            try {
+              await window.ethereum.request({
+                method: "eth_requestAccounts",
+              });
+            } catch (error) {
+              console.error("Permission denied:", error);
+            }
+            // Create a contract instance
+            const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+            // ABI of your contract
+            var url = "/abi/get/facetAbi/<%=process.env.CHAIN_DELIVERY_FACET_NAME%>/";
+            $.ajax({
+            type: "GET",
+            url: url,
+            success: function (abi) {
+              
+                console.log(abi);
+                const contractAbi = abi;
+                add(contractAddress,contractAbi,provider, data);
+              
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error");
+            },
+          });
+
+          
+
+            // const result1 = await contract.viewProducts(
+            //   "0xdd2fd4581271e230360230f9337d5c0430bf44c0"
+            // );
+            // await result.wait(1);
+            // console.log(result1);
+          }
+          else{
+            console.log("Metamask is not initiated Properly !!")
+          }
+        }
+
+        async function add(contractAddress, contractAbi,provider, data){
+            const contract = new ethers.Contract(
+              contractAddress,
+              contractAbi,
+              provider.getSigner()
+            );
+           var uid =  '<%=uid%>';
+            
+            const result = await contract.setDeliveryMan(
+              data.order_address.toLowerCase(),
+              data.order_db_id,
+              uid
+            );
+            await result.wait(1);
+            console.log(result);
+          }
+            
+
+     
+        $(".setDeliveryBtn").click(function (e) {
+          
+          var orderAddress = $(this).attr("order_address")
+          var orderId = $(this).attr("order_id")
+          var productsAddess = [];
+          $(".Product_Id_" + orderId).each(function(index, element){
+            // console.log(element)
+            productsAddess.push( $(element).html().trim());
+          });
+          var units = productsAddess.map(function(product){
+            return $("#" + orderId + "_" + product).val();
+          });
+          console.log(productsAddess)
+          console.log(units)
+        });
+
+        
+      });
+
+
+
+
+    </script>
   </body>
 </html>
 
