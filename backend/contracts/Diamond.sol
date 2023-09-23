@@ -1,6 +1,5 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "hardhat/console.sol";
 import {AppStorage} from "./AppStorage.sol";
 import "./Product.sol";
@@ -8,7 +7,7 @@ import "./Order.sol";
 
 contract OrderFacet {
     AppStorage aps;
-    using SafeMath for uint256;
+    // using SafeMath for uint256;
 
     uint256 private orderTotalReviewRatingPayable;
 

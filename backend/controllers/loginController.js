@@ -29,8 +29,10 @@ router.post("/", function (request, response) {
         response.redirect("/seller/dashboard/");
       } else if (request.session.user.role == 2) {
         response.redirect("/buyer/productList/");
+      } else if (request.session.user.role == 3) {
+        response.redirect("/dm/dashboard/");
       } else {
-        response.redirect("/deliveryman/dashboard/");
+        response.json({ code: "404", status: "Error" });
       }
     } else {
       console.log(result);

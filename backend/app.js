@@ -13,6 +13,7 @@ let landing = require("./controllers/landingController");
 let abi = require("./controllers/abiController");
 let chainRegistrationListener = require("./services/registrationChainService");
 let chainProductListener = require("./services/productChainService");
+let dm = require("./controllers/dmController");
 
 const app = express();
 
@@ -53,6 +54,12 @@ function buyerAuthorization(request, response, next) {
   } else next();
 }
 
+function dmAuthorization(request, response, next) {
+  if (request.session.user.role != 3) {
+    response.render("access_denied");
+  } else next();
+}
+
 //endpoint handler
 app.use("", landing);
 app.use("/signup", signUp);
@@ -61,6 +68,7 @@ app.use("/abi", abi);
 app.use("/logout", logout);
 app.use("/seller", authentication, sellerAuthorization, seller);
 app.use("/buyer", authentication, buyerAuthorization, buyer);
+app.use("/dm", authentication, dmAuthorization, dm);
 
 // chain activity
 //  chainRegistrationListener.initRegistrationListener();

@@ -1,0 +1,86 @@
+<%- include('partials/common_header'); %> 
+  <body class="h-full bg-white dark:bg-slate-900">
+    <!-- home page -->
+    <section>
+      <div class="flex flex-no-wrap">
+        <!-- Sidebar starts -->
+        <%- include('partials/dm_left_bar'); %>
+        <!-- Sidebar ends -->
+
+        <div class="container mx-auto overflow-auto">
+          <!-- Top bar starts -->
+          <%- include('partials/dm_top_bar'); %>
+          <!-- Top bar ends -->
+
+          <%- include('partials/common_body'); %>
+            <!-- Place your content here STARTS-->
+            <section>
+
+          <!-- Order View STARTS -->
+              <main class="container mx-auto py-8">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Upcoming Orders</h2>
+                <section class="mb-8">
+                 
+                    <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md mt-4 overflow-x-auto">
+                      <table class="w-full table-auto">
+                        <tbody>
+                           <tr>
+                                <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Order Address (Chain) :</td>
+                                <td class="px-4 py-2">0x123123234321434312423543212dsdf23</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Sellers :</td>
+                                <td class="px-4 py-2">" John's Store  "  ||  " Win's Shop " </td>
+                            </tr>
+                            <tr>
+                              <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Sellers Contact:</td>
+                              <td class="px-4 py-2"> " +12345 "   ||   " 01732432412 "</td>
+                          </tr>
+                            <tr>
+                              <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Seller Shop Addresses:</td>
+                              <td class="px-4 py-2">" 123 Main St, City "  ||  " 123 Main St, City " </td>
+                          </tr>
+                            <tr>
+                                <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Buyer username:</td>
+                                <td class="px-4 py-2">"buyer_1"</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Buyer Home Address:</td>
+                                <td class="px-4 py-2">123 Main St, City</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Buyer Contact Number:</td>
+                                <td class="px-4 py-2">123-456-7890</td>
+                            </tr>
+                            <tr>
+                              <td class="px-4 py-2 text-gray-600 dark:text-gray-300">Pick-up Date:</td>
+                              <td class="px-4 py-2"> 12th September, 2023</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md mt-4">
+                        <form class="flex flex-col space-y-4">
+                            <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300">
+                                Deliver This Order
+                            </button>
+                        </form>
+                    </div>
+                    </div>
+                </section>
+            </main>
+          <!-- Order View ENDS -->
+      </section>   
+            <!-- Place your content here ENDS -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <%- include('partials/common_js'); %> <%- include('partials/common_js'); %>
+  </body>
+</html>
+
+
+              
+          <!--  Main seciton-->
+         

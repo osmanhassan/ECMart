@@ -1,0 +1,31 @@
+<%- include('partials/common_header'); %> 
+  <body class="h-full bg-white dark:bg-slate-900">
+    <!-- home page -->
+    <section>
+      <div class="flex flex-no-wrap">
+        <!-- Sidebar starts -->
+        <%- include('partials/dm_left_bar'); %>
+        <!-- Sidebar ends -->
+
+        <div class="container mx-auto overflow-auto">
+          <!-- Top bar starts -->
+          <%- include('partials/dm_top_bar'); %>
+          <!-- Top bar ends -->
+
+          <%- include('partials/common_body'); %>
+            <!-- Place your content here STARTS-->
+            <section>
+              <h1
+                class="text-slate-700 dark:text-gray-300 text-3xl font-semibold mb-4"
+              >
+                Welcome Delivery-man, UserName!
+              </h1>
+            </section>
+            <!-- Place your content here ENDS -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <%- include('partials/common_js'); %> <%- include('partials/common_js'); %>
+  </body>
+</html>
