@@ -121,21 +121,33 @@
               </div>
               <!-- Add to cart Button -->
               <form id="addtoCartForm" action="/buyer/addToCart/" method="POST"> 
+                <input type="hidden" name="id" value="<%= product[0].ID %>">
+                <input type="hidden" name="unitPrice" value="<%= product[0].FINAL_PRICE %>">
+                <input type="hidden" name="name" value="<%= product[0].NAME %>">
+                <input type="hidden" name="sellerId" value="<%= product[0].SELLER_ID %>">
+                <input type="hidden" name="productPk" value="<%= product[0].ADDRESS %>">
+             
+              <label for="stock" class="block font-semibold dark:text-neutral-200 text-slate-700"> Quantity</label>
+            
+              <input type="number" name="quantity" id="quantity" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-2 bg-transparent dark:text-neutral-200 text-slate-700 focus:border-blue-500" placeholder="Enter inventory stock">
+              <br/>
+              <br/>
               <button
-                class="dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:text-gray-900 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-base flex items-center justify-center leading-none text-white bg-gray-800 w-full py-4 hover:bg-gray-700 focus:outline-none"
-              >
-                <img
-                  class="mr-3 dark:hidden"
-                  src="https://tuk-cdn.s3.amazonaws.com/can-uploader/svg1.svg"
-                  alt="location"
-                />
-                <img
-                  class="mr-3 hidden dark:block"
-                  src="https://tuk-cdn.s3.amazonaws.com/can-uploader/svg1dark.svg"
-                  alt="location"
-                />
-                Add to Cart
-              </button>
+              class="dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:text-gray-900 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-base flex items-center justify-center leading-none text-white bg-gray-800 w-full py-4 hover:bg-gray-700 focus:outline-none"
+            >
+              <img
+                class="mr-3 dark:hidden"
+                src="https://tuk-cdn.s3.amazonaws.com/can-uploader/svg1.svg"
+                alt="location"
+              />
+              <img
+                class="mr-3 hidden dark:block"
+                src="https://tuk-cdn.s3.amazonaws.com/can-uploader/svg1dark.svg"
+                alt="location"
+              />
+              
+              Add to Cart
+            </button>
             </form>
               <!-- Product description -->
               <div>

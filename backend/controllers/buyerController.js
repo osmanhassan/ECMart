@@ -2,6 +2,7 @@ let express = require("express");
 let router = express.Router();
 let product = require("../models/products");
 let orders = require("../models/orders");
+let user = require("../models/user");
 
 router.get("/productList/", (req, res) => {
   product.getAllProducts((result) => {
@@ -27,37 +28,89 @@ router.get("/productView/:id/", (req, res) => {
   });
 });
 
+router.post("/addToCart/", (req, res) => {
+  console.log(req.body);
+  const productId = req.body.id;
+  const unitPrice = req.body.unitPrice;
+  const name = req.body.name;
+
+  if (req.session.cart == undefined) {
+    req.session.cart = {};
+  }
+  user.findById(req.body.sellerId, function (result) {
+    if (result.length > 0) {
+      req.session.cart[productId] = {
+        name: name,
+        quantity: req.body.quantity,
+        unit_price: unitPrice,
+        sellerId: req.body.sellerId,
+        productPk: req.body.productPk,
+        sellerAddress: result[0].ADDRESS,
+      };
+      console.log(req.session.cart);
+      res.redirect("/buyer/productList/");
+    } else {
+      res.redirect("/buyer/productList/");
+    }
+  });
+});
+
 router.get("/buyer_cart/", (req, res) => {
-  res.render("buyer_cart");
+  console.log(req.session.cart);
+  res.render("buyer_cart", { cart: req.session.cart });
 });
 
 router.get("/order/", (req, res) => {
   // console.log("oder----------------------");
+  var cart = req.session.cart;
+  var productId = [];
+  var sellerID = [];
+  var sellerAddress = [];
+  var units = [];
+  var unitPrice = [];
+  var itemTotal = [];
+  var productPk = [];
+  var total = 0;
+  for (var x in cart) {
+    productId.push(x);
+    sellerID.push(cart[x].sellerId);
+    sellerAddress.push(cart[x].sellerAddress);
+    units.push(cart[x].quantity);
+    unitPrice.push(cart[x].unit_price);
+    productPk.push(cart[x].productPk);
+    var itemTotalam = cart[x].quantity * cart[x].unit_price;
+    itemTotal.push(itemTotalam);
+    total += itemTotalam;
+  }
+  console.log(req.session.user);
   let orderInfo = {
     // 1st query
     // orderId: autoDB,
-    buyerID: 5,
-    buyerAddress: "Uttara",
-    total: 645,
-    deliverymanID: 9,
+    buyerID: req.session.user.uid,
+    buyerAddress: req.session.user.address,
+    total: total,
+
     // 2nd query
     // orderItemsID: autoDB,
     // orderID : fromDB_after_1st_query_execution,
-    productId: [8, 9, 14],
-    sellerID: [4, 4, 6],
-    sellerAddress: ["Shyamoli", "Shyamoli", "Dhanmondi"],
-    units: [3, 1, 1],
-    unitPrice: [55, 2100, 750],
-    itemTotal: [165, 2100, 750],
+    productId: productId,
+    sellerID: sellerID,
+    sellerAddress: sellerAddress,
+    units: units,
+    unitPrice: unitPrice,
+    itemTotal: itemTotal,
+    productPk: productPk,
     // 3rd query
     // otpId: autoDB,
     // orderId: fromDB_after_1st_query_execution,
     // sellerId : givenPreviously,
   };
 
-  orders.placeOrder(orderInfo, (status) => {
-    if (status) {
-      res.redirect("/buyer/productList/");
+  orders.placeOrder(orderInfo, (order_id) => {
+    if (order_id != -1) {
+      orderInfo.order_id = order_id;
+      req.session.cart = undefined;
+      res.json({ code: 200, status: "success", data: orderInfo });
     } else {
       res.json({ code: 500, status: "server-error" });
     }

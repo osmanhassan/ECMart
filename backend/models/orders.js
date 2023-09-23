@@ -4,7 +4,7 @@ function placeOrder(params, callback) {
   let order_id;
   let no_of_products = params.productId.length;
 
-  let sql_orders = "INSERT INTO orders VALUES (null, ?, ?, ?, ?)";
+  let sql_orders = "INSERT INTO orders VALUES (null, ?, ?, ?, null, null)";
   let sql_orderItems = "INSERT INTO order_items VALUES ";
   let sql_otps =
     "INSERT into otps (SELLER_ID, ORDER_ID) SELECT DISTINCT SELLER_ID, ? as ORDER_ID from order_items WHERE ORDER_ID = ?";
@@ -12,7 +12,7 @@ function placeOrder(params, callback) {
   //1st query
   db.executeGetId(
     sql_orders,
-    [params.buyerID, params.buyerAddress, params.total, params.deliverymanID],
+    [params.buyerID, params.buyerAddress, params.total],
     function (result) {
       if (result == -1) {
         console.log("error at 1st query of order place");
@@ -39,15 +39,15 @@ function placeOrder(params, callback) {
           if (result) {
             db.execute(sql_otps, [order_id, order_id], function (status) {
               if (status) {
-                callback(status);
+                callback(order_id);
               } else {
-                callback(status);
+                callback(-1);
                 console.log("Error in 3rd query");
               }
             });
           } else {
             console.log("error at 2nd query of order place");
-            callback(false);
+            callback(-1);
           }
         });
       }
@@ -55,6 +55,15 @@ function placeOrder(params, callback) {
   );
 }
 
+function updateOrderChainAddressByID(params, callback) {
+  // console.log(params);
+  var sql = "UPDATE orders SET ORDER_PK=? WHERE ID=?";
+  db.execute(sql, [params.address, params.id], function (flag) {
+    callback(flag);
+  });
+}
+
 module.exports = {
   placeOrder,
+  updateOrderChainAddressByID,
 };

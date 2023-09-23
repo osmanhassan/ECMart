@@ -78,7 +78,7 @@ function findByName(name, callback) {
 }
 
 function findById(uid, callback) {
-  var sql = "SELECT * FROM users WHERE uid = ?";
+  var sql = "SELECT * FROM users WHERE id = ?";
   db.getResult(sql, [uid], function (result) {
     callback(result);
   });

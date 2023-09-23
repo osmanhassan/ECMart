@@ -11,7 +11,7 @@ contract OrderFacet {
 
     uint256 private orderTotalReviewRatingPayable;
 
-    event Save(address orderAddress);
+    event Save(address orderAddress, uint256 dbId);
     event OrderPaid(bool isPaid);
 
     // Calculate amount will be done in the backend
@@ -71,7 +71,8 @@ contract OrderFacet {
     // Final Price per unit, ecMart Amount per unit, ReviewRating amount per product, deliveryman amount per unit should be send from backend_offchain to this function --> calculateOrderAmount will not be done ONCHAIN.
     function placeOrder(
         address[] calldata _orderItems,
-        uint256[] calldata _units
+        uint256[] calldata _units,
+        uint256 dbId
     ) public payable returns (address) {
         (
             uint256 TOTAL_PAYABLE,
@@ -83,6 +84,7 @@ contract OrderFacet {
 
         //****  need implement getConversionRate() method
         //Lets assume 1USD == 619,202,727,197,760 WEI
+        console.log(TOTAL_PAYABLE);
         require(msg.value >= (TOTAL_PAYABLE), "You need to spend more ETH!");
         // hold money ends
 
@@ -138,7 +140,7 @@ contract OrderFacet {
 
         // FUND Transfers to ORDER ends
 
-        emit Save(address(order));
+        emit Save(address(order), dbId);
 
         return address(order);
     }
@@ -406,7 +408,7 @@ contract Diamond {
         aps.reviewRatingAmount = 3000000000000000000;
         aps.ecMartPercentage = 5;
         facetMap[
-            bytes4(keccak256("placeOrder(address[],uint256[])"))
+            bytes4(keccak256("placeOrder(address[],uint256[],uint256)"))
         ] = address(orderFacet);
 
         facetMap[bytes4(keccak256("setDeliveryMan(address)"))] = address(

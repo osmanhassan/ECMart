@@ -21,6 +21,7 @@ router.post("/", function (request, response) {
         phone: result[0].PHONE,
         shopName: result[0].SHOP_NAME,
         nid: result[0].NID,
+        address: result[0].ADDRESS,
       };
 
       request.session.user = data;

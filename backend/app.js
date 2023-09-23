@@ -14,6 +14,8 @@ let abi = require("./controllers/abiController");
 let chainRegistrationListener = require("./services/registrationChainService");
 let chainProductListener = require("./services/productChainService");
 let dm = require("./controllers/dmController");
+let orderProductListener = require("./services/orderChainService");
+
 
 const app = express();
 
