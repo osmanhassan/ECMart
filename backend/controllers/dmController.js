@@ -28,6 +28,25 @@ router.get("/orderDelivery/", (req, res) => {
   );
 });
 
+router.post("/orderDelivery/", (req, res) => {
+  var data = JSON.parse(req.body.data);
+  console.log("aasdadasdasdasdasd");
+  console.log(data);
+  orders.deleteDeliveryDetailsByOrderID(data, function (status) {
+    if (status) {
+      orders.setDelivery(data, data.orderId, function (status) {
+        if (status) {
+          res.json({ code: 200 });
+        } else {
+          res.json({ code: 300 });
+        }
+      });
+    } else {
+      res.json({ code: 300 });
+    }
+  });
+});
+
 router.get("/orderComplete/", (req, res) => {
   res.render("dm_order_complete");
 });

@@ -6,8 +6,7 @@ function placeOrder(params, callback) {
 
   let sql_orders = "INSERT INTO orders VALUES (null, ?, ?, ?, null, null, 0)";
   let sql_orderItems = "INSERT INTO order_items VALUES ";
-  let sql_otps =
-    "INSERT into otps (SELLER_ID, ORDER_ID) SELECT DISTINCT SELLER_ID, ? as ORDER_ID from order_items WHERE ORDER_ID = ?";
+  
 
   //1st query
   db.executeGetId(
@@ -37,14 +36,9 @@ function placeOrder(params, callback) {
         console.log(sql_orderItems);
         db.execute(sql_orderItems, orderItemValues, function (result) {
           if (result) {
-            db.execute(sql_otps, [order_id, order_id], function (status) {
-              if (status) {
+            
                 callback(order_id);
-              } else {
-                callback(-1);
-                console.log("Error in 3rd query");
-              }
-            });
+             
           } else {
             console.log("error at 2nd query of order place");
             callback(-1);
@@ -59,14 +53,14 @@ function setDelivery(params, order_id, callback) {
   let sql_deliveryItems = "INSERT INTO delivery_items VALUES ";
 
   //1st query
-
+  console.log(params);
   // 2nd query
   var deliveryItemValuesQuery = [];
   var deliveryItemValues = [];
-  for (i = 0; i < params.productId.length; i++) {
+  for (i = 0; i < params.productsId.length; i++) {
     deliveryItemValuesQuery.push("(null, ?, ?, ?, ?, ?)");
     deliveryItemValues.push(order_id);
-    deliveryItemValues.push(params.productId[i]);
+    deliveryItemValues.push(params.productsId[i]);
 
     deliveryItemValues.push(params.units[i]);
     deliveryItemValues.push(params.unitPrice[i]);
@@ -94,8 +88,32 @@ function updateDMByID(params, callback) {
   });
 }
 
+function updateOrderStatusByIDAndStatusAndBuyer(params, callback) {
+  // console.log(params);
+  var sql = "UPDATE orders SET STATUS=? WHERE ID=? and STATUS=? and BUYER_ID=?";
+  db.execute(sql, params, function (flag) {
+    callback(flag);
+  });
+}
+
+function deleteDeliveryDetailsByOrderID(params, callback) {
+  var sql = "delete from delivery_items where ORDER_ID=?";
+  db.execute(sql, [params.orderId], function (flag) {
+    callback(flag);
+  });
+}
+
 function getByDeliveryManandStatus(params, callback) {
-  var sql = "SELECT * from orders inner join order_items on orders.id = order_items.order_id inner join products on products.id = order_items.product_id where DELIVERMAN_ID=? and STATUS=? order by orders.id";
+  var sql =
+    "SELECT * from orders inner join order_items on orders.id = order_items.order_id inner join products on products.id = order_items.product_id where DELIVERMAN_ID=? and STATUS=? order by orders.id";
+  db.getResult(sql, params, function (result) {
+    callback(result);
+  });
+}
+
+function getOrdersToPay(params, callback) {
+  var sql =
+    "SELECT orders.ID, max(orders.ORDER_PK) as ORDER_PK FROM orders INNER join delivery_items on orders.id = delivery_items.ORDER_ID where orders.STATUS = 1 and orders.BUYER_ID = ? GROUP BY orders.ID";
   db.getResult(sql, params, function (result) {
     callback(result);
   });
@@ -116,4 +134,7 @@ module.exports = {
   updateDMByID,
   setDelivery,
   getByDeliveryManandStatus,
+  deleteDeliveryDetailsByOrderID,
+  getOrdersToPay,
+  updateOrderStatusByIDAndStatusAndBuyer,
 };

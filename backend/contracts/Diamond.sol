@@ -252,6 +252,36 @@ contract DeliveryFacet {
     AppStorage aps;
     event deliveryManSet(uint256 orderDBID, uint256 dmDBID);
 
+    function getDelivery(
+        address orderAddress
+    )
+        public
+        view
+        returns (
+            string[] memory,
+            address[] memory,
+            uint256[] memory,
+            uint256[] memory,
+            uint256[] memory
+        )
+    {
+        require(aps.orders[orderAddress] != 0, "Invalid order");
+        Order order = Order(orderAddress);
+        address[] memory deliveredItems = order.getDeliveredItems();
+        uint256[] memory deliveredUnits = order.getDeliveredUnits();
+        string[] memory names = new string[](deliveredItems.length);
+        uint256[] memory itemTotal = new uint256[](deliveredItems.length);
+        uint256[] memory unitPrice = new uint256[](deliveredItems.length);
+
+        for (uint16 i = 0; i < deliveredItems.length; i++) {
+            Product product = Product(deliveredItems[i]);
+            names[i] = product.getName();
+            itemTotal[i] = product.getProductFinalPrice() * deliveredUnits[i];
+            unitPrice[i] = product.getProductFinalPrice();
+        }
+        return (names, deliveredItems, deliveredUnits, unitPrice, itemTotal);
+    }
+
     function setDeliveryMan(
         address orderAddress,
         uint256 orderDBID,
@@ -423,6 +453,10 @@ contract Diamond {
         facetMap[
             bytes4(keccak256("setDelivery(address,address[],uint256[])"))
         ] = address(deliveryFacet);
+
+        facetMap[bytes4(keccak256("getDelivery(address)"))] = address(
+            deliveryFacet
+        );
 
         facetMap[bytes4(keccak256("payOrder(address)"))] = address(orderFacet);
 

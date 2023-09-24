@@ -281,7 +281,8 @@
         }
 
         async function add(contractAddress, contractAbi,provider, data){
-            const contract = new ethers.Contract(
+            try{
+              const contract = new ethers.Contract(
               contractAddress,
               contractAbi,
               provider.getSigner()
@@ -298,6 +299,11 @@
             );
             await result.wait(1);
             console.log(result);
+            window.location.href = window.location.href;
+            }
+            catch(e){
+              console.log(e);
+            }
           }
             
 

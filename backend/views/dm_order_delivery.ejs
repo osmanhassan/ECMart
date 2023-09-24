@@ -69,7 +69,7 @@
           <td class="font-semibold text-gray-800 dark:text-white py-2">
             Product Quantity 
           </td>
-          <td class="py-2"><input type="number" name="qunatity" id="<%=order.ORDER_ID%>_<%=orders[x].ADDRESS%>" value="<%=orders[x].UNITS%>" class="form-checkbox h-7 w-25 dark:text-blue-500 text-center"></td>
+          <td class="py-2"><input type="number" name="qunatity" id="<%=order.ORDER_ID%>_<%=orders[x].ADDRESS%>" unit_price="<%=orders[x].FINAL_PRICE%>" product_id="<%=orders[x].PRODUCT_ID%>" value="<%=orders[x].UNITS%>" class="form-checkbox h-7 w-25 dark:text-blue-500 text-center"></td>
         </tr>
         </table>
         <br>
@@ -93,17 +93,30 @@
     <script>
       $(document).ready(function () { 
         // When product needs to be added
-        function setDeliveryMan(e, btnObj) {
+        function setDeliveryBtnClickHandler(data) {
           // console.log("Dhukse")
-         var url = "/buyer/order/";
-         var data = {
-          order_address : $(btnObj).attr("order_address"),
-          order_db_id : $(btnObj).attr("order_db_id"),
-         }
-          setDeliveryManInOrder(data)
+          var url = "/dm/orderDelivery/";
+            $.ajax({
+            type: "POST",
+            url: url,
+            data: {data:JSON.stringify(data)},
+            success: function (response) {
+              
+                console.log(response);
+                setDelivery(data)
+                // const contractAbi = abi;
+                // add(contractAddress,contractAbi,provider, data);
+              
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error");
+            },
+          });
+          
         }
 
-        async function setDeliveryManInOrder(data) {
+        async function setDelivery(data) {
           console.log("inside chain function");
           console.log(data);
           if (typeof window.ethereum !== "undefined") {
@@ -151,6 +164,7 @@
         }
 
         async function add(contractAddress, contractAbi,provider, data){
+          try{
             const contract = new ethers.Contract(
               contractAddress,
               contractAbi,
@@ -158,13 +172,19 @@
             );
            var uid =  '<%=uid%>';
             
-            const result = await contract.setDeliveryMan(
-              data.order_address.toLowerCase(),
-              data.order_db_id,
-              uid
+            const result = await contract.setDelivery(
+              data.orderAddress.toLowerCase(),
+              data.productsAddess,
+              data.units,
             );
             await result.wait(1);
             console.log(result);
+            alert("Delivery Set to " + data.orderAddress+ " " + "Successfully");
+          }
+          catch(e){
+            console.log(e);
+          }
+            
           }
             
 
@@ -174,15 +194,35 @@
           var orderAddress = $(this).attr("order_address")
           var orderId = $(this).attr("order_id")
           var productsAddess = [];
+          var productsId = [];
+          var unitPrice = [];
+          var itemTotal = [];
           $(".Product_Id_" + orderId).each(function(index, element){
             // console.log(element)
             productsAddess.push( $(element).html().trim());
           });
           var units = productsAddess.map(function(product){
+            productsId.push($("#" + orderId + "_" + product).attr("product_id"));
+            unitPrice.push($("#" + orderId + "_" + product).attr("unit_price"));
             return $("#" + orderId + "_" + product).val();
           });
-          console.log(productsAddess)
-          console.log(units)
+        
+          for(var i = 0; i < units.length;i++){
+            itemTotal[i] = Number(unitPrice[i]) * units[i];
+            productsAddess[i] = productsAddess[i].toLowerCase();
+          }
+
+          var data = {
+            orderId: orderId,
+            orderAddress: orderAddress,
+            productsAddess:productsAddess,
+            productsId:productsId,
+            units:units,
+            unitPrice:unitPrice,
+            itemTotal:itemTotal
+          }
+
+          setDeliveryBtnClickHandler(data);
         });
 
         

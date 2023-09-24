@@ -39,6 +39,8 @@ async function main() {
   // connect wallet with ecmart_wallet for deployment
   const DiamondContractFactory = await ethers.getContractFactory("Diamond");
   //Contract Deployment
+  // const gasLimit = 20000000000000;
+
   console.log("Deploying contract...");
   const ecmart = await DiamondContractFactory.connect(ecmartWallet).deploy();
   // deployed() checks whether the contract is deployed properly, returns `undefined` if it doesn't

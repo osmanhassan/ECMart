@@ -140,6 +140,7 @@
         }
 
         async function add(contractAddress, contractAbi,provider, data){
+          try{
             const contract = new ethers.Contract(
               contractAddress,
               contractAbi,
@@ -154,6 +155,12 @@
             );
             await result.wait(1);
             console.log(result);
+
+            window.location.href=window.location.href;
+          }
+            catch(e){
+              console.log(e);
+            }
           }
             
 

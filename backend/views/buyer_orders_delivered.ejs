@@ -21,64 +21,40 @@
       <h2 class="text-xl font-semibold text-gray-800 dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:text-transparent dark:bg-clip-text mb-4">
         Delivery Details
       </h2>
+      <hr>
+      <% for(var x in orders){ %>
       <table class="w-full">
         <tr>
           <td class="font-semibold text-gray-800 dark:text-white py-2">
             Order ID:
           </td>
-          <td class="py-2">12345</td>
+          <td class="py-2"><%=orders[x].ID%></td>
         </tr>
         <tr>
           <td class="font-semibold text-gray-800 dark:text-white py-2">
             Order Contract Address:
           </td>
-          <td class="py-2">0x1237384687236487</td>
+          <td class="py-2"><%=orders[x].ORDER_PK%></td>
         </tr>
-         <tr>
-          <td class="font-semibold text-gray-800 dark:text-white py-2">
-            Order DELIVERY total Amount:
-          </td>
-          <td class="py-2"> (ETH)</td>
-        </tr>
+         
         </table>
         <br>
-
+        <div class="mt-6">
+          <button
+            class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300 disbursePaymentBtn" order_address = "<%=orders[x].ORDER_PK%>" order_id="<%=orders[x].ID%>"
+          >
+            Disburse Payment
+          </button>
+        </div>
+        <div id="det_<%=orders[x].ID%>"></div>
+        <% } %>
        
         <!-- USE LOOP here -->
-        <table class="w-full">
-
-          <tr>
-            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> Products 1 </h3>
-          </tr>
-
-          <tr>
-          <td class="font-semibold text-gray-800 dark:text-white py-2">
-            Contract Key: 
-          </td>
-          <td class="py-2"> 0x1233243543543543sdsad123df </td>
-        </tr>
-
-        <tr>
-          <td class="font-semibold text-gray-800 dark:text-white py-2">
-            $PRODUCT_NAME
-          </td>
-          <td class="font-semibold text-gray-800 dark:text-white py-2 "> $Product_Delivery_QUANTITY </td>
-           <td class="text-gray-800 dark:text-white py-2 "> $Product_UNIT_PRICE (ETH)</td>
-           <td class="font-semibold text-gray-800 dark:text-white py-2 "> $Product_FINAL_PRICE (ETH)</td>
-        </tr>
-
-        </table>
-        <br>
+       
     <!-- LOOP ends here  -->
 
 
-      <div class="mt-6">
-        <button
-          class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300"
-        >
-          Disburse Payment
-        </button>
-      </div>
+   
     </div>
   </section>
 </main>
@@ -88,7 +64,227 @@
         </div>
       </div>
     </section>
-    <%- include('partials/common_js'); %> <%- include('partials/common_js'); %>
+    <%- include('partials/common_js'); %> 
+    <%- include('partials/common_scripts'); %>
+    <script>
+      $(document).ready(function () { 
+
+        async function getDetails(){
+
+        var ordersAddress = [];
+        var ordersId= [];
+
+        <% for(var i in orders){ %>
+          ordersAddress.push('<%=orders[i].ORDER_PK%>');
+          ordersId.push(<%=orders[i].ID%>);
+        <%}%>
+
+        console.log(ordersAddress);
+        console.log(ordersId);
+
+          if (typeof window.ethereum !== "undefined") {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+
+            try {
+              await window.ethereum.request({
+                method: "eth_requestAccounts",
+              });
+            } catch (error) {
+              console.error("Permission denied:", error);
+            }
+            var url = "/abi/get/facetAbi/<%=process.env.CHAIN_DELIVERY_FACET_NAME%>/";
+            $.ajax({
+            type: "GET",
+            url: url,
+            success: function (abi) {
+              
+                console.log(abi);
+                const contractAbi = abi;
+                showDeliveryDetails(contractAbi, provider, ordersId, ordersAddress);
+                disburseBtnHandler();
+              
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error");
+            },
+          });
+        }else{
+            console.log("Metamask is not initiated Properly !!")
+          }
+
+        }
+      
+
+          async function showDeliveryDetails(contractAbi, provider, ordersId, ordersAddress){
+            const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+
+            for(var x in ordersAddress){
+
+            
+              try{
+                var contract = new ethers.Contract(
+                                    contractAddress,
+                                    contractAbi,
+                                    provider.getSigner()
+                                  );
+              var result = await contract.getDelivery( ordersAddress[x].toLowerCase());
+              setHtml(result, ordersId[x]);
+              // await result.wait(1);
+              
+              }catch(e){console.log(e);}
+            }
+
+           
+          }
+
+
+          function setHtml(result, orderId){
+            var inner = ``;
+            console.log(result[0]);
+            console.log(result[1]);
+            console.log(result[2]);
+            console.log(result[3]);
+            console.log(result[4]);
+            var divider = 1000000000000000000;
+            for(var i in result[0]){
+                      
+              inner  += `<tr><td>
+                  <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> Product ${Number(i)+1} </h3></td><td></td>
+                </tr>
+
+                <tr>
+                <td class="font-semibold text-gray-800 dark:text-white py-2">
+                  Contract Key: 
+                </td>
+                <td class="py-2"> ${result[1][i]} </td>
+                </tr>
+
+                <tr>
+                  <td>Name</td>  
+                  <td>Units</td>  
+                  <td>Unit Price</td>  
+                  <td>Item Total</td>  
+                </tr>
+
+                <tr>
+                <td class="font-semibold text-gray-800 dark:text-white py-2">
+                  ${result[0][i]}
+                </td>
+                <td class="font-semibold text-gray-800 dark:text-white py-2 "> ${result[2][i]} </td>
+                <td class="text-gray-800 dark:text-white py-2 "> ${result[3][i]/divider} (ETH)</td>
+                <td class="font-semibold text-gray-800 dark:text-white py-2 "> ${result[4][i]/divider} (ETH)</td>
+                </tr>`;
+            }
+            var html = ` <table class="w-full">
+
+                          ${inner}
+
+                          </table>
+                          <br><hr>`;
+            // console.log(html)
+
+            $("#det_" + orderId).html(html);
+            
+          }
+
+          getDetails();
+
+      async function disburseDelivery(contractAbi, provider, orderId, orderAddress){
+        try{
+        const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+
+        var contract = new ethers.Contract(
+                                    contractAddress,
+                                    contractAbi,
+                                    provider.getSigner()
+                                  );
+          var result = await contract.payOrder( orderAddress.toLowerCase());
+          await result.wait(1);
+          console.log(result);
+
+
+
+          $.ajax({
+                type: "POST",
+                url: "/buyer/disburse/",
+                data:{orderID: orderId},
+                success: function (response) {
+                  
+                    if(response.code == 200){
+                      alert("Order " + orderAddress + " disbursed");
+                      window.location.href = window.location.href;
+                    }else{
+                      alert("Order " + orderAddress + " doesnt disbursed")
+                    }
+                  
+                },
+                error: function (data) {
+                  // Some error in ajax call
+                  alert("some Error");
+                },
+              });
+
+          
+        }catch(e){console.log(e);}
+
+      }
+
+      async function disburseDeliveryHelper(orderId,orderAddress){
+        if(window.confirm("Do you want ro disburse order " + orderAddress + " ?")){
+              if (typeof window.ethereum !== "undefined") {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+
+                try {
+                  await window.ethereum.request({
+                    method: "eth_requestAccounts",
+                  });
+                } catch (error) {
+                  console.error("Permission denied:", error);
+                }
+                var url = "/abi/get/facetAbi/<%=process.env.CHAIN_ORDER_FACET_NAME%>/";
+                $.ajax({
+                type: "GET",
+                url: url,
+                success: function (abi) {
+                  
+                    console.log(abi);
+                    const contractAbi = abi;
+                    disburseDelivery(contractAbi, provider, orderId, orderAddress);
+                  
+                },
+                error: function (data) {
+                  // Some error in ajax call
+                  alert("some Error");
+                },
+              });
+            }else{
+                console.log("Metamask is not initiated Properly !!")
+              }
+
+        }
+      }
+      async function disburseBtnHandler(){
+
+        $(".disbursePaymentBtn").click(function(){
+            var orderId = $(this).attr("order_id");
+            var orderAddress = $(this).attr("order_address");
+            disburseDeliveryHelper(orderId, orderAddress);
+            });
+
+      }
+      
+        
+    });
+
+
+
+
+
+
+    </script>
   </body>
 </html>
 
