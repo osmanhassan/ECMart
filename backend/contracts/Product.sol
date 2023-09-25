@@ -29,18 +29,29 @@ contract Product {
     address[] public orders;
 
     // List of buyers of the product
-    address[] public buyers;
+    // address[] public buyers;
     // Need to check whether the buyer purchased before giving review and rating --> Function
     mapping(address => uint32) buyersToHowManyTimesOrdered; // map buyer->how_many_times_ordered the product
+    mapping(address => uint32) buyersToHowManyReviewed; // map buyer->how_many_times_ordered the product
+    uint256 totalRatingSum;
+    uint256 no_of_Rating;
 
-    struct reviewRatingStruct {
-        // no need to store order_info in reviewRating
-        //review rating is product specific
-        string[] reviews;
-        uint8[] ratings;
+    // struct reviewRatingStruct {
+    //     // no need to store order_info in reviewRating
+    //     //review rating is product specific
+    //     string[] reviews;
+    //     uint8[] ratings;
+    //     uint256[] reviewTime;
+    // }
+    // mapping(address => reviewRatingStruct) buyerToReviewRating;
+
+    struct ReviewRatingStruct {
+        address[] reviewer;
+        string[] review;
+        uint256[] rating;
         uint256[] reviewTime;
     }
-    mapping(address => reviewRatingStruct) buyerToReviewRating;
+    ReviewRatingStruct reviewRatingStruct;
 
     constructor(
         string memory _name,
@@ -58,6 +69,9 @@ contract Product {
         seller = _seller;
         owner = _owner;
         finalProductPrice = _finalPrice;
+
+        totalRatingSum = 0;
+        no_of_Rating = 0;
     }
 
     modifier onlyECmartOrSeller() {
@@ -89,47 +103,90 @@ contract Product {
         ordersOfProduct[order_address] = order_units;
     }
 
-    function addBuyer(address buyer_address) public onlyOrder {
-        //if new buyer, add to buyers array
-        if (buyersToHowManyTimesOrdered[buyer_address] == 0) {
-            buyers.push(buyer_address);
-        }
-    }
+    // function addBuyer(address buyer_address) public onlyOrder {
+    //     //if new buyer, add to buyers array
+    //     if (buyersToHowManyTimesOrdered[buyer_address] == 0) {
+    //         buyers.push(buyer_address);
+    //     }
+    // }
 
     // call this function when buyer purchases this product --> increase how_many_times a buyer ordered the product
-    function enableReviewRating(address buyer_address) public {
+    function enableReviewRating(address buyer_address) public onlyECmart {
         buyersToHowManyTimesOrdered[buyer_address] =
             buyersToHowManyTimesOrdered[buyer_address] +
             1;
     }
 
-    function submitReviewRating(string memory review, uint8 rating) public {
+    function submitReviewRating(
+        string memory _review,
+        uint256 _rating,
+        address buyerAddress
+    ) public onlyECmart {
         //check whether he is a buyer
         require(
-            buyersToHowManyTimesOrdered[msg.sender] != 0,
+            buyersToHowManyTimesOrdered[buyerAddress] != 0,
             "You are not a buyer of the product"
         );
         // Check whether the buyer exceeds the number_of_reviews with number_of_time they ordered
         require(
-            buyersToHowManyTimesOrdered[msg.sender] <
-                buyerToReviewRating[msg.sender].ratings.length,
+            buyersToHowManyTimesOrdered[buyerAddress] >
+                buyersToHowManyReviewed[buyerAddress],
             "You have already provided review and rating of this product"
         );
+
+        require(_rating <= 5, "Rating should be less than 5");
+
         uint256 currentTime = block.timestamp;
-        buyerToReviewRating[msg.sender].reviews.push(review);
-        buyerToReviewRating[msg.sender].ratings.push(rating);
-        buyerToReviewRating[msg.sender].reviewTime.push(currentTime);
+        reviewRatingStruct.reviewer.push(buyerAddress);
+        reviewRatingStruct.review.push(_review);
+        reviewRatingStruct.rating.push(_rating);
+        reviewRatingStruct.reviewTime.push(currentTime);
+
+        buyersToHowManyReviewed[buyerAddress] =
+            buyersToHowManyReviewed[buyerAddress] +
+            1;
+        totalRatingSum += _rating;
+        no_of_Rating++;
+    }
+
+    // function getRating() public view returns (uint256) {
+    //     // SHould return float number
+    //     return (totalRatingSum / no_of_Rating);
+    // }
+
+    function getTotalRatingSum() public view returns (uint256) {
+        return totalRatingSum;
+    }
+
+    function getNumOfRating() public view returns (uint256) {
+        return no_of_Rating;
+    }
+
+    function getReviewRatingOfProduct()
+        public
+        view
+        returns (
+            address[] memory,
+            string[] memory,
+            uint256[] memory,
+            uint256[] memory
+        )
+    {
+        return (
+            reviewRatingStruct.reviewer,
+            reviewRatingStruct.review,
+            reviewRatingStruct.rating,
+            reviewRatingStruct.reviewTime
+        );
     }
 
     function getQuantity() public view returns (uint256) {
         return quantity;
     }
 
-
     function getName() public view returns (string memory) {
         return name;
     }
-    
 
     function getPrice() public view onlyECmartOrSeller returns (uint256) {
         return price;

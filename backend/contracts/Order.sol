@@ -1,11 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 
-//New Fucntion added
-// function provideReviewRating( address _productAddress,string memory review,uint8 rating)
-
-//Function Modified
-// function setDelivery(address[] memory _deliveryItems, uint256[] memory _deliveryUnits)
-
 pragma solidity ^0.8.0;
 
 // Uncomment this line to use console.log
@@ -81,19 +75,6 @@ contract Order {
         // require(msg.sender == owner);
         require(msg.sender == owner, "ECmart only");
         _;
-    }
-
-    //Added function by --> Win
-    function addBuyer() public onlyECmart {
-        for (uint32 i = 0; i < orderItems.length; i++) {
-            (bool success, ) = orderItems[i].call(
-                abi.encodeWithSignature("addBuyer(address)", buyer)
-            );
-            require(
-                success,
-                "Buyer Not Added to the Product From ORDER contract"
-            );
-        }
     }
 
     //Fund Transfer to Deliveryman starts
@@ -198,39 +179,6 @@ contract Order {
 
         deliveredItems = _deliveryItems;
         deliveredUnits = _deliveryUnits;
-
-        //Review and Rating ENABLE || REview and rating can be submitted even when the product is not delivered.
-        for (uint32 i = 0; i < orderItems.length; i++) {
-            // Call the function of Product Contract without importing Product.sol using function signature --> dynamic approach
-            (bool success, ) = orderItems[i].call(
-                abi.encodeWithSignature("enableReviewRating(address)", buyer)
-            );
-            require(success, "Review-Rating Permission given is FAILED!!");
-        }
     }
 
-
-
-    function provideReviewRating(
-        address _productAddress,
-        string memory review,
-        uint8 rating
-    ) public {
-        require(
-            msg.sender == buyer,
-            "Can not give Review-Rating. Because You are not the buyer!"
-        );
-        require(
-            productToUnits[_productAddress] != 0,
-            "You haven't purchased the product!"
-        );
-        (bool success, ) = _productAddress.call(
-            abi.encodeWithSignature(
-                "submitReviewRating(string,uint8)",
-                review,
-                rating
-            )
-        );
-        require(success, "Review-Rating Provding is FAILED!!");
-    }
 }

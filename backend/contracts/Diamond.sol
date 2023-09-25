@@ -123,8 +123,7 @@ contract OrderFacet {
                 "Order added to Products is UNSUCCESSFUL!! from ECmart contract"
             );
         }
-        // addBuyer to product
-        order.addBuyer();
+
         // Create orders ends
 
         // Product Quantity update starts
@@ -155,6 +154,7 @@ contract OrderFacet {
         );
         address[] memory deliveredItems = order.getDeliveredItems();
         uint256[] memory deliveredUnits = order.getDeliveredUnits();
+        address buyer = order.getBuyer();
 
         // send to seller  --> Only for Delivered Goods
 
@@ -242,7 +242,19 @@ contract OrderFacet {
         // set refund amount staus
         order.setIsRefunded(true);
         order.setRefundedAmount(refundable);
+
         //
+        //Enable ReviewRating || REview and rating can be submitted even when the product is not delivered.
+        for (uint32 i = 0; i < deliveredItems.length; i++) {
+            Product product = Product(deliveredItems[i]);
+            product.enableReviewRating(buyer);
+            // Call the function of Product Contract without importing Product.sol using function signature --> dynamic approach
+            // (bool success, ) = deliveredItems[i].call(
+            //     abi.encodeWithSignature("enableReviewRating(address)", buyer)
+            // );
+            // require(success, "Review-Rating Permission given is FAILED!!");
+        }
+
         emit OrderPaid(true);
     }
 }
@@ -322,6 +334,44 @@ contract DeliveryFacet {
     }
 
     //Buyer verifyDelivery
+}
+
+contract ReviewRatingFacet {
+    AppStorage aps;
+
+    //REview-Rating is enabled AUTOMATICALLY DURING payOrder() function
+
+    function provideReviewRating(
+        address productAddress,
+        string memory _review,
+        uint256 _rating
+    ) public {
+        Product product = Product(productAddress);
+        product.submitReviewRating(_review, _rating, msg.sender);
+    }
+
+    function getReviewRating(
+        address productAddress
+    )
+        public
+        view
+        returns (
+            address[] memory,
+            string[] memory,
+            uint256[] memory,
+            uint256[] memory
+        )
+    {
+        Product product = Product(productAddress);
+        return product.getReviewRatingOfProduct();
+    }
+
+    function getRating(address productAddress) public view returns (uint256) {
+        Product product = Product(productAddress);
+        uint256 totalRatingSum = product.getTotalRatingSum();
+        uint256 noOfRating = product.getNumOfRating();
+        return totalRatingSum / noOfRating;
+    }
 }
 
 contract ProductFacet {
@@ -434,6 +484,7 @@ contract Diamond {
         // console.log("tottotot..........");
         OrderFacet orderFacet = new OrderFacet();
         DeliveryFacet deliveryFacet = new DeliveryFacet();
+        ReviewRatingFacet reviewRatingFacet = new ReviewRatingFacet();
         ProductFacet productFacet = new ProductFacet();
         RegistrationFacet registrationFacet = new RegistrationFacet();
 
@@ -483,6 +534,16 @@ contract Diamond {
         facetMap[bytes4(keccak256("registerDeliveryMan(uint256)"))] = address(
             registrationFacet
         );
+
+        facetMap[bytes4(keccak256("getRating(address)"))] = address(
+            reviewRatingFacet
+        );
+        facetMap[bytes4(keccak256("getReviewRating(address)"))] = address(
+            reviewRatingFacet
+        );
+        facetMap[
+            bytes4(keccak256("provideReviewRating(address,string,uint256)"))
+        ] = address(reviewRatingFacet);
 
         // bytes32 x = keccak256("addProduct(string,uint256,string,uint256)");
         // string memory converted = bytes32ToString(x);

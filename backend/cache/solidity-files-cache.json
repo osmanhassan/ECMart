@@ -72,8 +72,8 @@
       ]
     },
     "/Users/mominwin/Documents/2_Productivity/Projects/ECMart/backend/contracts/Diamond.sol": {
-      "lastModificationDate": 1695552947069,
-      "contentHash": "e7fb5229c2ad6b0a08e57ffa673de3b6",
+      "lastModificationDate": 1695585419074,
+      "contentHash": "49f2631366b400c187717b00b7e67825",
       "sourceName": "contracts/Diamond.sol",
       "solcConfig": {
         "version": "0.8.8",
@@ -112,12 +112,13 @@
         "Diamond",
         "OrderFacet",
         "ProductFacet",
-        "RegistrationFacet"
+        "RegistrationFacet",
+        "ReviewRatingFacet"
       ]
     },
     "/Users/mominwin/Documents/2_Productivity/Projects/ECMart/backend/contracts/Product.sol": {
-      "lastModificationDate": 1695148392172,
-      "contentHash": "817742bea182fc30b7bdbcf4315df033",
+      "lastModificationDate": 1695585550567,
+      "contentHash": "f5b0d345e7d69581392688abf3df675a",
       "sourceName": "contracts/Product.sol",
       "solcConfig": {
         "version": "0.8.8",
@@ -153,8 +154,8 @@
       ]
     },
     "/Users/mominwin/Documents/2_Productivity/Projects/ECMart/backend/contracts/Order.sol": {
-      "lastModificationDate": 1695551232030,
-      "contentHash": "391108ef05063959eaccf2eb3eb59be7",
+      "lastModificationDate": 1695580072538,
+      "contentHash": "0c18c66e26f5fc4fb1a0cb1e9a3ab635",
       "sourceName": "contracts/Order.sol",
       "solcConfig": {
         "version": "0.8.8",
