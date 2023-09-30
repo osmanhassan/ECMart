@@ -1,17 +1,17 @@
-
-    <%- include('partials/common_header'); %> <%-
-    include('partials/common_scripts'); %>
+<%- include('partials/common_header'); %> 
 
   <body class="h-full bg-white dark:bg-slate-900">
-    <section>
-      <div class="flex flex-no-wrap">
-        <%- include('partials/buyer_left_bar'); %>
-        <div class="container mx-auto overflow-auto">
-          <%- include('partials/buyer_top_bar'); %>
-          <div
-            class="w-full rounded px-4 pt-9 pb-3 md:pt-3 h-[100dvh] overflow-auto text-slate-600 bg-slate-100 dark:bg-gradient-to-r dark:from-slate-800 dark:to-stone-600 dark:text-gray-400"
-            id="body-content"
-          >
+    <div class="flex flex-no-wrap">
+      <!-- Sidebar starts -->
+      <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
+      <%- include('partials/buyer_left_bar'); %>
+      <!-- Sidebar ends -->
+      <!-- Remove class [ h-64 ] when adding a card block -->
+      <div class="container mx-auto overflow-auto">
+        <%- include('partials/buyer_top_bar'); %>
+
+        <%- include('partials/common_body'); %>
+          <!-- Place your content here -->
             <!-- product list -->
             <section>
               <div class="bg-transparent">
@@ -32,7 +32,7 @@
                         class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
                       >
                         <img
-                          src=""
+                          src="<%= product.IMAGE %>"
                           alt="Image of product"
                           class="h-full w-full object-cover object-center lg:h-full lg:w-full"
                         />
@@ -184,7 +184,7 @@
                 </div>
               </div>
             </section>
-          </div>
+          
         </div>
       </div>
       <%- include('partials/common_js'); %>

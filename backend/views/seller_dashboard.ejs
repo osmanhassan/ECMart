@@ -1,29 +1,27 @@
+<%- include('partials/common_header'); %> 
 
-<%- include('partials/common_header'); %> <%-
-    include('partials/common_scripts'); %>
   <body class="h-full bg-white dark:bg-slate-900">
-    <!-- home page -->
-    <section>
-      <div class="flex flex-no-wrap">
-        <%- include('partials/seller_left_bar'); %>
+    <div class="flex flex-no-wrap">
+      <!-- Sidebar starts -->
+      <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
+      <%- include('partials/seller_left_bar'); %>
+      <!-- Sidebar ends -->
+      <!-- Remove class [ h-64 ] when adding a card block -->
+      <div class="container mx-auto overflow-auto">
+        <%- include('partials/seller_top_bar'); %>
 
-        <div class="container mx-auto overflow-auto">
-          <%- include('partials/seller_top_bar'); %>
-          <div
-            class="w-full rounded px-4 pt-9 pb-3 md:pt-3 h-[100dvh] overflow-auto text-slate-600 bg-slate-100 dark:bg-gradient-to-r dark:from-slate-800 dark:to-stone-600 dark:text-gray-400"
-            id="body-content"
-          >
+        <%- include('partials/common_body'); %>
             <!-- Place your content here -->
 
-            <!-- product list -->
             <section>
               <h1
                 class="text-slate-700 dark:text-gray-300 text-3xl font-semibold mb-4"
               >
+              <br>
                 Welcome Seller, <b> <%= username %> </b> !!!!
               </h1>
             </section>
-          </div>
+          
         </div>
       </div>
       <%- include('partials/common_js'); %>

@@ -109,10 +109,21 @@ async function main() {
       "Watch",
       "20000000000000000000",
       "Apple Watch Series 5",
-      14,
+      45,
       55
     );
   console.log("Product Added 3");
+
+  tx_addProduct = await productFacet
+    .connect(sellerWallet)
+    .addProduct(
+      "Drone",
+      "36000000000000000000",
+      "Apple Surveillance Drone",
+      32,
+      76
+    );
+  console.log("Product Added 4");
 
   //view Products
   console.log("Product addresses :");

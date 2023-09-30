@@ -1,20 +1,19 @@
 <%- include('partials/common_header'); %> 
-    
+
   <body class="h-full bg-white dark:bg-slate-900">
-    <!-- home page -->
-    <section>
-      <div class="flex flex-no-wrap">
-        <!-- Sidebar starts -->
-        <%- include('partials/seller_left_bar'); %>
-        
-        <div class="container mx-auto overflow-auto">
-          <%- include('partials/seller_top_bar'); %>
-          <div
-            class="w-full rounded px-4 pt-9 pb-3 md:pt-3 h-[100dvh] overflow-auto text-slate-600 bg-slate-100 dark:bg-gradient-to-r dark:from-slate-800 dark:to-stone-600 dark:text-gray-400"
-            id="body-content"
-          >
+    <div class="flex flex-no-wrap">
+      <!-- Sidebar starts -->
+      <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
+      <%- include('partials/seller_left_bar'); %>
+      <!-- Sidebar ends -->
+      <!-- Remove class [ h-64 ] when adding a card block -->
+      <div class="container mx-auto overflow-auto">
+        <%- include('partials/seller_top_bar'); %>
+
+        <%- include('partials/common_body'); %>
+
+
             <!-- Place your content here -->
-            <!-- product add for seller -->
             <section>
               <div class="bg-transparent">
                 <div class="mx-auto max-w-2xl lg:max-w-7xl">
@@ -24,7 +23,7 @@
                        <h1 class="text-4xl font-bold mb-4 dark:text-neutral-200 text-slate-800">Add Product</h1>
                        <div class="flex flex-col gap-6">
 
-                      <form id="add_form" method="POST" action="/seller/productAdd/">
+                      <form id="add_form" method="POST" action="/seller/productAdd/" enctype="multipart/form-data">
                          <label for="productName" class="block font-semibold dark:text-neutral-200 text-slate-700">Product Name</label>
                          <input type="text" 
                          name="productName"  id="productName" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-2 bg-transparent dark:text-neutral-200 text-slate-700 focus:border-blue-500" placeholder="Enter product name">
@@ -53,7 +52,7 @@
                      </div>
               </div>
             </section>
-          </div>
+          
         </div>
       </div>
     </section>ƒ
@@ -69,10 +68,14 @@
 
           var form = formObj;
           var url = form.attr("action");
+
+          var formData = new FormData(form[0]);
           $.ajax({
             type: "POST",
             url: url,
-            data: form.serialize(),
+            data: formData,  // Use the FormData object instead of form.serialize()
+            processData: false, // Important! Prevents jQuery from processing the data
+            contentType: false, // Important! Let the server handle the content type
             success: function (data) {
               // Ajax call completed successfully
               if (data.code == 200) {
@@ -151,6 +154,7 @@
             );
             await result.wait(1);
             console.log(result);
+            window.location.href = window.location.href;
           }
             
 
