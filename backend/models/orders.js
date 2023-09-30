@@ -6,7 +6,6 @@ function placeOrder(params, callback) {
 
   let sql_orders = "INSERT INTO orders VALUES (null, ?, ?, ?, null, null, 0)";
   let sql_orderItems = "INSERT INTO order_items VALUES ";
-  
 
   //1st query
   db.executeGetId(
@@ -36,9 +35,7 @@ function placeOrder(params, callback) {
         console.log(sql_orderItems);
         db.execute(sql_orderItems, orderItemValues, function (result) {
           if (result) {
-            
-                callback(order_id);
-             
+            callback(order_id);
           } else {
             console.log("error at 2nd query of order place");
             callback(-1);
@@ -119,6 +116,14 @@ function getOrdersToPay(params, callback) {
   });
 }
 
+function getOrdersCompleted(params, callback) {
+  var sql =
+    "SELECT orders.ID, max(orders.ORDER_PK) as ORDER_PK FROM orders INNER join delivery_items on orders.id = delivery_items.ORDER_ID where orders.STATUS = 2 and orders.BUYER_ID = ? GROUP BY orders.ID";
+  db.getResult(sql, params, function (result) {
+    callback(result);
+  });
+}
+
 function getUnassignedDMOrders(callback) {
   var sql =
     "select users.USER_NAME as BUYER_NAME, users.PHONE as BUYER_PHONE, x.* from users INNER JOIN (SELECT orders.id as ORDER_ID, max(orders.ORDER_PK) as ORDER_ADDRESS,max(orders.BUYER_ID) BUYER_ID, max(orders.BUYER_ADDRESS) as BUYER_ADDRESS,GROUP_CONCAT(users.USER_NAME SEPARATOR '||') as SELLERS, GROUP_CONCAT(users.SHOP_NAME SEPARATOR '||') as SELLERS_SHOP,GROUP_CONCAT(users.PHONE SEPARATOR '||') as SELLERS_PHONE FROM orders inner JOIN order_items on orders.ID = order_items.ORDER_ID INNER JOIN users on order_items.SELLER_ID = users.id WHERE orders.DELIVERMAN_ID is null and orders.ORDER_PK is not null GROUP BY orders.id) x on users.ID = x.BUYER_ID";
@@ -136,5 +141,6 @@ module.exports = {
   getByDeliveryManandStatus,
   deleteDeliveryDetailsByOrderID,
   getOrdersToPay,
+  getOrdersCompleted,
   updateOrderStatusByIDAndStatusAndBuyer,
 };

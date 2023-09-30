@@ -24,6 +24,7 @@ contract Product {
     address seller;
     address owner;
     uint256 public finalProductPrice;
+    uint256 dbId;
 
     mapping(address => uint256) ordersOfProduct; //Which order has ordered how many units
     address[] public orders;
@@ -33,8 +34,8 @@ contract Product {
     // Need to check whether the buyer purchased before giving review and rating --> Function
     mapping(address => uint32) buyersToHowManyTimesOrdered; // map buyer->how_many_times_ordered the product
     mapping(address => uint32) buyersToHowManyReviewed; // map buyer->how_many_times_ordered the product
-    uint256 totalRatingSum;
-    uint256 no_of_Rating;
+    // uint256 totalRatingSum;
+    // uint256 no_of_Rating;
 
     // struct reviewRatingStruct {
     //     // no need to store order_info in reviewRating
@@ -60,7 +61,8 @@ contract Product {
         uint256 _quantity,
         address _seller,
         address _owner,
-        uint256 _finalPrice
+        uint256 _finalPrice,
+        uint256 _dbId
     ) {
         name = _name;
         price = _price;
@@ -69,9 +71,10 @@ contract Product {
         seller = _seller;
         owner = _owner;
         finalProductPrice = _finalPrice;
+        dbId = _dbId;
 
-        totalRatingSum = 0;
-        no_of_Rating = 0;
+        // totalRatingSum = 0;
+        // no_of_Rating = 0;
     }
 
     modifier onlyECmartOrSeller() {
@@ -145,8 +148,8 @@ contract Product {
         buyersToHowManyReviewed[buyerAddress] =
             buyersToHowManyReviewed[buyerAddress] +
             1;
-        totalRatingSum += _rating;
-        no_of_Rating++;
+        // totalRatingSum += _rating;
+        // no_of_Rating++;
     }
 
     // function getRating() public view returns (uint256) {
@@ -154,13 +157,17 @@ contract Product {
     //     return (totalRatingSum / no_of_Rating);
     // }
 
-    function getTotalRatingSum() public view returns (uint256) {
-        return totalRatingSum;
+    function getDbId() public view onlyECmart returns (uint256) {
+        return dbId;
     }
 
-    function getNumOfRating() public view returns (uint256) {
-        return no_of_Rating;
-    }
+    // function getTotalRatingSum() public view returns (uint256) {
+    //     return totalRatingSum;
+    // }
+
+    // function getNumOfRating() public view returns (uint256) {
+    //     return no_of_Rating;
+    // }
 
     function getReviewRatingOfProduct()
         public

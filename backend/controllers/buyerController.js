@@ -117,8 +117,11 @@ router.get("/order/", (req, res) => {
   });
 });
 
-router.get("/orderTracking/", (req, res) => {
-  res.render("buyer_orders_tracking");
+router.get("/orderComplete/", (req, res) => {
+  // res.render("buyer_orders_complete");
+  orders.getOrdersCompleted([req.session.user.uid], function (result) {
+    res.render("buyer_orders_complete", { orders: result });
+  });
 });
 
 router.get("/orderDelivery/", (req, res) => {
@@ -128,11 +131,16 @@ router.get("/orderDelivery/", (req, res) => {
 });
 
 router.post("/disburse/", (req, res) => {
-  
-  orders.updateOrderStatusByIDAndStatusAndBuyer([2, req.body.orderID, 1,req.session.user.uid], function (flag) {
-    if(flag){res.json({code:200})}
-    else{res.json({code:300})}
-  });
+  orders.updateOrderStatusByIDAndStatusAndBuyer(
+    [2, req.body.orderID, 1, req.session.user.uid],
+    function (flag) {
+      if (flag) {
+        res.json({ code: 200 });
+      } else {
+        res.json({ code: 300 });
+      }
+    }
+  );
 });
 
 module.exports = router;

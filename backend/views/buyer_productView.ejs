@@ -68,7 +68,7 @@
                   <p
                     class="text-sm leading-none text-gray-600 dark:text-gray-300"
                   >
-                  <%= product[0].FINAL_PRICE %>
+                  <%= (product[0].FINAL_PRICE)/1000000000000000000 %> ETH
                   </p>
                   
                 </div>
@@ -81,7 +81,7 @@
                   Rating
                 </p>
                 <div class="flex items-center justify-center">
-                  <p
+                  <p id="overallRating"
                     class="text-sm leading-none text-gray-600 dark:text-gray-300 mr-3"
                   >
                   <%= product[0].RATING %>
@@ -96,9 +96,9 @@
                 <p class="text-base leading-4 text-gray-800 dark:text-gray-300">
                   Contract_Address
                 </p>
-                <div class="flex items-center justify-center">
+                <div class="flex items-center justify-center flex-shrink flex-wrap">
                   <p
-                    class="text-xs leading-none text-gray-600 dark:text-gray-300"
+                    class="text-xs leading-none text-gray-600 dark:text-gray-300 flex-wrap"
                   >
                   <%= product[0].ADDRESS %>
                   </p>
@@ -125,7 +125,7 @@
                 <input type="hidden" name="unitPrice" value="<%= product[0].FINAL_PRICE %>">
                 <input type="hidden" name="name" value="<%= product[0].NAME %>">
                 <input type="hidden" name="sellerId" value="<%= product[0].SELLER_ID %>">
-                <input type="hidden" name="productPk" value="<%= product[0].ADDRESS %>">
+                <input type="hidden" name="productPk" id="productAddress" value="<%= (product[0].ADDRESS); %>">
              
               <label for="stock" class="block font-semibold dark:text-neutral-200 text-slate-700"> Quantity</label>
             
@@ -154,7 +154,7 @@
                 <p
                   class="xl:pr-48 text-base lg:leading-tight leading-normal text-gray-600 dark:text-gray-300 mt-7"
                 >
-                  <span class="text-purple-400 text-lg">
+                  <span class="dark:text-purple-600 text-lg">
                     Product Description :
                   </span>
                   <%= product[0].VARIANT %>
@@ -246,10 +246,10 @@
           <div class="max-w-4xl mx-auto px-4">
             
             <h2 class="text-3xl font-semibold  text-gray-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 mb-6">Customer Reviews</h2>
-            <button class="dark:bg-transparent rounded dark:border dark:border-blue-700 dark:shadow-md dark: text-white font-bold py-2 px-4 rounded cursor-pointer" onclick="myFunction()">
+            <button id="showReview" class="dark:bg-transparent rounded dark:border dark:border-blue-700 dark:shadow-md dark: text-white font-bold py-2 px-4 rounded cursor-pointer">
         Get Reviews from Blockchain</button>
             <!-- Review Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div id="reviewRatingCard" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 hidden">
                 <!-- Review 1 -->
                 <div class="bg-transparent rounded-lg p-4 shadow-2xl">
                     <h3 class="text-xl font-semibold  text-gray-600 dark:text-gray-300 mb-2">Reviewer Name 1</h3>
@@ -257,26 +257,60 @@
                     <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Purchase Date: <span class="text-gray-600 dark:text-purple-600">September 10, 2023</span></p>
                     <p class="text-gray-600 dark:text-gray-300">Review Description: <span class="text-gray-800 dark:text-purple-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec lorem non quam varius hendrerit. </span></p>
                 </div>
-                
-                <!-- Review 2 -->
-                <div class="bg-transparent rounded-lg p-4 shadow-2xl">
-                  <h3 class="text-xl font-semibold  text-gray-600 dark:text-gray-300 mb-2">Reviewer Name 1</h3>
-                  <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Reviewer Ethereum Wallet: <span class="text-gray-800 dark:text-purple-600">0x123456789...</span></p>
-                  <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Purchase Date: <span class="text-gray-600 dark:text-purple-600">September 10, 2023</span></p>
-                  <p class="text-gray-600 dark:text-gray-300">Review Description: <span class="text-gray-800 dark:text-purple-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec lorem non quam varius hendrerit. </span></p>
-              </div>
-
-              <!-- Review 2 -->
-              <div class="bg-transparent rounded-lg p-4 shadow-2xl">
-                <h3 class="text-xl font-semibold  text-gray-600 dark:text-gray-300 mb-2">Reviewer Name 1</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Reviewer Ethereum Wallet: <span class="text-gray-800 dark:text-purple-600">0x123456789...</span></p>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Purchase Date: <span class="text-gray-600 dark:text-purple-600">September 10, 2023</span></p>
-                <p class="text-gray-600 dark:text-gray-300">Review Description: <span class="text-gray-800 dark:text-purple-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec lorem non quam varius hendrerit. </span></p>
+                                
             </div>
 
-          
-                
-            </div>
+            <!-- Submit Review -->
+            <div class="max-w-full mt-10 mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h2 class="text-2xl font-semibold mb-4 dark:text-gray-200">Provide Review and Rating on <spna class="text-gray-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400">Blockchain</spna></h2>
+              
+              <!-- Review and Rating Form -->
+              <form id="reviewForm">
+                  <!-- Product Rating -->
+                  <div class="mb-4">
+                      <label class="block text-sm font-medium">Product Rating:</label>
+                      <div class="flex items-center space-x-10">
+                        <div><input type="radio" name="rating" value="1" id="rating-1" class="">
+                          <label for="rating-1" class="text-gray-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400">
+                              1★
+                          </label></div>
+                          
+                          <div><input type="radio" name="rating" value="2" id="rating-2" class="">
+                            <label for="rating-2" class="text-gray-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400">
+                                2★
+                            </label></div>
+                          
+                          <div><input type="radio" name="rating" value="3" id="rating-3" class="">
+                            <label for="rating-3" class="text-gray-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400">
+                                3★
+                            </label></div>
+                          
+                            <div><input type="radio" name="rating" value="4" id="rating-4" class="">
+                              <label for="rating-4" class="text-gray-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400">
+                                  4★
+                              </label></div>
+                          
+                              <div><input type="radio" name="rating" value="5" id="rating-5" checked class="">
+                                <label for="rating-5" class="text-gray-600 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400">
+                                    5★
+                                </label></div>
+                          
+                      </div>
+                  </div>
+                  
+                  <!-- Review Text -->
+                  <div class="mb-4">
+                      <label for="review" class="block text-sm font-medium">Review:</label>
+                      <textarea id="review" name="review" rows="4" class="w-full border rounded-md p-2 dark:bg-transparent focus:outline-none focus:ring focus:border-blue-300">The product is AWESOME !</textarea>
+                  </div>
+                  
+                  <!-- Submit Button -->
+                  <div class="text-center">
+                      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300">Submit</button>
+                  </div>
+              </form>
+          </div>
+
 
 
           </div>
@@ -284,7 +318,147 @@
       </div>
       
     </div>
-    <%- include('partials/common_js'); %>
+    <%- include('partials/common_js'); %> 
+    <%- include('partials/common_scripts'); %>
+    <script>
+    $(document).ready(function() {
 
+      let contractAbi, provider;
+      //Select the product address  
+      const productAddress = $("#productAddress").val().trim();
+      console.log(`Product address is : ${productAddress}`);
+      //Get review data
+      // console.log($("#review").val());
+      //Default Rating == 5
+      let selectedRating = 5;
+      console.log(`Selected Rating: ${selectedRating}`);
+      // Rating CHANGE event Listener
+      $('input[name="rating"]').on('change', function() {
+            selectedRating = Number($('input[name="rating"]:checked').val());
+            console.log(`Selected Rating: ${selectedRating}`);
+        });
+    
+
+       _initalize();
+
+      //initialize metamask
+      async function _initalize(){
+          // Metamask Initialize + FACET ABI fetch
+        if (typeof window.ethereum !== "undefined") {
+            provider = new ethers.providers.Web3Provider(window.ethereum);
+            const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+            try {
+              await window.ethereum.request({
+                method: "eth_requestAccounts",
+              });
+            } catch (error) {
+              console.error("Permission denied:", error);
+            }
+            var url = "/abi/get/facetAbi/<%=process.env.CHAIN_REVIEWRATING_FACET_NAME%>/";
+            $.ajax({
+            type: "GET",
+            url: url,
+            success: function (abi) {
+              
+                console.log(abi);
+                contractAbi = abi;
+                
+            },
+            error: function (data) {
+              // Some error in ajax call
+              alert("some Error");
+              // return -1; 
+            },
+          });
+        }else{
+            console.log("Metamask is not initiated Properly !!");
+          }
+        }
+
+        async function provideReview(productAddress, review, rating, contractAbi, provider){
+          console.log("Inside provide func");
+          const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+            
+          try{
+            var contract = new ethers.Contract(contractAddress, contractAbi, provider.getSigner());
+            var result = await contract.provideReviewRating(productAddress, review, rating);
+            console.log(result);
+            await result.wait(1);
+          alert("Review Rating Provided");
+          }catch(e){
+            console.log(e);
+          }
+        }
+        
+      async function showReviewRating(productAddress, contractAbi, provider){
+        console.log("Inside Show func");
+        const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+
+        try{
+            var contract = new ethers.Contract(contractAddress, contractAbi, provider.getSigner());
+            var result = await contract.getReviewRating(productAddress);
+            
+            return result;
+        
+          alert("Review Rating Provided");
+          }catch(e){
+            console.log(e);
+          }
+      }
+
+      // async function showOverallRating(productAddress, contractAbi, provider){
+      //   console.log("Inside Show Rating func");
+      //   const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
+
+      //   try{
+      //       var contract = new ethers.Contract(contractAddress, contractAbi, provider.getSigner());
+      //       var result = await contract.getRating(productAddress);
+            
+      //       return result.toNumber();
+        
+      //     alert("Review Rating Provided");
+      //     }catch(e){
+      //       console.log(e);
+      //     }
+      // }
+      
+
+      $("#reviewForm").submit( (e)=>{
+        e.preventDefault();
+
+        let review = $("#review").val();
+        console.log(review);
+        provideReview(productAddress, review, selectedRating, contractAbi, provider);
+        
+      });
+
+      $("#showReview").click(async function (e){
+
+        let [reviewer, review, rating, reviewTime] = await showReviewRating(productAddress, contractAbi, provider);
+        // let overAllRating = await showOverallRating(productAddress, contractAbi, provider);
+        // console.log(`Overall Rating: ${overAllRating}`);
+
+        let totalRating = 0;
+
+        let inner = ``;
+        for(let i = 0; i < reviewer.length; i++){
+          totalRating += rating[i].toNumber();
+          inner  += `<div class="bg-transparent rounded-lg p-4 shadow-2xl">
+                    <h3 class="text-xs font-semibold  text-gray-600 dark:text-gray-300 mb-2">Reviewer: <span class="text-gray-600 dark:text-purple-600">${reviewer[i]}</span></h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Purchase Date: <span class="text-gray-600 dark:text-purple-600">${new Date(reviewTime[i].toNumber() * 1000).toString()}</span></p>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Rating: <span class="text-gray-800 dark:text-purple-600"> ${rating[i].toNumber()} </span></p>
+                    <p class="text-gray-600 dark:text-gray-300">Review Description: <span class="text-gray-800 dark:text-purple-600"> ${review[i].toString()} </span></p>
+                </div>`;
+        }
+
+        let avgRating = totalRating/reviewer.length;
+
+        $("#reviewRatingCard").html(inner);
+        $("#overallRating").html(avgRating);
+        $("#reviewRatingCard").removeClass("hidden");
+      });
+
+  });
+  </script>
   </body>
 </html>

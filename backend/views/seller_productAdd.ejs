@@ -32,7 +32,7 @@
                          <label for="stock" class="block font-semibold dark:text-neutral-200 text-slate-700"> Stock</label>
                          <input type="number" name="stock" id="stock" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-2 bg-transparent dark:text-neutral-200 text-slate-700 focus:border-blue-500" placeholder="Enter inventory stock">
                  
-                         <label for="price" class="block font-semibold dark:text-neutral-200 text-slate-700">Price</label>
+                         <label for="price" class="block font-semibold dark:text-neutral-200 text-slate-700">Price (ETH)</label>
                          <input type="text" name="price"  id="price" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-2 bg-transparent dark:text-neutral-200 text-slate-700 focus:border-blue-500" placeholder="Enter price">
         
                  
@@ -156,7 +156,11 @@
 
      
         $("#add_form").submit(function (e) {
-          
+          console.log("------------ PRoduct Add Data ENDS ---------------- ");
+          // Change the value to WEI before sending it to Chain && DB
+          let priceField = $("#price"); 
+          priceField.val(priceField.val()*1000000000000000000);
+
           sellerProductAddFormHandler(e, $(this));
         });
 

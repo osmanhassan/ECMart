@@ -17,12 +17,12 @@
 
 <main class="container mx-auto py-8">
   <section class="mb-8">
-    <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md">
+    
       <h2 class="text-xl font-semibold text-gray-800 dark:bg-gradient-to-r dark:from-green-200 dark:to-teal-400 dark:text-transparent dark:bg-clip-text mb-4">
         Delivery Details
       </h2>
-      <hr>
       <% for(var x in orders){ %>
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md mt-10">
       <table class="w-full">
         <tr>
           <td class="font-semibold text-gray-800 dark:text-white py-2">
@@ -38,7 +38,6 @@
         </tr>
          
         </table>
-        <br>
         <div class="mt-6">
           <button
             class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300 disbursePaymentBtn" order_address = "<%=orders[x].ORDER_PK%>" order_id="<%=orders[x].ID%>"
@@ -47,15 +46,11 @@
           </button>
         </div>
         <div id="det_<%=orders[x].ID%>"></div>
+
+      </div>
         <% } %>
        
-        <!-- USE LOOP here -->
-       
     <!-- LOOP ends here  -->
-
-
-   
-    </div>
   </section>
 </main>
 
@@ -121,7 +116,6 @@
             const contractAddress = "<%=process.env.ECMART_CONTRACT_ADDRESS%>";
 
             for(var x in ordersAddress){
-
             
               try{
                 var contract = new ethers.Contract(
@@ -150,8 +144,8 @@
             var divider = 1000000000000000000;
             for(var i in result[0]){
                       
-              inner  += `<tr><td>
-                  <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> Product ${Number(i)+1} </h3></td><td></td>
+              inner  += `<tr><td colspan=2>
+                  <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> Product ${Number(i)+1}  ---- [From Chain]</h3></td><td></td>
                 </tr>
 
                 <tr>
@@ -177,12 +171,11 @@
                 <td class="font-semibold text-gray-800 dark:text-white py-2 "> ${result[4][i]/divider} (ETH)</td>
                 </tr>`;
             }
-            var html = ` <table class="w-full">
+            var html = ` <table class="w-full mt-6">
 
                           ${inner}
 
-                          </table>
-                          <br><hr>`;
+                          </table>`;
             // console.log(html)
 
             $("#det_" + orderId).html(html);

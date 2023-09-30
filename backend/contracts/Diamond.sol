@@ -274,6 +274,7 @@ contract DeliveryFacet {
             address[] memory,
             uint256[] memory,
             uint256[] memory,
+            uint256[] memory,
             uint256[] memory
         )
     {
@@ -284,14 +285,17 @@ contract DeliveryFacet {
         string[] memory names = new string[](deliveredItems.length);
         uint256[] memory itemTotal = new uint256[](deliveredItems.length);
         uint256[] memory unitPrice = new uint256[](deliveredItems.length);
+        uint256[] memory dbId = new uint256[](deliveredItems.length);
 
         for (uint16 i = 0; i < deliveredItems.length; i++) {
             Product product = Product(deliveredItems[i]);
             names[i] = product.getName();
+            dbId[i] = product.getDbId();
             itemTotal[i] = product.getProductFinalPrice() * deliveredUnits[i];
             unitPrice[i] = product.getProductFinalPrice();
         }
-        return (names, deliveredItems, deliveredUnits, unitPrice, itemTotal);
+        // crucial function
+        return (names, deliveredItems, deliveredUnits, unitPrice, itemTotal, dbId);
     }
 
     function setDeliveryMan(
@@ -366,12 +370,12 @@ contract ReviewRatingFacet {
         return product.getReviewRatingOfProduct();
     }
 
-    function getRating(address productAddress) public view returns (uint256) {
-        Product product = Product(productAddress);
-        uint256 totalRatingSum = product.getTotalRatingSum();
-        uint256 noOfRating = product.getNumOfRating();
-        return totalRatingSum / noOfRating;
-    }
+    // function getRating(address productAddress) public view returns (uint256) {
+    //     Product product = Product(productAddress);
+    //     uint256 totalRatingSum = product.getTotalRatingSum();
+    //     uint256 noOfRating = product.getNumOfRating();
+    //     return totalRatingSum / noOfRating;
+    // }
 }
 
 contract ProductFacet {
@@ -407,7 +411,8 @@ contract ProductFacet {
             _quantity,
             msg.sender,
             address(this),
-            _finalPrice
+            _finalPrice,
+            dbID
         );
         address productAddress = address(product);
         console.log(productAddress);
@@ -535,9 +540,9 @@ contract Diamond {
             registrationFacet
         );
 
-        facetMap[bytes4(keccak256("getRating(address)"))] = address(
-            reviewRatingFacet
-        );
+        // facetMap[bytes4(keccak256("getRating(address)"))] = address(
+        //     reviewRatingFacet
+        // );
         facetMap[bytes4(keccak256("getReviewRating(address)"))] = address(
             reviewRatingFacet
         );

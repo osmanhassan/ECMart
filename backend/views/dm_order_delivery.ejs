@@ -17,15 +17,15 @@
 
 <main class="container mx-auto py-8">
   <section class="mb-8">
-    <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md">
-      <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
-        Order Details
-      </h2>
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-8">
+      Order Details
+    </h2>
+   
       <% let order = orders[0]; for(var x in orders ){ %>
-        
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md">
        <% if(order.ORDER_ID != orders[x].ORDER_ID || x == 0){ order = orders[x]; %>
-     <hr>
-      <table class="w-full">
+        <hr>
+      <table class="w-full mt-2">
         <tr>
           <td class="font-semibold text-gray-800 dark:text-white py-2">
             Order ID:
@@ -54,7 +54,8 @@
         <table class="w-full">
 
           <tr>
-            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> <%=orders[x].NAME%> </h3>
+            <td> <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> Product Name :  </h3></td>
+            <td><h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4"> <%=orders[x].NAME%> </h3></td>
           </tr>
 
           <tr>
@@ -73,13 +74,13 @@
         </tr>
         </table>
         <br>
-      
+      </div>
         <% } %>
     <!-- LOOP ends here  -->
 
 
       
-    </div>
+    
   </section>
 </main>
 
