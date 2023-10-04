@@ -74,7 +74,7 @@ async function main() {
   //register as DM
   let tx_dm = await registrationFacet
     .connect(dmWallet)
-    .registerDeliveryMan(138);
+    .registerDeliveryMan(144);
   console.log("Deliveryman Registered");
 
   //connect to Product Facet

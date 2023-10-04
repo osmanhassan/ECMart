@@ -260,16 +260,25 @@
         }
 
         async function add(contractAddress,contractAbi,provider, seller){
-       
-           const contract = new ethers.Contract(
-           contractAddress,
-           contractAbi,
-           provider.getSigner()
-         );
+            try{
+              const contract = new ethers.Contract(
+                contractAddress,
+                contractAbi,
+                provider.getSigner()
+              );
         
-         const result = await contract.registerSeller(seller.id);
-         await result.wait(1);
-         console.log(result);
+              const result = await contract.registerSeller(seller.id);
+              await result.wait(1);
+              console.log(result);
+              alert("Registration SUCCESSFUL !!");
+              window.location.href = window.location.href;
+            }
+            catch(e){
+              console.log(e.message);
+              alert(e.reason);
+            }
+           
+
         }
 
       });

@@ -80,6 +80,7 @@ contract OrderFacet {
             uint256[] memory orderUnitFinalPrice
         ) = calculateOrderAmount(_orderItems, _units);
 
+        require(aps.buyers[msg.sender] == 2, "You are not a Buyer!!");
         // hold money starts
 
         //****  need implement getConversionRate() method
@@ -295,7 +296,14 @@ contract DeliveryFacet {
             unitPrice[i] = product.getProductFinalPrice();
         }
         // crucial function
-        return (names, deliveredItems, deliveredUnits, unitPrice, itemTotal, dbId);
+        return (
+            names,
+            deliveredItems,
+            deliveredUnits,
+            unitPrice,
+            itemTotal,
+            dbId
+        );
     }
 
     function setDeliveryMan(

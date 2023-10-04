@@ -154,11 +154,12 @@
             );
             await result.wait(1);
             console.log(result);
-
+            alert("You are set as a DELIVERYMAN for this order...");
             window.location.href=window.location.href;
           }
             catch(e){
               console.log(e);
+              alert(e.reason);
             }
           }
             

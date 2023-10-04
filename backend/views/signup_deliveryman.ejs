@@ -241,8 +241,8 @@
         }
 
         async function add(contractAddress,contractAbi,provider, dm){
-       
-           const contract = new ethers.Contract(
+          try{
+            const contract = new ethers.Contract(
            contractAddress,
            contractAbi,
            provider.getSigner()
@@ -251,7 +251,17 @@
          const result = await contract.registerDeliveryMan(dm.id);
          await result.wait(1);
          console.log(result);
+         alert("Registration SUCCESSFUL !!");
+              window.location.href = window.location.href;
         }
+            catch(e){
+              console.log(e.message);
+              alert(e.reason);
+            }
+
+
+          }
+           
 
       });
 
