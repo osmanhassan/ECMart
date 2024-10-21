@@ -1,75 +1,29 @@
-# ECMart
-#### A next generation e-commerce powered by Blockchain Techonology.. 
+# ECMart: Decentralized E-Commerce Marketplace
 
-## Installation
-1. Install Node, npm
-2. [Initialize Tailwindcss on your machine using the following instruction](https://tailwindcss.com/docs/installation)
+Welcome to the **ECMart** repository, a blockchain-powered decentralized e-commerce platform designed to provide a secure, transparent, and non-fraudulent marketplace. This project leverages blockchain, smart contracts, and AI-based NLP models to handle transactions, reputation systems, and dispute resolutions in a decentralized manner.
 
-## TechStack Used (till now)
-- HTML5
-- CSS3
-- TailwindCSS
-- JavaScript
-- NodeJS
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
 
+## Overview
+**ECMart** is an innovative decentralized marketplace utilizing blockchain technology to overcome the issues of fraud, fake reviews, and centralization in traditional e-commerce. The platform enables **buyers**, **sellers**, and **delivery personnel** to securely engage in transactions using **Tether (USDT)** for stable payments. By utilizing **smart contracts**, **decentralized identity management**, and **AI-powered dispute resolution**, ECMart ensures transparency, security, and fairness.
 
-## Necessary Documentation
+## Features
+- **Open Participation:** Buyers, sellers, and delivery personnel can join the marketplace using a crypto wallet compatible with the SKALE network.
+- **Secure Payments:** All transactions are processed in **Tether (USDT)** to maintain price stability.
+- **Decentralized Identity Management (DID):** Secure and verified user identities with appropriate access permissions.
+- **Reputation System:** Blockchain-powered, automated reputation system rewarding users with positive feedback and transaction history.
+- **AI-powered Dispute Resolution:** NLP-based AI model handles initial disputes, with final arbitration by randomly selected platform owners.
+- **Smart Contracts:** Enforce core marketplace rules automatically for transparent and secure interactions.
 
-1. [TailwindCSS Documentation](https://tailwindcss.com/docs/installation)
-2. 
-
-## Necessary Installation Commands
-
-1. First naviagte to the frontend directory using `cd`
-
-```bash
-cd frontend
-```
-
-2. Run the commands 
-```bash
-npm install
-```
-```bash
-npm install -D
-```
-```bash
-npx tailwindcss -i ./src/input.css -o ./dist/app.css --watch
-```
-or, FOR BACKEND, run
-```bash
-npx tailwindcss -i ./public/css/input.css -o ./public/css/app.css --watch
-```
-
-3. copy "src/img" folder into "dist" folder
-
-4. if you use any img then place the img in both "src/img" and "dist/img" folder 
-
-## Instructions
-
-1. Maintain DarkMode-LightMode --> bg, font
-2. Code in Proper section, highlighted as
-
-```Comment
-<!-- Place your CODE here in the SECTION  -->
-```
-3. Take the following page as reference
-      - login.html
-      - buyer_catalog.html
-4. 
-
-## UI To-do 
-
-- [ ] Landing Page. 
-- [ ] Register as: Buyer - Seller - Deliveryman.  == login.html
-- [ ] Buyer Payment Page. == buyer_catalog.html
-- [ ] Buyer Add fund to Tether Page == buyer_catalog.html 
-- [ ] Buyer|Seller|Deliveryman, Account Page -- Address add, edit, username chnage, contact number add and edit == buyer_catalog.html 
-- [ ] Seller review and rating page == seller_productList.html
-- [ ] Seller Order Page == seller_productList.html + OTP option 
-- [ ] Delivery-man Dashboard == similar to buyer and seller 
-- [ ] Deliveryman Order Collect Page == similar to buyer and seller  + OTP option 
-- [ ] Deliveryman Order Delivary Page == similar to buyer and seller + OTP option 
-- [ ] Deliveryman Order Completed Page == similar to buyer and seller 
-
-
+## Technology Stack
+- **Blockchain:** SKALE Network, Solidity
+- **Front-end:** HTML, Tailwind CSS, JavaScript
+- **Back-end:** Node.js, Express.js
+- **Data Storage:** IPFS for media, BigchainDB for decentralized storage
+- **Smart Contracts:** Solidity, Hardhat
+- **Wallet Integration:** MetaMask, Ethers.js
+- **AI Integration:** LLaMA GPT model, LangChain for AI chatbot
+- **Testing Framework:** Mocha
